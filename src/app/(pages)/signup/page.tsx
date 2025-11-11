@@ -1,15 +1,31 @@
+"use client";
 import { UiButton } from "@/components/ui/base/UiButton";
 import ContainerPage from "@/components/ui/container/page";
-import PATH from "@/constant/path";
+import { Checkbox, Form, FormProps, Input } from "antd";
 import Image from "next/image";
-import Link from "next/link";
+type FieldType = {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  policy?: boolean;
+};
 
 const signupPage = () => {
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <ContainerPage className="flex justify-center items-center">
-      <div className="w-[50%]">
+      <div className="w-[50%] max-lg:w-[65%] max-md:w-full">
         <h1 className="mb-[20px] text-[28px] text-[var(--color-accent-300)] font-semibold max-md:text-center">
-          Chào mừng đến với FindJob
+          Đăng ký tài khoản
         </h1>
         <UiButton
           variantCustom="outlineGoogle"
@@ -30,63 +46,114 @@ const signupPage = () => {
             or
           </div>
         </div>
-        <form className="mt-[20px]">
-          <div>
-            <div className="mb-5">
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Your email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="findjob@gmail.com"
-                required
-              />
-            </div>
-            <div className="mb-5">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Your password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="•••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-              />
-            </div>
-            <div className="mb-5">
-              <label
-                htmlFor="passwordConfirm"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Your password
-              </label>
-              <input
-                type="passwordConfirm"
-                id="password"
-                placeholder="•••"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-              />
-            </div>
-            <UiButton className="w-full">Đăng nhập với email</UiButton>
-            <p className="mt-[10px] text-[14px]">
-              bạn không có tài khoản?{" "}
-              <Link href={PATH.SIGNUP} className="text-[var(--text-link)]">
-                {" "}
-                Đăng ký ngay!
-              </Link>
-            </p>
-          </div>
-        </form>
+        <Form
+          className="!mt-[15px]"
+          name="basic"
+          layout="vertical"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          {/* Email */}
+          <Form.Item<FieldType>
+            label="Email của bạn"
+            name="email"
+            hasFeedback
+            rules={[
+              { required: true, message: "Vui lòng nhập email!" },
+              { type: "email", message: "Email không hợp lệ!" },
+            ]}
+            style={{ marginBottom: "10px" }}
+          >
+            <Input size="large" placeholder="findjob@gmail.com" />
+          </Form.Item>
+
+          {/* Password */}
+          <Form.Item<FieldType>
+            label="Mât khẩu"
+            name="password"
+            hasFeedback
+            rules={[
+              { required: true, message: "Vui lòng nhập mật khẩu!" },
+              {
+                pattern:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[{\]};:'",.<>/?\\|`~]).{12,}$/,
+                message:
+                  "Mật khẩu phải có ít nhất 12 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!",
+              },
+            ]}
+            style={{ marginBottom: "10px" }}
+          >
+            <Input.Password
+              className="w-full"
+              size="large"
+              placeholder="******"
+            />
+          </Form.Item>
+
+          {/* Password Confirm*/}
+          <Form.Item<FieldType>
+            label="Nhập lại mật khẩu"
+            name="confirmPassword"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              { required: true, message: "Vui lòng xác nhận mật khẩu!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject("Mật khẩu xác nhận không khớp!");
+                },
+              }),
+              {
+                pattern:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[{\]};:'",.<>/?\\|`~]).{12,}$/,
+                message:
+                  "Mật khẩu phải có ít nhất 12 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!",
+              },
+            ]}
+            style={{ marginBottom: "10px" }}
+          >
+            <Input.Password
+              className="w-full"
+              size="large"
+              placeholder="******"
+            />
+          </Form.Item>
+          <p className="mt-[10px] text-[12px] ">
+            Ít nhất 12 ký tự <br />
+            Ít nhất 1 ký tự (! @ # $ ...) <br />
+            Ít nhất 1 số <br />
+            Ít nhất 1 chữ cái in HOA <br />
+            Ít nhất 1 chữ cái in thường
+          </p>
+          {/* policy */}
+          <Form.Item<FieldType>
+            name="policy"
+            valuePropName="checked" // bắt buộc để lấy value boolean từ Checkbox
+            rules={[
+              {
+                validator: (_, value) =>
+                  value
+                    ? Promise.resolve()
+                    : Promise.reject(
+                        "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
+                      ),
+              },
+            ]}
+          >
+            <Checkbox>Tôi đồng ý với điều khoản</Checkbox>
+          </Form.Item>
+
+          <Form.Item label={null} style={{ marginTop: "20px" }}>
+            <UiButton className="w-full" htmlType="submit">
+              Đăng nhập với email
+            </UiButton>
+          </Form.Item>
+        </Form>
       </div>
     </ContainerPage>
   );

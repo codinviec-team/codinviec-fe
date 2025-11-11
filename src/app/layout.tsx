@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" data-theme="light">
+    <html lang="vi">
       <body className="flex flex-col min-h-screen">
         <ReduxProvider>
           <ConfigProvider

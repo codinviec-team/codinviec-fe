@@ -2,7 +2,7 @@
 import { UiButton } from "@/components/ui/base/UiButton";
 import ContainerPage from "@/components/ui/container/page";
 import PATH from "@/constant/path";
-import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import { Form, FormProps, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -48,49 +48,6 @@ const signinPage = () => {
                 or
               </div>
             </div>
-            {/* <form className="mt-[20px]">
-              <div>
-                <div className="mb-5">
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="findjob@gmail.com"
-                    required
-                  />
-                </div>
-                <div className="mb-5">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Your password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder="•••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    required
-                  />
-                </div>
-                <UiButton className="w-full">Đăng nhập với email</UiButton>
-                <p className="mt-[10px] text-[14px] ">
-                  bạn không có tài khoản?{" "}
-                  <Link href={PATH.SIGNUP} className="text-[var(--text-link)]">
-                    {" "}
-                    Đăng ký ngay!
-                  </Link>
-                </p>
-              </div>
-            </form> */}
-
             <Form
               className="!mt-[15px]"
               name="basic"
@@ -101,25 +58,32 @@ const signinPage = () => {
               autoComplete="off"
             >
               <Form.Item<FieldType>
-                label="Email"
+                label="Email của bạn"
                 name="email"
+                hasFeedback
                 rules={[
-                  { required: true, message: "Please input your email!" },
+                  { required: true, message: "Vui lòng nhập email!" },
+                  { type: "email", message: "Email không hợp lệ!" },
                 ]}
                 style={{ marginBottom: "10px" }}
               >
-                <Input size="large" />
+                <Input size="large" placeholder="findjob@gmail.com" />
               </Form.Item>
 
               <Form.Item<FieldType>
-                label="Password"
+                label="Mật khẩu "
                 name="password"
                 rules={[
                   { required: true, message: "Please input your password!" },
+                  { min: 12, message: "Mật khẩu phải có ít nhất 12 ký tự!" },
                 ]}
                 style={{ marginBottom: "10px" }}
               >
-                <Input.Password className="w-full" size="large" />
+                <Input.Password
+                  className="w-full"
+                  size="large"
+                  placeholder="******"
+                />
               </Form.Item>
 
               <Form.Item label={null} style={{ marginTop: "20px" }}>
