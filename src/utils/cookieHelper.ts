@@ -19,8 +19,6 @@ export const cookieHelper = {
         const storedvalue =
             typeof value === "string" ? value : JSON.stringify(value);
 
-        // Xác định thời gian hết hạn dựa trên key hoặc tham số expires
-        // BE tự xử lý refreshToken nên FE chỉ xử lý accessToken
         let expiresDays: number;
         if (expires !== undefined) {
             expiresDays = expires;
