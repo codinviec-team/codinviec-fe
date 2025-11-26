@@ -3,21 +3,17 @@ import { Form, FormProps, Input } from "antd";
 import { UiButton } from "../base/UiButton";
 import clsx from "clsx";
 
-interface SearchCustomProps extends FormProps {}
+type SearchCustomProps = FormProps
 type FieldType = {
   search?: string;
 };
 
 const SearchCustom = ({ className, ...props }: SearchCustomProps) => {
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-  };
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => { };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
+  ) => { };
   return (
     <Form
       name="basic"

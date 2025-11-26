@@ -10,7 +10,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListCategory() {
   const dispatch = useAppDispatch();
-  const { data, loading, error } = useAppSelector(
+  const { data, loading } = useAppSelector(
     (state: RootState) => state.category
   );
 
@@ -18,8 +18,9 @@ export default function ListCategory() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  if (loading) return <li className="text-accent-100 px-3">...</li>;
-  if (error) return <li className="text-red-400 px-3">Lỗi: {error}</li>;
+  if (loading) {
+    return null;
+  }
   if (!Array.isArray(data) || data.length === 0) return null;
 
   return (

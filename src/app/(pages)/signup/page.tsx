@@ -1,8 +1,19 @@
 "use client";
 import { UiButton } from "@/components/ui/base/UiButton";
 import ContainerPage from "@/components/ui/container/page";
-import { Checkbox, Form, FormProps, Input } from "antd";
+import { PATHS } from "@/constants/paths";
+import { IRegister } from "@/types/auth/Register";
+import { Checkbox, Form, FormProps, Input, Spin } from "antd";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { register } from "@/store/slice/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { RootState } from "@/store";
+import { AxiosError } from "axios";
+import { alert, toast } from "@/utils/notification";
+import { useEffect, useState } from "react";
+
 type FieldType = {
   email?: string;
   password?: string;
@@ -10,26 +21,87 @@ type FieldType = {
   policy?: boolean;
 };
 
-const signupPage = () => {
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+const SignupPage = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { isAuthenticated, loading } = useAppSelector((state: RootState) => state.auth);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Redirect nếu đã đăng nhập
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.replace(PATHS.HOME);
+    }
+  }, [isAuthenticated, loading, router]);
+
+  const handleGoogleLogin = () => {
+    // Redirect đến backend OAuth2 endpoint
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!apiBaseUrl) {
+      alert.error("Lỗi cấu hình", "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên.");
+      return;
+    }
+    window.location.href = `${apiBaseUrl}/auth/login-google`;
+  };
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    const registerData: IRegister = {
+      email: values.email!,
+      password: values.password!,
+    };
+
+    setSubmitting(true);
+    try {
+      // Dispatch register action - Service được gọi trong slice
+      await dispatch(register(registerData)).unwrap();
+
+      toast.success("Đăng ký thành công!", "Vui lòng đăng nhập để tiếp tục");
+      router.push(PATHS.SIGNIN);
+    } catch (error: unknown) {
+      // Error từ slice là AxiosError
+      let errorMessage = "Đăng ký thất bại. Vui lòng thử lại.";
+      if (error instanceof AxiosError) {
+        errorMessage = (error.response?.data as any)?.message || error.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+      toast.error("Đăng ký thất bại", errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
+  ) => { };
+
+  // Hiển thị loading khi đang check auth
+  if (loading) {
+    return (
+      <ContainerPage className="flex justify-center items-center min-h-screen">
+        <Spin size="large" />
+      </ContainerPage>
+    );
+  }
+
+  // Không render form nếu đã đăng nhập (sẽ redirect)
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <ContainerPage className="flex justify-center items-center">
       <div className="w-[50%] max-lg:w-[65%] max-md:w-full">
-        <h1 className="mb-[20px] text-[28px] text-[var(--color-accent-300)] font-semibold max-md:text-center">
+        <h1 className="mb-[20px] text-[28px] text-accent-300 font-semibold max-md:text-center">
           Đăng ký tài khoản
         </h1>
         <UiButton
           variantCustom="outlineGoogle"
           className="mb-[20px] w-full text-[16px]"
+          onClick={handleGoogleLogin}
+          disabled={submitting}
         >
           <Image
             src="/google-icon.svg"
@@ -41,8 +113,8 @@ const signupPage = () => {
           Sign In with Google
         </UiButton>
         {/* line */}
-        <div className="line bg-[var(--text-default)] w-full relative h-[1px]">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--color-primary-50)] flex justify-center items-center px-[5px]">
+        <div className="line bg-gray-900 w-full relative h-[1px]">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-50 flex justify-center items-center px-[5px]">
             or
           </div>
         </div>
@@ -66,7 +138,7 @@ const signupPage = () => {
             ]}
             style={{ marginBottom: "10px" }}
           >
-            <Input size="large" placeholder="findjob@gmail.com" />
+            <Input size="large" placeholder="codinviec@gmail.com" />
           </Form.Item>
 
           {/* Password */}
@@ -140,8 +212,8 @@ const signupPage = () => {
                   value
                     ? Promise.resolve()
                     : Promise.reject(
-                        "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
-                      ),
+                      "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
+                    ),
               },
             ]}
           >
@@ -149,13 +221,20 @@ const signupPage = () => {
           </Form.Item>
 
           <Form.Item label={null} style={{ marginTop: "20px" }}>
-            <UiButton className="w-full" htmlType="submit">
-              Đăng nhập với email
+            <UiButton className="w-full" htmlType="submit" loading={submitting} disabled={submitting}>
+              Đăng ký với email
             </UiButton>
+
+            <p className="mt-[10px] text-[14px]">
+              Bạn đã có tài khoản?{" "}
+              <Link href={PATHS.SIGNIN} className="text-blue-600 hover:text-blue-700">
+                Đăng nhập ngay!
+              </Link>
+            </p>
           </Form.Item>
         </Form>
       </div>
     </ContainerPage>
   );
 };
-export default signupPage;
+export default SignupPage;
