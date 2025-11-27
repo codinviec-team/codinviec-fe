@@ -21,7 +21,7 @@ type FieldType = {
   policy?: boolean;
 };
 
-const SignupPage = () => {
+const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isAuthenticated, loading } = useAppSelector((state: RootState) => state.auth);
@@ -73,9 +73,7 @@ const SignupPage = () => {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => { };
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {};
 
   // Hiển thị loading khi đang check auth
   if (loading) {
@@ -237,4 +235,4 @@ const SignupPage = () => {
     </ContainerPage>
   );
 };
-export default SignupPage;
+export default RegisterPage;

@@ -1,24 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { RootState } from "@/store";
-import { fetchCategories } from "@/store/slice/home/categorySlice";
+import { useCategories } from "@/hooks/home/category/useCategories";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListCategory() {
-  const dispatch = useAppDispatch();
-  const { data, loading } = useAppSelector(
-    (state: RootState) => state.category
-  );
+  const { data, isLoading } = useCategories();
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
-  if (loading) {
+  if (isLoading) {
     return null;
   }
   if (!Array.isArray(data) || data.length === 0) return null;

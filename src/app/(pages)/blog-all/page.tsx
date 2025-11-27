@@ -9,7 +9,7 @@ import BlogCardCustom from "../blog/components/BlogCardCustom";
 import ListBlogCustom from "../blog/components/ListBlogCustom";
 import MyPagination from "@/components/ui/MyPagination/page";
 import SearchCustom from "@/components/ui/SearchCustom/page";
-import { BlogService } from "@/services/blog/BlogService";
+import { BlogService } from "@/services/home/blog/BlogService";
 import { useQuery } from "@tanstack/react-query";
 import { BlogType } from "@/types/blog/BlogType";
 import { useState } from "react";
@@ -20,7 +20,7 @@ const pageSizeBlogDefault = 9;
 const BlogAllPage = () => {
   const [pageBlog, setPageBlog] = useState(1);
 
-  const { data, isLoading, isError, error } = useQuery<
+  const { data } = useQuery<
     BasePageResponse<BlogType>,
     Error
   >({
@@ -32,7 +32,7 @@ const BlogAllPage = () => {
       }),
   });
 
-  const onChangePagination = (page: number, pageSize: number) => {
+  const onChangePagination = (page: number) => {
     setPageBlog(page);
   };
   return (
