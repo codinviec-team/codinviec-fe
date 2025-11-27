@@ -1,5 +1,5 @@
 export interface IBaseResponse<T = unknown> {
-  code?: number; // HTTP status code từ BE
+  code?: number;
   message?: string;
   data?: T;
 }

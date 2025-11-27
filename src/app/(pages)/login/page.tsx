@@ -7,60 +7,26 @@ import { Form, FormProps, Input, Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { login } from "@/store/slice/auth/authSlice";
+import {useEffect, useRef, useState} from "react";
+import {checkAuth, login, setLoading} from "@/store/slice/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
-import { AxiosError } from "axios";
-import { alert, toast } from "@/utils/notification";
+import { alert } from "@/utils/notification";
+import {getGoogleErrorMessages} from "@/utils/errorGoogle";
+import {cookieHelper} from "@/utils/cookieHelper";
 
 type FieldType = {
   email?: string;
   password?: string;
 };
 
-const SigninPage = () => {
+const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const hasProcessedToken = useRef(false);
   const { isAuthenticated, loading } = useAppSelector((state: RootState) => state.auth);
   const [submitting, setSubmitting] = useState(false);
-
-  // Redirect nếu đã đăng nhập
-  useEffect(() => {
-    if (!loading && isAuthenticated) {
-      router.replace(PATHS.HOME);
-    }
-  }, [isAuthenticated, loading, router]);
-
-  // Xử lý error từ OAuth2 redirect
-  useEffect(() => {
-    const error = searchParams.get("error");
-    if (error) {
-      // Map error code thành error message
-      const errorMessages: Record<string, string> = {
-        access_denied: "Bạn đã từ chối quyền truy cập. Vui lòng thử lại.",
-        invalid_request: "Yêu cầu không hợp lệ. Vui lòng thử lại.",
-        unauthorized_client: "Ứng dụng không được phép truy cập. Vui lòng liên hệ quản trị viên.",
-        disabled_client: "Ứng dụng OAuth đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên để kích hoạt lại.",
-        unsupported_response_type: "Loại phản hồi không được hỗ trợ. Vui lòng thử lại.",
-        invalid_scope: "Phạm vi truy cập không hợp lệ. Vui lòng thử lại.",
-        server_error: "Lỗi máy chủ. Vui lòng thử lại sau.",
-        temporarily_unavailable: "Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.",
-        no_email: "Không tìm thấy email từ tài khoản Google. Vui lòng thử lại.",
-        no_token: "Không thể tạo token. Vui lòng thử lại.",
-        logged_in: "Tài khoản này đã được đăng nhập ở nơi khác!",
-        email_err: "Lỗi xử lý email. Vui lòng thử lại.",
-        token_err: "Lỗi xử lý token. Vui lòng thử lại.",
-      };
-      const errorMessage = errorMessages[error] || "Đăng nhập thất bại. Vui lòng thử lại.";
-
-      alert.error("Đăng nhập thất bại", errorMessage);
-
-      // Xóa error parameter từ URL
-      router.replace(PATHS.SIGNIN);
-    }
-  }, [searchParams, router]);
 
   const handleGoogleLogin = () => {
     // Redirect đến backend OAuth2 endpoint
@@ -71,6 +37,80 @@ const SigninPage = () => {
     }
     window.location.href = `${apiBaseUrl}/auth/login-google`;
   };
+
+    // Redirect nếu đã đăng nhập
+    useEffect(() => {
+        if (!loading && isAuthenticated) {
+            router.replace(PATHS.HOME);
+        }
+    }, [isAuthenticated, loading, router]);
+
+    useEffect(() => {
+        const error = searchParams.get("error");
+        if (error) {
+            const errorMessage = getGoogleErrorMessages(error);
+
+            alert.error("Đăng nhập thất bại", errorMessage);
+
+            router.replace(PATHS.SIGNIN);
+            return;
+        }
+
+        const token = searchParams.get("token");
+
+        if (token && !hasProcessedToken.current) {
+            hasProcessedToken.current = true;
+
+            try {
+                // Decode token từ URL (đã được encode ở backend)
+                const decodedToken = decodeURIComponent(token);
+
+                // Validate token format (basic check)
+                if (!decodedToken || decodedToken.trim().length === 0) {
+                    throw new Error("Token không hợp lệ");
+                }
+
+                // Lưu access token vào cookie
+                cookieHelper.set("access_token", decodedToken);
+
+                // Xóa token từ URL
+                const newUrl = window.location.pathname;
+                router.replace(newUrl);
+            } catch (error: unknown) {
+                const errorMessage =
+                    typeof error === "string"
+                        ? error
+                        : error instanceof Error
+                            ? error.message
+                            : "Token không hợp lệ. Vui lòng thử lại.";
+
+                alert.error("Đăng nhập thất bại", errorMessage);
+
+                // Xóa token từ URL
+                const newUrl = window.location.pathname;
+                router.replace(newUrl);
+            }
+        }
+    }, [searchParams, router]);
+
+
+    useEffect(() => {
+        const syncAuth = async () => {
+            try {
+                const token = cookieHelper.get("access_token");
+
+                if (token) {
+                    await dispatch(checkAuth()).unwrap();
+                } else {
+                    dispatch(setLoading(false));
+                }
+            } catch (error: unknown) {
+                dispatch(setLoading(false));
+            }
+        };
+
+        syncAuth();
+    }, []);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const loginData: ILogin = {
@@ -83,28 +123,14 @@ const SigninPage = () => {
       // Dispatch login action - Service được gọi trong slice
       // checkAuth được gọi tự động trong login 
       await dispatch(login(loginData)).unwrap();
-
-      toast.success("Đăng nhập thành công!", "Chào mừng bạn đến với CodinViec");
-      router.push(PATHS.HOME);
-    } catch (error: unknown) {
-      // Error từ slice là AxiosError
-      let errorMessage = "Đăng nhập thất bại. Vui lòng thử lại.";
-      if (error instanceof AxiosError) {
-        errorMessage = (error.response?.data as any)?.message || error.message || errorMessage;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === "string") {
-        errorMessage = error;
-      }
-      toast.error("Đăng nhập thất bại", errorMessage);
-    } finally {
+    } catch (error) {}
+    finally {
       setSubmitting(false);
     }
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => { };
+  ) => {};
 
   // Hiển thị loading khi đang check auth
   if (loading) {
@@ -214,4 +240,4 @@ const SigninPage = () => {
     </>
   );
 };
-export default SigninPage;
+export default LoginPage;

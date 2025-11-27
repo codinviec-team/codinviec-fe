@@ -12,15 +12,11 @@ export default function GlobalHandler() {
         const handleError = (e: CustomEvent<{ status: number; message?: string }>) => {
             const { status, message } = e.detail;
 
-            // 401 được xử lý bởi interceptor (refresh token), không cần hiển thị ở đây
-            if (status === 401) {
-                return;
-            }
-
             // Lấy message mặc định nếu không có
             const defaultMessages: Record<number, string> = {
                 0: "Không thể kết nối với server. Vui lòng kiểm tra kết nối internet và thử lại!",
                 400: "Vui lòng kiểm tra lại thông tin đã nhập!",
+                401: "Tài khoản hoặc mật khẩu không đúng!",
                 403: "Bạn không có quyền thực hiện hành động này. Vui lòng thực hiện lại sau!",
                 404: "Dữ liệu không tồn tại!",
                 409: "Dữ liệu đã tồn tại hoặc bị xung đột. Vui lòng kiểm tra lại!",
@@ -39,14 +35,17 @@ export default function GlobalHandler() {
                 case 400:
                     toast.warning("Dữ liệu không hợp lệ", errorMessage);
                     break;
+                case 401:
+                    alert.error("Đăng nhập thất bại", errorMessage);
+                    break;
                 case 403:
-                    alert.error("Không có quyền truy cập", errorMessage);
+                    alert.warning("Không có quyền truy cập", errorMessage);
                     break;
                 case 404:
                     toast.info("Không tìm thấy", errorMessage);
                     break;
                 case 409:
-                    toast.warning("Xung đột dữ liệu", errorMessage);
+                    alert.error("Đăng nhập thất bại", errorMessage);
                     break;
                 case 422:
                     toast.warning("Dữ liệu không hợp lệ", errorMessage);

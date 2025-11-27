@@ -1,5 +1,4 @@
 import ReduxProvider from "@/app/providers/ReduxProvider";
-import AuthProvider from "@/app/providers/AuthProvider";
 import Footer from "@/components/home/Footer";
 import Header from "@/components/home/Header";
 import GlobalHandler from "@/components/ui/Handler/GlobalHandler";
@@ -19,7 +18,6 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen">
         <ReduxProvider>
           <MyQueryClientProvider>
-            <AuthProvider>
               <ConfigProvider
                 theme={{
                   token: {
@@ -34,7 +32,6 @@ export default function RootLayout({
                 <GlobalHandler />
                 <ToastContainer />
               </ConfigProvider>
-            </AuthProvider>
           </MyQueryClientProvider>
         </ReduxProvider>
       </body>
