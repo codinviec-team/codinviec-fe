@@ -71,7 +71,7 @@ export default function GlobalHandler() {
 
             // Logout với redirect - Cần xác nhận → Alert
             await alert.warning("Phiên đăng nhập hết hạn", message);
-            router.push("/signin");
+            router.push("/login");
         };
 
         window.addEventListener("api-error", handleError as EventListener);
