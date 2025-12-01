@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 
 type FieldType = {
   email?: string;
+  firstName?: string;
+  lastName?: string;
   password?: string;
   confirmPassword?: string;
   policy?: boolean;
@@ -24,7 +26,9 @@ type FieldType = {
 const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { isAuthenticated, loading } = useAppSelector((state: RootState) => state.auth);
+  const { isAuthenticated, loading } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [submitting, setSubmitting] = useState(false);
 
   // Redirect nếu đã đăng nhập
@@ -38,7 +42,10 @@ const RegisterPage = () => {
     // Redirect đến backend OAuth2 endpoint
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!apiBaseUrl) {
-      alert.error("Lỗi cấu hình", "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên.");
+      alert.error(
+        "Lỗi cấu hình",
+        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên."
+      );
       return;
     }
     window.location.href = `${apiBaseUrl}/auth/login-google`;
@@ -47,21 +54,31 @@ const RegisterPage = () => {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const registerData: IRegister = {
       email: values.email!,
+      firstName: values.firstName!,
+      lastName: values.lastName!,
       password: values.password!,
     };
 
     setSubmitting(true);
     try {
       // Dispatch register action - Service được gọi trong slice
-      await dispatch(register(registerData)).unwrap();
+      const res = await dispatch(register(registerData)).unwrap();
 
-      toast.success("Đăng ký thành công!", "Vui lòng đăng nhập để tiếp tục");
-      router.push(PATHS.SIGNIN);
+      if (res?.id) {
+        toast.success(
+          "Đăng ký thành công!",
+          "Chào mừng bạn tới với Codinviec!"
+        );
+        router.push(PATHS.HOME);
+      }
     } catch (error: unknown) {
       // Error từ slice là AxiosError
       let errorMessage = "Đăng ký thất bại. Vui lòng thử lại.";
       if (error instanceof AxiosError) {
-        errorMessage = (error.response?.data as any)?.message || error.message || errorMessage;
+        errorMessage =
+          (error.response?.data as any)?.message ||
+          error.message ||
+          errorMessage;
       } else if (error instanceof Error) {
         errorMessage = error.message;
       } else if (typeof error === "string") {
@@ -139,6 +156,31 @@ const RegisterPage = () => {
             <Input size="large" placeholder="codinviec@gmail.com" />
           </Form.Item>
 
+          <div className="flex gap-4 max-lg:flex-col  max-lg:gap-0">
+            {/* Email */}
+            <Form.Item<FieldType>
+              label="Tên"
+              name="firstName"
+              className="w-[50%] max-lg:w-full"
+              hasFeedback
+              rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
+              style={{ marginBottom: "10px" }}
+            >
+              <Input size="large" placeholder="Phu" />
+            </Form.Item>
+            {/* Email */}
+            <Form.Item<FieldType>
+              label="Họ"
+              name="lastName"
+              className="w-[50%] max-lg:w-full"
+              hasFeedback
+              rules={[{ required: true, message: "Vui lòng nhập họ!" }]}
+              style={{ marginBottom: "10px" }}
+            >
+              <Input size="large" placeholder="Nguyen" />
+            </Form.Item>
+          </div>
+
           {/* Password */}
           <Form.Item<FieldType>
             label="Mât khẩu"
@@ -210,8 +252,8 @@ const RegisterPage = () => {
                   value
                     ? Promise.resolve()
                     : Promise.reject(
-                      "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
-                    ),
+                        "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
+                      ),
               },
             ]}
           >
@@ -219,13 +261,21 @@ const RegisterPage = () => {
           </Form.Item>
 
           <Form.Item label={null} style={{ marginTop: "20px" }}>
-            <UiButton className="w-full" htmlType="submit" loading={submitting} disabled={submitting}>
+            <UiButton
+              className="w-full"
+              htmlType="submit"
+              loading={submitting}
+              disabled={submitting}
+            >
               Đăng ký với email
             </UiButton>
 
             <p className="mt-[10px] text-[14px]">
               Bạn đã có tài khoản?{" "}
-              <Link href={PATHS.SIGNIN} className="text-blue-600 hover:text-blue-700">
+              <Link
+                href={PATHS.SIGNIN}
+                className="text-blue-600 hover:text-blue-700"
+              >
                 Đăng nhập ngay!
               </Link>
             </p>

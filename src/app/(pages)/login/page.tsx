@@ -7,13 +7,13 @@ import { Form, FormProps, Input, Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import {useEffect, useRef, useState} from "react";
-import {checkAuth, login, setLoading} from "@/store/slice/auth/authSlice";
+import { useEffect, useRef, useState } from "react";
+import { checkAuth, login, setLoading } from "@/store/slice/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
 import { alert } from "@/utils/notification";
-import {getGoogleErrorMessages} from "@/utils/errorGoogle";
-import {cookieHelper} from "@/utils/cookieHelper";
+import { getGoogleErrorMessages } from "@/utils/errorGoogle";
+import { cookieHelper } from "@/utils/cookieHelper";
 
 type FieldType = {
   email?: string;
@@ -25,92 +25,96 @@ const LoginPage = () => {
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const hasProcessedToken = useRef(false);
-  const { isAuthenticated, loading } = useAppSelector((state: RootState) => state.auth);
+  const { isAuthenticated, loading } = useAppSelector(
+    (state: RootState) => state.auth
+  );
   const [submitting, setSubmitting] = useState(false);
 
   const handleGoogleLogin = () => {
     // Redirect đến backend OAuth2 endpoint
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!apiBaseUrl) {
-      alert.error("Lỗi cấu hình", "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên.");
+      alert.error(
+        "Lỗi cấu hình",
+        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên."
+      );
       return;
     }
     window.location.href = `${apiBaseUrl}/auth/login-google`;
   };
 
-    // Redirect nếu đã đăng nhập
-    useEffect(() => {
-        if (!loading && isAuthenticated) {
-            router.replace(PATHS.HOME);
+  // Redirect nếu đã đăng nhập
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.replace(PATHS.HOME);
+    }
+  }, [isAuthenticated, loading, router]);
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      const errorMessage = getGoogleErrorMessages(error);
+
+      alert.error("Đăng nhập thất bại", errorMessage);
+
+      router.replace(PATHS.SIGNIN);
+      return;
+    }
+
+    const token = searchParams.get("token");
+
+    if (token && !hasProcessedToken.current) {
+      hasProcessedToken.current = true;
+
+      try {
+        // Decode token từ URL (đã được encode ở backend)
+        const decodedToken = decodeURIComponent(token);
+
+        // Validate token format (basic check)
+        if (!decodedToken || decodedToken.trim().length === 0) {
+          throw new Error("Token không hợp lệ");
         }
-    }, [isAuthenticated, loading, router]);
 
-    useEffect(() => {
-        const error = searchParams.get("error");
-        if (error) {
-            const errorMessage = getGoogleErrorMessages(error);
+        // Lưu access token vào cookie
+        cookieHelper.set("access_token", decodedToken);
 
-            alert.error("Đăng nhập thất bại", errorMessage);
+        // Xóa token từ URL
+        const newUrl = window.location.pathname;
+        router.replace(newUrl);
+      } catch (error: unknown) {
+        const errorMessage =
+          typeof error === "string"
+            ? error
+            : error instanceof Error
+            ? error.message
+            : "Token không hợp lệ. Vui lòng thử lại.";
 
-            router.replace(PATHS.SIGNIN);
-            return;
+        alert.error("Đăng nhập thất bại", errorMessage);
+
+        // Xóa token từ URL
+        const newUrl = window.location.pathname;
+        router.replace(newUrl);
+      }
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
+    const syncAuth = async () => {
+      try {
+        const token = cookieHelper.get("access_token");
+
+        if (token) {
+          await dispatch(checkAuth()).unwrap();
+        } else {
+          dispatch(setLoading(false));
         }
+      } catch (error: unknown) {
+        dispatch(setLoading(false));
+      }
+    };
 
-        const token = searchParams.get("token");
-
-        if (token && !hasProcessedToken.current) {
-            hasProcessedToken.current = true;
-
-            try {
-                // Decode token từ URL (đã được encode ở backend)
-                const decodedToken = decodeURIComponent(token);
-
-                // Validate token format (basic check)
-                if (!decodedToken || decodedToken.trim().length === 0) {
-                    throw new Error("Token không hợp lệ");
-                }
-
-                // Lưu access token vào cookie
-                cookieHelper.set("access_token", decodedToken);
-
-                // Xóa token từ URL
-                const newUrl = window.location.pathname;
-                router.replace(newUrl);
-            } catch (error: unknown) {
-                const errorMessage =
-                    typeof error === "string"
-                        ? error
-                        : error instanceof Error
-                            ? error.message
-                            : "Token không hợp lệ. Vui lòng thử lại.";
-
-                alert.error("Đăng nhập thất bại", errorMessage);
-
-                // Xóa token từ URL
-                const newUrl = window.location.pathname;
-                router.replace(newUrl);
-            }
-        }
-    }, [searchParams, router]);
-
-
-    useEffect(() => {
-        const syncAuth = async () => {
-            try {
-                const token = cookieHelper.get("access_token");
-
-                if (token) {
-                    await dispatch(checkAuth()).unwrap();
-                } else {
-                    dispatch(setLoading(false));
-                }
-            } catch (error: unknown) {
-                dispatch(setLoading(false));
-            }
-        };
-
-        syncAuth();
-    }, []);
+    syncAuth();
+  }, []);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const loginData: ILogin = {
@@ -121,16 +125,15 @@ const LoginPage = () => {
     setSubmitting(true);
     try {
       // Dispatch login action - Service được gọi trong slice
-      // checkAuth được gọi tự động trong login 
+      // checkAuth được gọi tự động trong login
       await dispatch(login(loginData)).unwrap();
-    } catch (error) {}
-    finally {
+    } catch (error) {
+    } finally {
       setSubmitting(false);
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-  ) => {};
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {};
 
   // Hiển thị loading khi đang check auth
   if (loading) {
@@ -148,7 +151,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <ContainerPage className="flex justify-center items-center">
+      <ContainerPage className="flex justify-center items-center flex-1">
         <div className="flex gap-[20px] w-full">
           <div className="signin_left basis-1/2 flex-shrink-0 max-md:basis-full">
             <h1 className="mb-[20px] text-[28px] text-accent-300 font-semibold max-md:text-center">
@@ -199,9 +202,7 @@ const LoginPage = () => {
               <Form.Item<FieldType>
                 label="Mật khẩu "
                 name="password"
-                rules={[
-                  { required: true, message: "Vui lòng nhập mật khẩu!" }
-                ]}
+                rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
                 style={{ marginBottom: "10px" }}
               >
                 <Input.Password
@@ -212,7 +213,12 @@ const LoginPage = () => {
               </Form.Item>
 
               <Form.Item label={null} style={{ marginTop: "20px" }}>
-                <UiButton className="w-full" htmlType="submit" loading={submitting} disabled={submitting}>
+                <UiButton
+                  className="w-full"
+                  htmlType="submit"
+                  loading={submitting}
+                  disabled={submitting}
+                >
                   Đăng nhập với email
                 </UiButton>
 

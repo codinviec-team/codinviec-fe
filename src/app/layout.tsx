@@ -18,20 +18,20 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen">
         <ReduxProvider>
           <MyQueryClientProvider>
-              <ConfigProvider
-                theme={{
-                  token: {
-                    fontFamily:
-                      'Lexend, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  },
-                }}
-              >
-                <Header />
-                <main className="flex-grow">{children}</main>
-                <Footer />
-                <GlobalHandler />
-                <ToastContainer />
-              </ConfigProvider>
+            <ConfigProvider
+              theme={{
+                token: {
+                  fontFamily:
+                    'Lexend, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                },
+              }}
+            >
+              <Header />
+              <main className="flex-grow flex">{children}</main>
+              <Footer />
+              <GlobalHandler />
+              <ToastContainer />
+            </ConfigProvider>
           </MyQueryClientProvider>
         </ReduxProvider>
       </body>
