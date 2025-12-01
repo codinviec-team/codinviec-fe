@@ -6,7 +6,7 @@ export default function AdminPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-blue-600">Trang quản trị {user}</h1>
+      <h1 className="text-3xl font-bold text-blue-600">Trang quản trị {user != null ? user.lastName : ""}</h1>
     </div>
   );
 }
