@@ -30,7 +30,8 @@ export const cookieHelper = {
         const storedvalue =
             typeof value === "string" ? value : JSON.stringify(value);
 
-    
+        const expiresDays = expires !== undefined ? expires : TIMECOOKIES.accessToken;
+
         Cookies.set(key, storedvalue, getCookieOptions(expiresDays));
     },
 
