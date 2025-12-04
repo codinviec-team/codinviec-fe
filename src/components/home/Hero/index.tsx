@@ -38,7 +38,7 @@ export default function HeroSection() {
         <div className="absolute top-40 right-40 w-64 h-64 bg-secondary-400 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative container mx-auto px-6 lg:px-12 py-16 lg:py-24">
+      <div className="relative container mx-auto px-6 lg:px-12 py-16 lg:pt-24 lg:pb-36">
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Heading */}
           <motion.h1
