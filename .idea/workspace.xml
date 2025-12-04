@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="89d44854-919c-4cd0-b70f-3ee1aff99843" name="Changes" comment="add-more">
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/providers/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers/AuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/Hero/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Hero/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interceptor/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/interceptor/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/auth/authService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth/authService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/cookieHelper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/cookieHelper.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;huynhbao2606&quot;
+  }
+}</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="page-gome" />
+                    <option name="lastUsedInstant" value="1764853283" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1764606106" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="fix-deployment" />
+                    <option name="lastUsedInstant" value="1764596603" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="update-ui" />
+                    <option name="lastUsedInstant" value="1764244037" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/codinviec-team/codinviec-fe.git&quot;,
+    &quot;accountId&quot;: &quot;8fba04d3-bc7a-42a2-a872-9a3f27f03e12&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;huynhbao2606&quot;,
+    &quot;repository&quot;: &quot;codinviec-fe&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="35sHqrTpFsDPt0z6X19NzxeQVuw" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;page-gome&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Learn/FE/codinviec-fe&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Next.js: server-side.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Learn\\FE\\codinviec-fe\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Learn\FE\codinviec-fe\src\hooks\home\category" />
+      <recent name="D:\Learn\FE\codinviec-fe\src\services\home\category" />
+      <recent name="D:\Learn\FE\codinviec-fe\src\services\home\blog" />
+      <recent name="D:\Learn\FE\codinviec-fe\src\services\home" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="89d44854-919c-4cd0-b70f-3ee1aff99843" name="Changes" comment="" />
+      <created>1763892054039</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763892054039</updated>
+      <workItem from="1763892058945" duration="6600000" />
+      <workItem from="1763965536239" duration="2198000" />
+      <workItem from="1764012312414" duration="265000" />
+      <workItem from="1764176466344" duration="14344000" />
+      <workItem from="1764193138745" duration="1082000" />
+      <workItem from="1764236981203" duration="627000" />
+      <workItem from="1764238670969" duration="10870000" />
+      <workItem from="1764251233519" duration="1407000" />
+      <workItem from="1764438786504" duration="240000" />
+      <workItem from="1764457075953" duration="725000" />
+      <workItem from="1764595798253" duration="3259000" />
+      <workItem from="1764605177744" duration="958000" />
+      <workItem from="1764606563879" duration="1600000" />
+      <workItem from="1764608362699" duration="10000" />
+      <workItem from="1764608447230" duration="778000" />
+      <workItem from="1764781372169" duration="1708000" />
+      <workItem from="1764785627884" duration="611000" />
+      <workItem from="1764789978589" duration="1896000" />
+      <workItem from="1764802176122" duration="6475000" />
+      <workItem from="1764840359285" duration="12970000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix-refresh-api">
+      <option name="closed" value="true" />
+      <created>1764193017867</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764193017867</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764193752616</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764193752616</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764194009850</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764194009850</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764251127695</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764251127695</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764596652430</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764596652430</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764597163471</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764597163471</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add-more">
+      <option name="closed" value="true" />
+      <created>1764605931067</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764605931067</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="add-more" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+    <MESSAGE value="fix-refresh-api" />
+    <MESSAGE value="add-more" />
+    <option name="LAST_COMMIT_MESSAGE" value="add-more" />
+  </component>
+</project>
