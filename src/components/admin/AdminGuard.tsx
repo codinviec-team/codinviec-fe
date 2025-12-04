@@ -6,6 +6,7 @@ import { useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
 import { Spin } from "antd";
 import { PATHS } from "@/constants/paths";
+import {alert} from "@/utils/notification";
 
 interface AdminGuardProps {
   children: React.ReactNode;
@@ -28,8 +29,9 @@ export default function AdminGuard({ children }: AdminGuardProps) {
       }
 
       // Nếu không phải ROLE_ADMIN, redirect về home
-      if (user.role !== "ROLE_ADMIN") {
+      if (user.role !== "ADMIN") {
         router.push(PATHS.HOME);
+        alert.warning("Bạn không có quyền truy cập", "Chỉ có admin mới có quyền truy cập đường dẫn này!")
         return;
       }
     }
@@ -48,7 +50,7 @@ export default function AdminGuard({ children }: AdminGuardProps) {
   }
 
   // Nếu không phải admin, hiển thị loading (sẽ redirect trong useEffect)
-  if (!user || user.role !== "ROLE_ADMIN") {
+  if (!user || user.role !== "ADMIN") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-50">
         <div className="text-center">

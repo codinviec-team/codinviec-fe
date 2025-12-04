@@ -17,19 +17,14 @@ const ToastContainer = dynamic(
 );
 
 // Dynamic import AntdProvider để defer antd loading
-const AntdProvider = dynamic(() => import("./AntdProvider"), {
-  ssr: false,
-});
 
 export default function AppProviders({ children }: { children: ReactNode }) {
   return (
     <ReduxProvider>
       <MyQueryClientProvider>
-        <AntdProvider>
           {children}
           <GlobalHandler />
           <ToastContainer />
-        </AntdProvider>
       </MyQueryClientProvider>
     </ReduxProvider>
   );
