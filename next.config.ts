@@ -11,13 +11,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
-      // Có thể thêm các hostname khác nếu cần
-      // {
-      //   protocol: "https",
-      //   hostname: "example.com",
-      //   port: "",
-      //   pathname: "/**",
-      // },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
