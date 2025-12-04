@@ -118,14 +118,6 @@ export default function ProfilePage() {
     setAvatarFile(null);
   };
 
-  if (loading) {
-    return (
-      <ContainerPage className="flex justify-center items-center min-h-screen">
-        <Spin size="large" tip="Đang tải..." />
-      </ContainerPage>
-    );
-  }
-
   if (!isAuthenticated || !user) {
     return null;
   }

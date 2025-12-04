@@ -1,10 +1,9 @@
 import ReduxProvider from "@/app/providers/ReduxProvider";
 import AuthProvider from "@/app/providers/AuthProvider";
-import Footer from "@/components/home/Footer";
-import Header from "@/components/home/Header";
 import GlobalHandler from "@/components/ui/Handler/GlobalHandler";
 import ToastContainer from "@/components/ui/ToastContainer/ToastContainer";
-import React, {Suspense} from "react";
+import GlobalLoadingScreen from "@/components/ui/GlobalLoadingScreen/GlobalLoadingScreen";
+import React, { Suspense } from "react";
 import "./globals.css";
 import { ConfigProvider } from "antd";
 import MyQueryClientProvider from "./providers/QueryClientProvider";
@@ -25,16 +24,13 @@ export default function RootLayout({
                   token: {
                     fontFamily:
                       'Lexend, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    colorPrimary: "#5a3fa6",
+                    borderRadius: 12,
                   },
                 }}
               >
-                <Header />
-                <main className="flex-grow flex">
-                    <Suspense fallback={null}>
-                        {children}
-                    </Suspense>
-                </main>
-                <Footer />
+                <GlobalLoadingScreen />
+                <Suspense fallback={null}>{children}</Suspense>
                 <GlobalHandler />
                 <ToastContainer />
               </ConfigProvider>

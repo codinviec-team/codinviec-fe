@@ -59,13 +59,7 @@ export default function Header() {
                 </div>
 
                 <div className="hidden md:flex items-center space-x-4 text-accent-100 font-medium">
-                    {loading ? (
-                        // Skeleton loading khi đang check auth
-                        <div className="flex items-center space-x-4 animate-pulse">
-                            <div className="h-4 w-16 bg-primary-700/50 rounded"></div>
-                            <div className="h-8 w-20 bg-primary-700/50 rounded-lg"></div>
-                        </div>
-                    ) : isAuthenticated && user ? (
+                    {isAuthenticated && user ? (
                         // User đã đăng nhập - Hiển thị avatar và dropdown với hover
                         <div className="relative group">
                             <button className="flex items-center justify-center hover:opacity-90 transition-all cursor-pointer p-1.5 rounded-xl hover:bg-primary-800/40 active:scale-95">

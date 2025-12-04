@@ -3,7 +3,7 @@ import { UiButton } from "@/components/ui/base/UiButton";
 import ContainerPage from "@/components/ui/container/page";
 import { PATHS } from "@/constants/paths";
 import { IRegister } from "@/types/auth/Register";
-import { Checkbox, Form, FormProps, Input, Spin } from "antd";
+import { Checkbox, Form, FormProps, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -91,15 +91,6 @@ const RegisterPage = () => {
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {};
-
-  // Hiển thị loading khi đang check auth
-  if (loading) {
-    return (
-      <ContainerPage className="flex justify-center items-center min-h-screen">
-        <Spin size="large" />
-      </ContainerPage>
-    );
-  }
 
   // Không render form nếu đã đăng nhập (sẽ redirect)
   if (isAuthenticated) {
