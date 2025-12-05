@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   DashboardOutlined,
@@ -76,9 +77,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Header */}
         <div className="h-16 px-4 flex items-center justify-between border-b border-primary-100">
           <Link href={PATHS.ADMIN} className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">A</span>
-            </div>
+            <Image
+              src="/logo-icon.svg"
+              alt="CodinViec Logo"
+              width={32}
+              height={32}
+              className="w-8 h-8"
+              priority
+            />
             <span className="font-bold text-xl text-primary-700">Admin</span>
           </Link>
 

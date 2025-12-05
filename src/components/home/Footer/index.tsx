@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { PATHS } from "@/constants/paths";
 import {
   FacebookOutlined,
@@ -52,9 +53,16 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Link
               href={PATHS.HOME}
-              className="text-accent font-extrabold text-3xl hover:text-accent-200 transition inline-block mb-4"
+              className="inline-block mb-4 hover:opacity-90 transition"
             >
-              CodinViec
+              <Image
+                src="/logo-full.svg"
+                alt="CodinViec Logo"
+                width={500}
+                height={200}
+                className="h-18 w-auto"
+                priority
+              />
             </Link>
             <p className="text-primary-300 mb-6 max-w-sm leading-relaxed">
               Nền tảng tuyển dụng IT hàng đầu Việt Nam. Kết nối hàng nghìn lập trình viên 
