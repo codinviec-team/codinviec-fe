@@ -6,6 +6,7 @@ export const PATHS = {
   ABOUT: "/about",
   BLOG: "/blog",
   BLOG_ALL: "/blog-all",
+  BRAND: "/brand",
   ADMIN: "/admin",
 } as const;
 

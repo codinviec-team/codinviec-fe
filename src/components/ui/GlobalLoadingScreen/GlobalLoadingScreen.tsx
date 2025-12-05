@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
@@ -143,7 +144,7 @@ export default function GlobalLoadingScreen() {
               }}
             >
               <motion.div
-                className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-2xl"
+                className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-2xl overflow-hidden"
                 animate={{
                   scale: [1, 1.1, 1],
                   rotate: [0, 5, -5, 0],
@@ -154,8 +155,7 @@ export default function GlobalLoadingScreen() {
                   ease: "easeInOut",
                 }}
               >
-                <motion.span
-                  className="text-4xl"
+                <motion.div
                   animate={{
                     rotate: [0, -360],
                   }}
@@ -165,8 +165,15 @@ export default function GlobalLoadingScreen() {
                     ease: "linear",
                   }}
                 >
-                  💼
-                </motion.span>
+                  <Image
+                    src="/logo-icon.svg"
+                    alt="CodinViec Logo"
+                    width={50}
+                    height={50}
+                    className="w-12 h-12"
+                    priority
+                  />
+                </motion.div>
               </motion.div>
             </motion.div>
 

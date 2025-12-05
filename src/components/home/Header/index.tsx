@@ -48,9 +48,16 @@ export default function Header() {
 
                     <Link
                         href={PATHS.HOME}
-                        className="text-accent font-extrabold text-2xl hover:text-accent-200 transition"
+                        className="flex items-center hover:opacity-90 transition"
                     >
-                        CodinViec
+                        <Image
+                            src="/logo-simple.svg"
+                            alt="CodinViec Logo"
+                            width={140}
+                            height={35}
+                            className="h-11 w-auto"
+                            priority
+                        />
                     </Link>
 
                     <ul className="hidden md:flex items-center space-x-6 text-base font-semibold text-accent-100">

@@ -1,0 +1,30 @@
+<svg width="360" height="80" viewBox="0 0 360 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cute owl icon - large size like text -->
+  <!-- Soft curved ear tufts - closer together -->
+  <path d="M20 12 Q19 8 21 9.5 Q23 11 22 13" fill="#5a3fa6"/>
+  <path d="M40 12 Q41 8 39 9.5 Q37 11 38 13" fill="#5a3fa6"/>
+  <!-- Head - large size -->
+  <circle cx="30" cy="24" r="15" fill="#5a3fa6"/>
+  <!-- Large expressive eyes -->
+  <!-- Left eye -->
+  <circle cx="23" cy="24" r="7" fill="#4db6ac"/>
+  <circle cx="23" cy="24" r="4.5" fill="#1e1e1e"/>
+  <circle cx="24" cy="23.5" r="1.8" fill="white"/>
+  <circle cx="21.8" cy="23" r="1" fill="white"/>
+  <!-- Right eye -->
+  <circle cx="37" cy="24" r="7" fill="#4db6ac"/>
+  <circle cx="37" cy="24" r="4.5" fill="#1e1e1e"/>
+  <circle cx="38" cy="23.5" r="1.8" fill="white"/>
+  <circle cx="35.8" cy="23" r="1" fill="white"/>
+  <!-- Orange beak - smaller and cuter -->
+  <path d="M30 32 L28 36 L32 36 Z" fill="#FF9800"/>
+  <!-- Plump body -->
+  <ellipse cx="30" cy="48" rx="11" ry="9" fill="#5a3fa6"/>
+  <!-- Soft wings -->
+  <ellipse cx="21" cy="48" rx="4" ry="6" fill="#4db6ac" opacity="0.3"/>
+  <ellipse cx="39" cy="48" rx="4" ry="6" fill="#4db6ac" opacity="0.3"/>
+  
+  <!-- Text - large size like in image -->
+  <text x="70" y="48" font-family="Lexend, system-ui, sans-serif" font-size="40" font-weight="700" fill="#4db6ac" letter-spacing="-0.5">CodinViec</text>
+  <text x="70" y="68" font-family="Lexend, system-ui, sans-serif" font-size="13" fill="#6B7280" letter-spacing="0">Kết nối việc làm, xây dựng tương lai.</text>
+</svg>
