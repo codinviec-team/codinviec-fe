@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89d44854-919c-4cd0-b70f-3ee1aff99843" name="Changes" comment="add-more">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="89d44854-919c-4cd0-b70f-3ee1aff99843" name="Changes" comment="blog-jobs-hr-companies">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Footer/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Footer/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Header/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/GlobalLoadingScreen/GlobalLoadingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/GlobalLoadingScreen/GlobalLoadingScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog-all/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog-all/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/BlogCardCustom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/components/BlogCardCustom.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/ListBlogCustom.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/components/ListBlogCustom.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/FeaturedJobs/JobCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/FeaturedJobs/JobCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/Hero/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Hero/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ui/SearchCustom/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/SearchCustom/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants/paths.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/paths.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,37 +109,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "metadata",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Learn/FE/codinviec-fe",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.Next.js: server-side.executor": "Run",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "D:\\Learn\\FE\\codinviec-fe\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;blog&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Learn/FE/codinviec-fe&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Next.js: server-side.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Learn\\FE\\codinviec-fe\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Learn\FE\codinviec-fe\src\components\admin" />
@@ -207,6 +202,7 @@
       <workItem from="1764962773533" duration="191000" />
       <workItem from="1764964447674" duration="14000" />
       <workItem from="1764964971130" duration="4295000" />
+      <workItem from="1765288760011" duration="9821000" />
     </task>
     <task id="LOCAL-00001" summary="fix-refresh-api">
       <option name="closed" value="true" />

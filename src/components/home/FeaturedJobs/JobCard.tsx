@@ -23,6 +23,7 @@ export type Job = {
   tags: string[];
   isHot?: boolean;
   isUrgent?: boolean;
+  isSuperHot?: boolean;
 };
 
 type JobCardProps = {
@@ -88,14 +89,43 @@ export default function JobCard({ job, index = 0, className }: JobCardProps) {
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {job.isHot && (
-          <span className="px-2.5 py-1 bg-red-50 text-red-600 text-xs font-semibold rounded-full">
-            🔥 Hot
-          </span>
+        {job.isSuperHot && (
+          <motion.span
+            animate={{ 
+              scale: [1, 1.08, 1],
+              boxShadow: [
+                "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)",
+                "0 0 0 10px rgba(251, 191, 36, 0), 0 0 30px rgba(251, 191, 36, 0.4)",
+                "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)"
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="px-3 py-1.5 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 text-white text-xs font-bold rounded-full shadow-2xl shadow-orange-500/80 border-3 border-yellow-200 ring-2 ring-yellow-300 ring-offset-2 ring-offset-white"
+            style={{ borderWidth: '3px' }}
+          >
+            🔥 Super Hot
+          </motion.span>
         )}
-        {job.isUrgent && (
-          <span className="px-2.5 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full">
+        {job.isUrgent && !job.isSuperHot && (
+          <motion.span
+            animate={{ 
+              scale: [1, 1.05, 1],
+              boxShadow: [
+                "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)",
+                "0 0 0 8px rgba(239, 68, 68, 0), 0 0 25px rgba(239, 68, 68, 0.4)",
+                "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)"
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-bold rounded-full shadow-2xl shadow-red-600/70 border-3 border-red-400 ring-2 ring-red-500 ring-offset-2 ring-offset-white"
+            style={{ borderWidth: '3px' }}
+          >
             ⚡ Urgent
+          </motion.span>
+        )}
+        {job.isHot && !job.isSuperHot && (
+          <span className="px-2.5 py-1 bg-gradient-to-r from-red-100 to-orange-100 text-red-700 text-xs font-semibold rounded-full shadow-md shadow-red-200/50 border border-red-200">
+            🔥 Hot
           </span>
         )}
         {job.tags.slice(0, 3).map((tag) => (

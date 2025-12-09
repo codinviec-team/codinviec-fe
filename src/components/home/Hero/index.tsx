@@ -1,17 +1,8 @@
 "use client";
 
-import { Form, Input, Select } from "antd";
-import { UiButton } from "@/components/ui/base/UiButton";
 import { motion } from "framer-motion";
-import { SearchOutlined, EnvironmentOutlined } from "@ant-design/icons";
-
-const locations = [
-  { value: "all", label: "Tất cả thành phố" },
-  { value: "hanoi", label: "Hà Nội" },
-  { value: "hcm", label: "Hồ Chí Minh" },
-  { value: "danang", label: "Đà Nẵng" },
-  { value: "other", label: "Khác" },
-];
+import SearchCustom from "@/components/ui/SearchCustom/page";
+import { useRouter } from "next/navigation";
 
 const popularKeywords = [
   "ReactJS",
@@ -25,8 +16,17 @@ const popularKeywords = [
 ];
 
 export default function HeroSection() {
+  const router = useRouter();
+
   const handleSearch = (values: { keyword?: string; location?: string }) => {
-    console.log("Search:", values);
+    const params = new URLSearchParams();
+    if (values.keyword) {
+      params.set("keyword", values.keyword);
+    }
+    if (values.location && values.location !== "all") {
+      params.set("location", values.location);
+    }
+    router.push(`/jobs?${params.toString()}`);
   };
 
   return (
@@ -48,7 +48,7 @@ export default function HeroSection() {
             className="text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight"
           >
             Tìm kiếm việc làm{" "}
-            <span className="text-accent">IT hàng đầu</span>
+            <span className="text-accent-200">IT hàng đầu</span>
           </motion.h1>
 
           <motion.p
@@ -65,48 +65,13 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl max-w-3xl mx-auto"
           >
-            <Form
+            <SearchCustom
               onFinish={handleSearch}
-              className="flex flex-col md:flex-row gap-3"
-              layout="vertical"
-            >
-              <Form.Item name="keyword" className="flex-1 !mb-0">
-                <Input
-                  size="large"
-                  placeholder="Nhập từ khóa, vị trí, công ty..."
-                  prefix={
-                    <SearchOutlined className="text-primary-400 text-lg mr-2" />
-                  }
-                  className="!h-[52px] !text-base !rounded-xl !border-primary-200 hover:!border-primary-400 focus:!border-primary-500"
-                />
-              </Form.Item>
-
-              <Form.Item name="location" className="md:w-[200px] !mb-0">
-                <Select
-                  size="large"
-                  placeholder="Địa điểm"
-                  options={locations}
-                  defaultValue="all"
-                  suffixIcon={
-                    <EnvironmentOutlined className="text-primary-400" />
-                  }
-                  className="!h-[52px] w-full [&_.ant-select-selector]:!h-[52px] [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-primary-200 [&_.ant-select-selection-item]:!leading-[52px]"
-                />
-              </Form.Item>
-
-              <Form.Item className="!mb-0">
-                <UiButton
-                  htmlType="submit"
-                  variantCustom="accent"
-                  className="!h-[52px] !px-8 !text-base !font-bold"
-                >
-                  <SearchOutlined className="mr-1" />
-                  Tìm việc
-                </UiButton>
-              </Form.Item>
-            </Form>
+              withBackground={true}
+              placeholder="Nhập từ khóa, vị trí, công ty..."
+              locationPlaceholder="Tất cả thành phố"
+            />
           </motion.div>
 
           {/* Popular Keywords */}
@@ -116,10 +81,11 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-6 flex flex-wrap justify-center gap-2"
           >
-            <span className="text-primary-300 text-sm mr-2">Phổ biến:</span>
+            <span className="text-primary-200 text-sm mr-2">Phổ biến:</span>
             {popularKeywords.map((keyword) => (
               <button
                 key={keyword}
+                onClick={() => handleSearch({ keyword })}
                 className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm rounded-full transition-all duration-200 hover:scale-105"
               >
                 {keyword}
@@ -142,9 +108,9 @@ export default function HeroSection() {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm"
+                className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
               >
-                <div className="text-2xl lg:text-3xl font-bold text-accent">
+                <div className="text-2xl lg:text-3xl font-bold text-accent-200">
                   {stat.number}
                 </div>
                 <div className="text-sm text-primary-200 mt-1">{stat.label}</div>
@@ -155,7 +121,7 @@ export default function HeroSection() {
       </div>
 
       {/* Wave Divider */}
-      <div className="absolute -bottom-[1px] left-0 right-0 ">
+      <div className="absolute -bottom-[1px] left-0 right-0">
         <svg
           viewBox="0 0 1440 120"
           fill="none"

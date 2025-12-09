@@ -1,8 +1,11 @@
-import HeadingCustom from "@/components/ui/HeadingCustom/page";
+"use client";
+
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
+import { CalendarOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 type divProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -11,6 +14,8 @@ type BlogCardProps = {
   shortDescription?: string;
   imageUrl?: string;
   linkDetail?: string;
+  createdDate?: string;
+  index?: number;
 } & divProps;
 
 const BlogCardCustom = ({
@@ -18,40 +23,75 @@ const BlogCardCustom = ({
   shortDescription = "",
   imageUrl = "/hinh_blog_mau.jpg",
   linkDetail = "",
+  createdDate,
+  index = 0,
   className,
   ...rest
 }: BlogCardProps) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
       className={clsx(
         className,
-        " bg-white rounded-[20px] overflow-hidden shadow-xl flex flex-col  h-[550px]"
+        "group bg-white rounded-2xl overflow-hidden shadow-sm border border-primary-100 hover:shadow-xl hover:border-accent-300 flex flex-col transition-all duration-300"
       )}
       {...rest}
     >
-      <div className="w-full h-[220px] relative">
+      {/* Image */}
+      <Link href={linkDetail} className="relative w-full h-[240px] overflow-hidden">
         <Image
-          src={imageUrl || ""}
-          alt="blog"
+          src={imageUrl || "/hinh_blog_mau.jpg"}
+          alt={title || "Blog image"}
           fill
-          className="w-full object-cover"
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
         />
-      </div>
-      <div className="flex-1 flex flex-col justify-between p-[32px]">
-        <div>
-          <HeadingCustom type="h5" className="line-clamp-3 wrap-break-word">
-            <Link href={linkDetail}>{title || ""}</Link>
-          </HeadingCustom>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </Link>
 
-          <p className="mt-[20px] line-clamp-4 wrap-break-word">
-            {shortDescription || ""}
+      {/* Content */}
+      <div className="flex-1 flex flex-col justify-between p-6">
+        <div>
+          <Link href={linkDetail}>
+            <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-3 group-hover:text-primary-600 transition-colors">
+              {title || "Tiêu đề bài viết"}
+            </h3>
+          </Link>
+
+          <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+            {shortDescription || "Mô tả ngắn về bài viết..."}
           </p>
+
+          {createdDate && (
+            <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+              <CalendarOutlined />
+              <span>{formatDate(createdDate)}</span>
+            </div>
+          )}
         </div>
-        <Link href={linkDetail} className="mt-20px text-right">
-          xem chi tiết
+
+        <Link
+          href={linkDetail}
+          className="flex items-center gap-2 text-primary-600 hover:text-accent-500 font-semibold text-sm transition-colors group/link"
+        >
+          <span>Đọc thêm</span>
+          <ArrowRightOutlined className="group-hover/link:translate-x-1 transition-transform" />
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default BlogCardCustom;
