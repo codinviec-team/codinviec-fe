@@ -1,35 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import {useState} from "react";
+import {motion} from "framer-motion";
+import {Button, Dropdown, Form, Input, message, Modal, Switch, Table, Tag, Tooltip, Tree,} from "antd";
+import type {ColumnsType} from "antd/es/table";
+import type {DataNode} from "antd/es/tree";
 import {
-  Table,
-  Input,
-  Button,
-  Tag,
-  Dropdown,
-  Modal,
-  message,
-  Form,
-  Switch,
-  Tooltip,
-  Tree,
-} from "antd";
-import type { ColumnsType } from "antd/es/table";
-import type { DataNode } from "antd/es/tree";
-import {
-  SearchOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  MoreOutlined,
-  ExclamationCircleOutlined,
-  ReloadOutlined,
-  FolderOutlined,
-  AppstoreOutlined,
-  UnorderedListOutlined,
+    AppstoreOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    ExclamationCircleOutlined,
+    FolderOutlined,
+    MoreOutlined,
+    PlusOutlined,
+    ReloadOutlined,
+    SearchOutlined,
+    UnorderedListOutlined,
 } from "@ant-design/icons";
-import { UiButton } from "@/components/ui/base/UiButton";
+import {UIButton} from "@/components/ui/UIButton";
 
 interface ICategory {
   id: string;
@@ -431,14 +419,13 @@ export default function AdminCategoriesPage() {
             Tổng cộng {categories.length} danh mục chính
           </p>
         </div>
-        <UiButton
-          variantCustom="primary"
+        <Button
           className="!h-10"
           onClick={() => handleOpenModal()}
         >
           <PlusOutlined className="mr-1" />
           Thêm danh mục
-        </UiButton>
+        </Button>
       </motion.div>
 
       {/* Stats */}
@@ -612,9 +599,9 @@ export default function AdminCategoriesPage() {
             <Button onClick={() => setModalOpen(false)} className="!rounded-xl">
               Hủy
             </Button>
-            <UiButton htmlType="submit" variantCustom="primary" className="!h-10">
+            <UIButton htmlType="submit" variantCustom="primary" className="!h-10">
               {editingCategory ? "Cập nhật" : "Thêm mới"}
-            </UiButton>
+            </UIButton>
           </div>
         </Form>
       </Modal>

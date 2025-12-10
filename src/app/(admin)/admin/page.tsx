@@ -1,20 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useAppSelector } from "@/hooks/hooks";
-import { RootState } from "@/store";
+import {motion} from "framer-motion";
+import {useAppSelector} from "@/hooks/hooks";
+import {RootState} from "@/store";
 import {
-  UserOutlined,
-  FileTextOutlined,
-  EyeOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  RiseOutlined,
-  FallOutlined,
-  TeamOutlined,
+    CheckCircleOutlined,
+    ClockCircleOutlined,
+    EyeOutlined,
+    FallOutlined,
+    FileTextOutlined,
+    RiseOutlined,
+    TeamOutlined,
+    UserOutlined,
 } from "@ant-design/icons";
-import { Card, Statistic, Row, Col, Table, Tag, Progress } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import {Card, Col, Progress, Row, Statistic, Table, Tag} from "antd";
+import type {ColumnsType} from "antd/es/table";
 
 // Sample data for recent activities
 const recentJobs = [

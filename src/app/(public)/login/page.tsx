@@ -1,6 +1,6 @@
 "use client";
-import { UiButton } from "@/components/ui/base/UiButton";
-import ContainerPage from "@/components/ui/container/page";
+import { UIButton } from "@/components/ui/UIButton";
+import Container from "@/components/ui/Container";
 import { PATHS } from "@/constants/paths";
 import { ILogin } from "@/types/auth/Login";
 import { Form, FormProps, Input } from "antd";
@@ -142,13 +142,13 @@ const LoginPage = () => {
 
   return (
     <>
-      <ContainerPage className="flex justify-center items-center flex-1">
+      <Container className="flex justify-center items-center flex-1">
         <div className="flex gap-[20px] w-full">
           <div className="signin_left basis-1/2 flex-shrink-0 max-md:basis-full">
             <h1 className="mb-[20px] text-[28px] text-accent-300 font-semibold max-md:text-center">
               Chào mừng đến với CodinViec
             </h1>
-            <UiButton
+            <UIButton
               variantCustom="outlineGoogle"
               className="!mb-[20px] !w-full"
               onClick={handleGoogleLogin}
@@ -161,7 +161,7 @@ const LoginPage = () => {
                 height={20}
               />
               Sign In with Google
-            </UiButton>
+            </UIButton>
             {/* line */}
             <div className="line bg-text-default w-full relative h-[1px]">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-50 flex justify-center items-center px-[5px]">
@@ -204,14 +204,14 @@ const LoginPage = () => {
               </Form.Item>
 
               <Form.Item label={null} style={{ marginTop: "20px" }}>
-                <UiButton
+                <UIButton
                   className="w-full"
                   htmlType="submit"
                   loading={submitting}
                   disabled={submitting}
                 >
                   Đăng nhập với email
-                </UiButton>
+                </UIButton>
 
                 <p className="mt-[10px] text-[14px] ">
                   bạn không có tài khoản?{" "}
@@ -233,7 +233,7 @@ const LoginPage = () => {
             />
           </div>
         </div>
-      </ContainerPage>
+      </Container>
     </>
   );
 };

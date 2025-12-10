@@ -1,16 +1,16 @@
 "use client";
-import ContainerPage from "@/components/ui/container/page";
+import Container from "@/components/ui/Container";
 import { PATHS } from "@/constants/paths";
 import { HomeOutlined } from "@ant-design/icons";
 import { Breadcrumb, Select } from "antd";
 import Link from "next/link";
-import BlogCardCustom from "../blog/components/BlogCardCustom";
-import ListBlogCustom from "../blog/components/ListBlogCustom";
-import MyPagination from "@/components/ui/MyPagination/page";
-import SearchCustom from "@/components/ui/SearchCustom/page";
+import BlogCard from "../blog/components/BlogCard";
+import BlogList from "../blog/components/BlogList";
+import PaginationComponent from "@/components/ui/Pagination";
+import SearchBar from "@/components/ui/SearchBar";
 import { BlogService } from "@/services/home/blog/BlogService";
 import { useQuery } from "@tanstack/react-query";
-import { BlogType } from "@/types/blog/BlogType";
+import { BlogType } from "@/types/home/blog/BlogType";
 import { useState } from "react";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { motion } from "framer-motion";
@@ -46,7 +46,7 @@ const BlogAllPage = () => {
 
   return (
     <div className="min-h-screen bg-primary-50">
-      <ContainerPage className="!py-8">
+      <Container className="!py-8">
         {/* Breadcrumb */}
         <Breadcrumb
           className="!mb-6"
@@ -95,7 +95,7 @@ const BlogAllPage = () => {
         >
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
-              <SearchCustom />
+              <SearchBar />
             </div>
             <Select
               size="large"
@@ -121,9 +121,9 @@ const BlogAllPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <ListBlogCustom>
+              <BlogList>
                 {data.content.map((blog, index) => (
-                  <BlogCardCustom
+                  <BlogCard
                     key={blog.id}
                     title={blog.title || ""}
                     shortDescription={blog.shortDescription || ""}
@@ -133,7 +133,7 @@ const BlogAllPage = () => {
                     index={index}
                   />
                 ))}
-              </ListBlogCustom>
+              </BlogList>
             </motion.section>
 
             {/* Pagination */}
@@ -144,7 +144,7 @@ const BlogAllPage = () => {
                 transition={{ duration: 0.4, delay: 0.3 }}
                 className="mt-12"
               >
-                <MyPagination
+                <PaginationComponent
                   current={pageBlog}
                   pageSize={pageSizeBlogDefault}
                   total={data.totalElements}
@@ -164,7 +164,7 @@ const BlogAllPage = () => {
             </p>
           </div>
         )}
-      </ContainerPage>
+      </Container>
     </div>
   );
 };

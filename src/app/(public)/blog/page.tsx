@@ -1,13 +1,13 @@
 "use client";
-import ContainerPage from "@/components/ui/container/page";
+import Container from "@/components/ui/Container";
 import { PATHS } from "@/constants/paths";
 import { HomeOutlined, FireOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { Breadcrumb } from "antd";
 import Link from "next/link";
-import BlogCardCustom from "./components/BlogCardCustom";
-import ListBlogCustom from "./components/ListBlogCustom";
-import { UiButton } from "@/components/ui/base/UiButton";
-import SearchCustom from "@/components/ui/SearchCustom/page";
+import BlogCard from "./components/BlogCard";
+import BlogList from "./components/BlogList";
+import { UIButton } from "@/components/ui/UIButton";
+import SearchBar from "@/components/ui/SearchBar";
 import { motion } from "framer-motion";
 
 // Demo data
@@ -68,7 +68,7 @@ const latestBlogs = [
 const BlogPage = () => {
   return (
     <div className="min-h-screen bg-primary-50">
-      <ContainerPage className="!py-8">
+      <Container className="!py-8">
         {/* Breadcrumb */}
         <Breadcrumb
           className="!mb-6"
@@ -108,7 +108,7 @@ const BlogPage = () => {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="mb-12"
         >
-          <SearchCustom />
+          <SearchBar />
         </motion.div>
 
         {/* Featured Section */}
@@ -132,9 +132,9 @@ const BlogPage = () => {
               Xem tất cả
             </Link>
           </div>
-          <ListBlogCustom>
+          <BlogList>
             {featuredBlogs.map((blog, index) => (
-              <BlogCardCustom
+              <BlogCard
                 key={blog.id}
                 title={blog.title}
                 shortDescription={blog.shortDescription}
@@ -144,7 +144,7 @@ const BlogPage = () => {
                 index={index}
               />
             ))}
-          </ListBlogCustom>
+          </BlogList>
         </motion.section>
 
         {/* Latest Section */}
@@ -168,9 +168,9 @@ const BlogPage = () => {
               Xem tất cả
             </Link>
           </div>
-          <ListBlogCustom>
+          <BlogList>
             {latestBlogs.map((blog, index) => (
-              <BlogCardCustom
+              <BlogCard
                 key={blog.id}
                 title={blog.title}
                 shortDescription={blog.shortDescription}
@@ -180,13 +180,13 @@ const BlogPage = () => {
                 index={index}
               />
             ))}
-          </ListBlogCustom>
+          </BlogList>
         </motion.section>
-      </ContainerPage>
+      </Container>
 
       {/* CTA Section */}
       <div className="bg-gradient-to-r from-primary-600 to-primary-800 py-12">
-        <ContainerPage>
+        <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -202,14 +202,14 @@ const BlogPage = () => {
                 Chia sẻ kinh nghiệm và giúp cộng đồng phát triển
               </p>
             </div>
-            <UiButton
+            <UIButton
               variantCustom="accent"
               className="!h-12 !px-8 !text-base !font-bold !rounded-xl"
             >
               Chia sẻ ngay
-            </UiButton>
+            </UIButton>
           </motion.div>
-        </ContainerPage>
+        </Container>
       </div>
     </div>
   );

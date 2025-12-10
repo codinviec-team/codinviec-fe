@@ -4,10 +4,10 @@ import {useState} from "react";
 import {motion} from "framer-motion";
 import {Button, Select} from "antd";
 import {BuildOutlined, EnvironmentOutlined, ReloadOutlined,} from "@ant-design/icons";
-import ContainerPage from "@/components/ui/container/page";
-import SearchCustom from "@/components/ui/SearchCustom/page";
+import Container from "@/components/ui/Container";
+import SearchBar from "@/components/ui/SearchBar";
 import CompanyCard from "./components/CompanyCard";
-import MyPagination from "@/components/ui/MyPagination/page";
+import PaginationComponent from "@/components/ui/Pagination";
 
 export type Company = {
   id: number;
@@ -291,22 +291,22 @@ export default function CompaniesListingClient() {
     <div className="min-h-screen bg-primary-50">
       {/* Search Section at Top */}
       <div className="bg-white border-b border-primary-100 py-8">
-        <ContainerPage className="!py-0">
+        <Container className="!py-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <SearchCustom
+            <SearchBar
               onFinish={handleSearch}
               placeholder="Tìm kiếm công ty..."
               locationPlaceholder="Tất cả thành phố"
             />
           </motion.div>
-        </ContainerPage>
+        </Container>
       </div>
 
-      <ContainerPage className="!py-8">
+      <Container className="!py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -400,7 +400,7 @@ export default function CompaniesListingClient() {
             </div>
 
             {/* Pagination */}
-            <MyPagination
+                <PaginationComponent
               current={currentPage}
               total={filteredCompanies.length}
               pageSize={pageSize}
@@ -428,7 +428,7 @@ export default function CompaniesListingClient() {
             </Button>
           </div>
         )}
-      </ContainerPage>
+      </Container>
     </div>
   );
 }

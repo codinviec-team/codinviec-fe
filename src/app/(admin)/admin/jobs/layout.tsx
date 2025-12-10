@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import {ReactNode} from "react";
 
 export const metadata: Metadata = {
   title: "Quản lý việc làm - Admin CodinViec",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function AdminJobsLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return <>{children}</>;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { generatePublicMetadata } from "@/utils/metadata";
-import ContainerPage from "@/components/ui/container/page";
-import React from "react";
+import Container from "@/components/ui/Container";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Tìm việc làm IT - Hàng nghìn cơ hội việc làm công nghệ",
@@ -12,12 +12,12 @@ export const metadata: Metadata = generatePublicMetadata(
 export default function JobsLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return <>
-    <ContainerPage>
+    <Container>
         {children}
-    </ContainerPage>
+    </Container>
   </>;
 }
 

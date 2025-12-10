@@ -6,14 +6,14 @@ import { Button } from "antd";
 import {
   FilterOutlined,
 } from "@ant-design/icons";
-import ContainerPage from "@/components/ui/container/page";
+import Container from "@/components/ui/Container";
 import FilterModal from "./components/FilterModal";
 import JobListCard from "./components/JobListCard";
 import JobDetail from "./components/JobDetail";
 import CompanyHighlight from "./components/CompanyHighlight";
-import MyPagination from "@/components/ui/MyPagination/page";
-import SearchCustom from "@/components/ui/SearchCustom/page";
-import { Job } from "@/components/home/FeaturedJobs/JobCard";
+import PaginationComponent from "@/components/ui/Pagination";
+import SearchBar from "@/components/ui/SearchBar";
+import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
 
 // Demo data - tương tự itviec
 const demoJobs: Job[] = [
@@ -226,21 +226,21 @@ export default function JobsListingClient() {
     <div className="min-h-screen bg-primary-50">
       {/* Search Section at Top */}
       <div className="bg-white border-b border-primary-100 py-8">
-        <ContainerPage className="!py-0">
+        <Container className="!py-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <SearchCustom onFinish={handleSearch} />
+            <SearchBar onFinish={handleSearch} />
           </motion.div>
-        </ContainerPage>
+        </Container>
       </div>
 
       {/* Company Highlight */}
       <CompanyHighlight />
 
-      <ContainerPage className="!py-8">
+      <Container className="!py-8">
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -329,7 +329,7 @@ export default function JobsListingClient() {
                 </div>
 
                 {/* Pagination */}
-                <MyPagination
+                <PaginationComponent
                   current={currentPage}
                   total={filteredJobs.length}
                   pageSize={pageSize}
@@ -377,7 +377,7 @@ export default function JobsListingClient() {
             setShowFilterModal(false);
           }}
         />
-      </ContainerPage>
+      </Container>
     </div>
   );
 }

@@ -12,7 +12,7 @@ import {
     HeartOutlined,
     ThunderboltOutlined,
 } from "@ant-design/icons";
-import {Job} from "@/components/home/FeaturedJobs/JobCard";
+import {Job} from "@/components/home/HomePage/FeaturedJobs/JobCard";
 import clsx from "clsx";
 
 type JobListCardProps = {

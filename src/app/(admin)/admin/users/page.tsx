@@ -1,37 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React, {useState} from "react";
+import {motion} from "framer-motion";
+import {Avatar, Button, Dropdown, Input, message, Modal, Select, Table, Tag, Tooltip,} from "antd";
+import type {ColumnsType} from "antd/es/table";
 import {
-  Table,
-  Input,
-  Select,
-  Button,
-  Tag,
-  Dropdown,
-  Modal,
-  message,
-  Avatar,
-  Tooltip,
-} from "antd";
-import type { ColumnsType } from "antd/es/table";
-import {
-  SearchOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  MoreOutlined,
-  UserOutlined,
-  LockOutlined,
-  UnlockOutlined,
-  ExclamationCircleOutlined,
-  FilterOutlined,
-  ReloadOutlined,
-  MailOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    ExclamationCircleOutlined,
+    EyeOutlined,
+    FilterOutlined,
+    LockOutlined,
+    MailOutlined,
+    MoreOutlined,
+    PlusOutlined,
+    ReloadOutlined,
+    SearchOutlined,
+    UnlockOutlined,
+    UserOutlined,
 } from "@ant-design/icons";
-import { UiButton } from "@/components/ui/base/UiButton";
-import { IUser } from "@/types/auth/User";
+import {IUser} from "@/types/auth/User";
+import {UIButton} from "@/components/ui/UIButton";
 
 // Sample users data
 const sampleUsers: IUser[] = [
@@ -373,7 +362,7 @@ export default function AdminUsersPage() {
             Tổng cộng {filteredUsers.length} người dùng
           </p>
         </div>
-        <UiButton
+        <UIButton
           variantCustom="primary"
           className="!h-10"
           onClick={() =>
@@ -382,7 +371,7 @@ export default function AdminUsersPage() {
         >
           <PlusOutlined className="mr-1" />
           Thêm người dùng
-        </UiButton>
+        </UIButton>
       </motion.div>
 
       {/* Stats Cards */}

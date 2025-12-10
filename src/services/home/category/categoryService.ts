@@ -1,4 +1,4 @@
-import { Category } from "@/types/home/Category";
+import { Category } from "@/types/home/category/Category";
 import api from "@/interceptor/api";
 import { IBaseResponse } from "@/types/common/BaseResponse";
 import { BasePageResponse } from "@/types/common/BasePageResponse";

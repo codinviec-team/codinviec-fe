@@ -1,35 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import {useState} from "react";
+import {motion} from "framer-motion";
+import {Button, Dropdown, Input, message, Modal, Select, Table, Tag, Tooltip,} from "antd";
+import type {ColumnsType} from "antd/es/table";
 import {
-  Table,
-  Input,
-  Select,
-  Button,
-  Tag,
-  Dropdown,
-  Modal,
-  message,
-  Tooltip,
-} from "antd";
-import type { ColumnsType } from "antd/es/table";
-import {
-  SearchOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  MoreOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  CloseCircleOutlined,
-  ExclamationCircleOutlined,
-  FilterOutlined,
-  ReloadOutlined,
+    CheckCircleOutlined,
+    ClockCircleOutlined,
+    CloseCircleOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    ExclamationCircleOutlined,
+    EyeOutlined,
+    FilterOutlined,
+    MoreOutlined,
+    PlusOutlined,
+    ReloadOutlined,
+    SearchOutlined,
 } from "@ant-design/icons";
-import { UiButton } from "@/components/ui/base/UiButton";
-import { IJob } from "@/types/admin/Job";
+import {IJob} from "@/types/admin/Job";
+import {UIButton} from "@/components/ui/UIButton";
 
 // Sample data với nhiều việc làm
 const sampleJobs: IJob[] = [
@@ -462,14 +452,14 @@ export default function AdminJobsPage() {
             Tổng cộng {filteredJobs.length} việc làm
           </p>
         </div>
-        <UiButton
+        <UIButton
           variantCustom="primary"
           className="!h-10"
           onClick={() => message.info("Chức năng thêm việc làm đang phát triển")}
         >
           <PlusOutlined className="mr-1" />
           Thêm việc làm
-        </UiButton>
+        </UIButton>
       </motion.div>
 
       {/* Stats Cards */}

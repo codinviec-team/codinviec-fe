@@ -1,6 +1,6 @@
 "use client";
-import { UiButton } from "@/components/ui/base/UiButton";
-import ContainerPage from "@/components/ui/container/page";
+import { UIButton } from "@/components/ui/UIButton";
+import Container from "@/components/ui/Container";
 import { PATHS } from "@/constants/paths";
 import { IRegister } from "@/types/auth/Register";
 import { Checkbox, Form, FormProps, Input } from "antd";
@@ -98,12 +98,12 @@ const RegisterPage = () => {
   }
 
   return (
-    <ContainerPage className="flex justify-center items-center">
+    <Container className="flex justify-center items-center">
       <div className="w-[50%] max-lg:w-[65%] max-md:w-full">
         <h1 className="mb-[20px] text-[28px] text-accent-300 font-semibold max-md:text-center">
           Đăng ký tài khoản
         </h1>
-        <UiButton
+        <UIButton
           variantCustom="outlineGoogle"
           className="mb-[20px] w-full text-[16px]"
           onClick={handleGoogleLogin}
@@ -117,7 +117,7 @@ const RegisterPage = () => {
             className="me-2"
           />
           Sign In with Google
-        </UiButton>
+        </UIButton>
         {/* line */}
         <div className="line bg-gray-900 w-full relative h-[1px]">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-50 flex justify-center items-center px-[5px]">
@@ -252,14 +252,14 @@ const RegisterPage = () => {
           </Form.Item>
 
           <Form.Item label={null} style={{ marginTop: "20px" }}>
-            <UiButton
+            <UIButton
               className="w-full"
               htmlType="submit"
               loading={submitting}
               disabled={submitting}
             >
               Đăng ký với email
-            </UiButton>
+            </UIButton>
 
             <p className="mt-[10px] text-[14px]">
               Bạn đã có tài khoản?{" "}
@@ -273,7 +273,7 @@ const RegisterPage = () => {
           </Form.Item>
         </Form>
       </div>
-    </ContainerPage>
+    </Container>
   );
 };
 export default RegisterPage;
