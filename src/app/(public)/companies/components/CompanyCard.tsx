@@ -20,7 +20,7 @@ export default function CompanyCard({ company }: CompanyCardProps) {
       whileHover={{ y: -4 }}
       className="group bg-white rounded-2xl border border-primary-100 hover:border-accent-300 p-6 transition-all duration-300 hover:shadow-xl"
     >
-      <Link href={`/companies/${company.slug}`}>
+      <Link href={`/company/${company.slug}`}>
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">

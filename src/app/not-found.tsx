@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLaptopCode, faArrowLeft, faServer } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import ContainerPage from "@/components/ui/container/page";
+import Container from "@/components/ui/Container";
 
 export default function NotFound() {
     return (
-        <ContainerPage className="flex flex-col items-center justify-center text-center py-24 relative overflow-hidden">
+        <Container className="flex flex-col items-center justify-center text-center py-24 relative overflow-hidden">
             <motion.div
                 className="absolute top-1/4 left-1/3 w-80 h-80 bg-primary-100 rounded-full blur-3xl opacity-30"
                 animate={{ y: [0, -30, 0] }}
@@ -72,6 +72,6 @@ export default function NotFound() {
             >
                 <FontAwesomeIcon icon={faServer} />
             </motion.div>
-        </ContainerPage>
+        </Container>
     );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import React from "react";
+import {ReactNode} from "react";
 
 export const metadata: Metadata = {
   title: "Quản lý danh mục - Admin CodinViec",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function AdminCategoriesLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return <>{children}</>;
 }

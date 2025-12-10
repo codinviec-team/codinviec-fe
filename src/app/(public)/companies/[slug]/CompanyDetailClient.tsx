@@ -19,10 +19,10 @@ import {
   RocketOutlined,
 } from "@ant-design/icons";
 import { Button, Tabs } from "antd";
-import ContainerPage from "@/components/ui/container/page";
+import Container from "@/components/ui/Container";
 import { Company } from "../CompaniesListingClient";
 import JobListCard from "@/app/(public)/jobs/components/JobListCard";
-import { Job } from "@/components/home/FeaturedJobs/JobCard";
+import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
 
 // Demo data
 const companies: Company[] = [
@@ -199,7 +199,7 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
 
   return (
     <div className="min-h-screen bg-primary-50">
-      <ContainerPage className="!py-8">
+      <Container className="!py-8">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -478,7 +478,7 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
             </motion.div>
           </div>
         </div>
-      </ContainerPage>
+      </Container>
     </div>
   );
 }

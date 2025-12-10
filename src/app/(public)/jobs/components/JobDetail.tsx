@@ -15,7 +15,7 @@ import {
     TeamOutlined,
     ThunderboltOutlined,
 } from "@ant-design/icons";
-import {Job} from "@/components/home/FeaturedJobs/JobCard";
+import {Job} from "@/components/home/HomePage/FeaturedJobs/JobCard";
 
 type JobDetailProps = {
   job: Job | null;

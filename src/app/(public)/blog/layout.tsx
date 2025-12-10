@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { generatePublicMetadata } from "@/utils/metadata";
 
 export const metadata: Metadata = generatePublicMetadata(
@@ -10,7 +11,7 @@ export const metadata: Metadata = generatePublicMetadata(
 export default function BlogLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return <>{children}</>;
 }

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import HomePageClient from "./HomePageClient";
 import { generatePublicMetadata } from "@/utils/metadata";
+import HeroSection from "@/components/home/HomePage/Hero";
+import JobCategories from "@/components/home/HomePage/JobCategories";
+import FeaturedJobs from "@/components/home/HomePage/FeaturedJobs";
+import TopEmployers from "@/components/home/HomePage/TopEmployers";
+import StatsSection from "@/components/home/HomePage/StatsSection";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Trang chủ - Tìm việc làm IT, Developer, Lập trình viên",
@@ -9,5 +13,22 @@ export const metadata: Metadata = generatePublicMetadata(
 );
 
 export default function HomePage() {
-  return <HomePageClient />;
+  return (
+      <div className="w-full">
+          {/* Hero Section with Search */}
+          <HeroSection />
+
+          {/* Job Categories */}
+          <JobCategories />
+
+          {/* Featured Jobs */}
+          <FeaturedJobs />
+
+          {/* Top Employers */}
+          <TopEmployers />
+
+          {/* Stats & CTA Section */}
+          <StatsSection />
+      </div>
+  );
 }

@@ -1,7 +1,7 @@
-import Header from "@/components/home/Header";
-import Footer from "@/components/home/Footer";
-import React, { Suspense } from "react";
+import Footer from "@/components/home/Layout/Footer";
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import HomeHeader from "@/components/home/Layout/Header";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +19,7 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      <Header />
+      <HomeHeader />
       <main className="flex-grow flex">
         <Suspense fallback={null}>{children}</Suspense>
       </main>

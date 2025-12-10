@@ -1,45 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { useAppSelector, useAppDispatch } from "@/hooks/hooks";
-import { RootState } from "@/store";
-import { checkAuth } from "@/store/slice/auth/authSlice";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
+import {motion} from "framer-motion";
+import {useAppDispatch, useAppSelector} from "@/hooks/hooks";
+import {RootState} from "@/store";
+import {checkAuth} from "@/store/slice/auth/authSlice";
+import type {UploadFile} from "antd";
+import {Avatar, Card, DatePicker, Divider, Form, Input, message, Select, Switch, Upload,} from "antd";
 import {
-  Form,
-  Input,
-  Button,
-  DatePicker,
-  Select,
-  Upload,
-  Avatar,
-  Card,
-  message,
-  Spin,
-  Switch,
-  Divider,
-} from "antd";
-import {
-  UserOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  EnvironmentOutlined,
-  CalendarOutlined,
-  GlobalOutlined,
-  SaveOutlined,
-  CameraOutlined,
-  EditOutlined,
+    CameraOutlined,
+    EditOutlined,
+    EnvironmentOutlined,
+    GlobalOutlined,
+    MailOutlined,
+    PhoneOutlined,
+    SaveOutlined,
+    UserOutlined,
 } from "@ant-design/icons";
-import type { UploadFile } from "antd";
-import { UiButton } from "@/components/ui/base/UiButton";
-import ContainerPage from "@/components/ui/container/page";
-import { IUser } from "@/types/auth/User";
-// dayjs is required for Ant Design DatePicker
-// Install with: npm install dayjs
+import {UIButton} from "@/components/ui/UIButton";
+import Container from "@/components/ui/Container";
 import dayjs from "dayjs";
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 export default function ProfilePage() {
@@ -76,17 +58,12 @@ export default function ProfilePage() {
     }
   }, [user, form]);
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async () => {
     try {
       setSubmitting(true);
-      
-      // TODO: Call API to update profile
-      // await authService.updateProfile({ ...values, avatar: avatarFile });
-      
-      // Simulate API call
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Refresh user data
+
       await dispatch(checkAuth()).unwrap();
       
       message.success("Cập nhật hồ sơ thành công!");
@@ -128,7 +105,7 @@ export default function ProfilePage() {
       : user.firstName || user.email?.split("@")[0] || "User";
 
   return (
-    <ContainerPage className="py-8">
+    <Container className="py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
@@ -140,14 +117,14 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">Hồ sơ của tôi</h1>
             {!editing && (
-              <Button
+              <UIButton
                 type="primary"
                 icon={<EditOutlined />}
                 onClick={() => setEditing(true)}
                 className="!h-10 !rounded-xl"
               >
                 Chỉnh sửa
-              </Button>
+              </UIButton>
             )}
           </div>
           <p className="text-gray-600">
@@ -375,14 +352,14 @@ export default function ProfilePage() {
                 {/* Action Buttons */}
                 {editing && (
                   <div className="flex gap-3 justify-end pt-4 border-t border-primary-100">
-                    <Button
+                    <UIButton
                       onClick={handleCancel}
                       size="large"
                       className="!rounded-xl"
                     >
                       Hủy
-                    </Button>
-                    <UiButton
+                    </UIButton>
+                    <UIButton
                       htmlType="submit"
                       variantCustom="primary"
                       className="!h-10"
@@ -390,7 +367,7 @@ export default function ProfilePage() {
                     >
                       <SaveOutlined className="mr-1" />
                       Lưu thay đổi
-                    </UiButton>
+                    </UIButton>
                   </div>
                 )}
               </Form>
@@ -398,7 +375,7 @@ export default function ProfilePage() {
           </motion.div>
         </div>
       </div>
-    </ContainerPage>
+    </Container>
   );
 }
 

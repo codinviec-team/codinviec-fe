@@ -1,12 +1,12 @@
-import ReduxProvider from "@/app/providers/ReduxProvider";
-import AuthProvider from "@/app/providers/AuthProvider";
-import GlobalHandler from "@/components/ui/Handler/GlobalHandler";
-import ToastContainer from "@/components/ui/ToastContainer/ToastContainer";
-import GlobalLoadingScreen from "@/components/ui/GlobalLoadingScreen/GlobalLoadingScreen";
-import React, { Suspense } from "react";
+import ReduxProvider from "@/providers/ReduxProvider";
+import AuthProvider from "@/providers/AuthProvider";
+import Handler from "@/components/ui/Handler";
+import Toast from "@/components/ui/Toast";
+import LoadingScreen from "@/components/ui/LoadingScreen";
+import { Suspense } from "react";
 import "./globals.css";
 import { ConfigProvider } from "antd";
-import MyQueryClientProvider from "./providers/QueryClientProvider";
+import MyQueryClientProvider from "@/providers/QueryClientProvider";
 import type { Metadata, Viewport } from "next";
 
 export const viewport: Viewport = {
@@ -117,10 +117,10 @@ export default function RootLayout({
                   },
                 }}
               >
-                <GlobalLoadingScreen />
+                <LoadingScreen />
                 <Suspense fallback={null}>{children}</Suspense>
-                <GlobalHandler />
-                <ToastContainer />
+                <Handler />
+                <Toast />
               </ConfigProvider>
             </MyQueryClientProvider>
           </AuthProvider>
