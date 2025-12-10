@@ -174,6 +174,24 @@ export default function HomeHeader() {
                                         </motion.div>
                                     )}
 
+                                    {user.role === "HR" || user.role === "ADMIN" && (
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -5 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.15 }}
+                                        >
+                                            <Link
+                                                href={PATHS.HR}
+                                                className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-accent-100 hover:bg-primary-800/60 hover:text-accent transition-all duration-150 rounded-lg mx-1 group/item"
+                                            >
+                                                <div className="w-7 h-7 rounded-md bg-red-500/15 flex items-center justify-center group-hover/item:bg-red-500/25 transition-colors">
+                                                    <SettingOutlined className="w-4 h-4 text-red-400 group-hover/item:text-red-300 transition-colors" />
+                                                </div>
+                                                <span>Quản lý</span>
+                                            </Link>
+                                        </motion.div>
+                                    )}
+
                                     <div className="border-t border-primary-700/40 my-1 mx-1"></div>
                                     
                                     <motion.div
@@ -373,6 +391,19 @@ export default function HomeHeader() {
                                             <SettingOutlined className="text-yellow-600" />
                                         </div>
                                         <span>Quản trị</span>
+                                    </Link>
+                                )}
+
+                                {user && user.role === "HR" || user && user.role === "ADMIN" &&(
+                                    <Link
+                                        href={PATHS.HR}
+                                        onClick={() => setMobileUserMenuOpen(false)}
+                                        className="flex items-center gap-3 px-4 py-3 bg-red-50 hover:bg-red-100 active:bg-red-200 rounded-xl transition-colors text-red-700 font-medium"
+                                    >
+                                        <div className="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center">
+                                            <SettingOutlined className="text-red-600" />
+                                        </div>
+                                        <span>Quản lý</span>
                                     </Link>
                                 )}
                                 
