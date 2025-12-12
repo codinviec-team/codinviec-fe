@@ -2,6 +2,7 @@
 import BlogCard from "@/components/ui/BlogCard";
 import BlogList from "@/components/ui/BlogList";
 import NoneBlog from "@/components/ui/NoneBlog";
+
 import { PATHS } from "@/constants/paths";
 import { BlogType } from "@/types/home/blog/BlogType";
 import { FireOutlined } from "@ant-design/icons";
