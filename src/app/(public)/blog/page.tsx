@@ -1,6 +1,6 @@
 "use client";
 import Container from "@/components/ui/Container";
-import SearchBar from "@/components/ui/SearchBar";
+import SearchBar, { SearchFormFields } from "@/components/ui/SearchBar";
 import { UIButton } from "@/components/ui/UIButton";
 import { PATHS } from "@/constants/paths";
 import { BlogService } from "@/services/home/blog/BlogService";
@@ -14,11 +14,15 @@ import ScNew from "./components/ScNew";
 import ScFeature from "./components/ScFeature";
 import { useRouter } from "next/navigation";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
+import LoadingBlog from "@/components/ui/LoadingBlog";
 
 const BlogPage = () => {
   const router = useRouter();
 
-  const { data: latestBlogs } = useQuery<BasePageResponse<BlogType>, Error>({
+  const { data: latestBlogs, isLoading: loadingLastedBlog } = useQuery<
+    BasePageResponse<BlogType>,
+    Error
+  >({
     queryKey: ["blogsFeatured"],
     queryFn: () =>
       BlogService.getAllBlogHavePage({
@@ -28,7 +32,10 @@ const BlogPage = () => {
       }),
   });
 
-  const { data: featuredBlogs } = useQuery<BasePageResponse<BlogType>, Error>({
+  const { data: featuredBlogs, isLoading: loadingFeaturedBlog } = useQuery<
+    BasePageResponse<BlogType>,
+    Error
+  >({
     queryKey: ["blogsNewest"],
     queryFn: () =>
       BlogService.getAllBlogHavePage({
@@ -38,13 +45,24 @@ const BlogPage = () => {
       }),
   });
 
-  const handleSearch = (values: { keyword?: string }) => {
+  const handleSearch = (values: SearchFormFields) => {
     const { keyword } = values;
+
     // chấp nhận cả ký tự đặc biệt trong từ khóa tìm kiếm
     router.push(
       `${PATHS.BLOG_ALL}?keyword=${encodeURIComponent(keyword || "")}`
     );
   };
+
+  const isLoading = loadingFeaturedBlog || loadingLastedBlog;
+
+  if (isLoading) {
+    return (
+      <div className="w-full">
+        <LoadingBlog />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

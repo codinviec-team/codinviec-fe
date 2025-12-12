@@ -1,9 +1,9 @@
 "use client";
+import { UIButton } from "@/components/ui/UIButton";
+import { EnvironmentOutlined, SearchOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input, Select } from "antd";
-import { SearchOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import {UIButton} from "@/components/ui/UIButton";
 
 type SearchBarProps = FormProps & {
   showLocation?: boolean;
@@ -11,9 +11,10 @@ type SearchBarProps = FormProps & {
   placeholder?: string;
   locationPlaceholder?: string;
   withBackground?: boolean;
+  defaultValuesSearch?: string;
 };
 
-type SearchFormFields = {
+export type SearchFormFields = {
   keyword?: string;
   location?: string;
 };
@@ -33,6 +34,7 @@ const SearchBar = ({
   placeholder = "Nhập từ khóa, vị trí, công ty...",
   locationPlaceholder = "Địa điểm",
   withBackground = false,
+  defaultValuesSearch = "",
   onFinish,
   ...props
 }: SearchBarProps) => {
@@ -41,12 +43,16 @@ const SearchBar = ({
       onFinish(values);
     }
   };
-
   const formContent = (
     <Form
+      form={props.form}
       onFinish={handleSearch}
       className="flex flex-col md:flex-row gap-3"
       layout="vertical"
+      // giá trị mặc định của form
+      initialValues={{
+        keyword: defaultValuesSearch,
+      }}
       {...props}
     >
       {showLocation && (
@@ -56,9 +62,7 @@ const SearchBar = ({
             placeholder={locationPlaceholder}
             options={locations}
             defaultValue="all"
-            suffixIcon={
-              <EnvironmentOutlined className="text-primary-400" />
-            }
+            suffixIcon={<EnvironmentOutlined className="text-primary-400" />}
             className="!h-[52px] w-full [&_.ant-select-selector]:!h-[52px] [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-primary-200 [&_.ant-select-selection-item]:!leading-[52px]"
           />
         </Form.Item>
@@ -77,7 +81,7 @@ const SearchBar = ({
         <UIButton
           htmlType="submit"
           variantCustom="accent"
-          className="!h-[52px] !px-8 !text-base !font-bold"
+          className="!h-[52px] !px-8 !text-base !font-bold max-md:!w-full"
         >
           <SearchOutlined className="mr-1" />
           Tìm kiếm
@@ -115,4 +119,3 @@ const SearchBar = ({
 };
 
 export default SearchBar;
-
