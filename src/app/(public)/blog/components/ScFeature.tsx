@@ -25,11 +25,9 @@ const ScFeature = ({ featuredBlogs = [] }: ScFeatureProps) => {
       className="mb-16"
     >
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 text-primary-600">
           <FireOutlined className="text-2xl text-orange-500" />
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">
-            Bài viết nổi bật
-          </h2>
+          <h2 className="text-2xl lg:text-3xl font-bold ">Bài viết nổi bật</h2>
         </div>
         <Link
           href={PATHS.BLOG_ALL}

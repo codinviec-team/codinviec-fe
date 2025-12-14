@@ -5,84 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89d44854-919c-4cd0-b70f-3ee1aff99843" name="Changes" comment="blog-jobs-hr-companies">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/fastRequest/fastRequestCurrentProjectLocalConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fastRequest/fastRequestCurrentProjectLocalConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_05_Dec_2025_00_40_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_05_Dec_2025_00_40__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/categories/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/categories/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/categories/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/categories/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/jobs/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/jobs/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/jobs/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/jobs/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/admin/users/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(admin)/admin/users/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/analytics/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(hr)/hr/analytics/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/candidates/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(hr)/hr/candidates/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/company/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(hr)/hr/company/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/jobs/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/jobs/post/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(hr)/hr/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(hr)/hr/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/hr/settings/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(admin)/layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/HomePageClient.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/about/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/about/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(public)/blog-all/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog-all/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/BlogCardCustom.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/ListBlogCustom.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/ScFeature.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/components/ScFeature.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/components/ScNew.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/components/ScNew.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(public)/blog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/blog/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/companies/CompaniesListingClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/companies/CompaniesListingClient.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/companies/CompaniesListingClient.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(public)/companies/[slug]/CompanyDetailClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/companies/[slug]/CompanyDetailClient.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(public)/companies/components/CompanyCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/companies/components/CompanyCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/job/[id]/JobDetailPageClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/[id]/JobDetailPageClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/job/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/jobs/JobsListingClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/JobsListingClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/jobs/components/JobDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/components/JobDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/jobs/components/JobListCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/components/JobListCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/jobs/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/jobs/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(public)/companies/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/companies/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(public)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/login/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/login/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(public)/register/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(public)/register/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/api/auth/refresh/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/not-found.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/AppProviders.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/providers/AuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/QueryClientProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/providers/QueryClientProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers/ReduxProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/providers/ReduxProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/AdminGuard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/Layout/AdminGuard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/AdminLayoutClient.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/Layout/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/admin/Layout/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/admin/job/list/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Category/ListCategory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/Category/ListCategory.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Category/MobileCategoryList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/Category/MobileCategoryList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/FeaturedJobs/JobCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/FeaturedJobs/JobCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/FeaturedJobs/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/FeaturedJobs/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Footer/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Layout/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Layout/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/Hero/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/Hero/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/JobCategories/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/JobCategories/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/StatsSection/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/StatsSection/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/TopEmployers/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomePage/TopEmployers/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/hr/HRLayoutClient.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/hr/Layout/LayoutClient.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/hr/HRSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/hr/Layout/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/GlobalLoadingScreen/GlobalLoadingScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/LoadingScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/Handler/GlobalHandler.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/Handler.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/HeadingCustom/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/MyPagination/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/SearchCustom/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/ToastContainer/ToastContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/Toast.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/base/UiButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ui/UIButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ui/container/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/home/category/useCategories.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/home/category/useCategories.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/home/category/useCategoriesPaginated.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/home/category/useCategoriesPaginated.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/home/blog/BlogService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/home/blog/BlogService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/home/category/categoryService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/home/category/categoryService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/blog/BlogType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/blog/BlogType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/blog/SearchBlogType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/blog/SearchBlogType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/home/Category.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/category/Category.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/Layout/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/Layout/Header.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/api_companies" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -119,20 +57,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="page-gome" />
-                    <option name="lastUsedInstant" value="1764853283" />
-                  </RecentBranch>
-                  <RecentBranch>
                     <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1764606106" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="fix-deployment" />
-                    <option name="lastUsedInstant" value="1764596603" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="update-ui" />
-                    <option name="lastUsedInstant" value="1764244037" />
+                    <option name="lastUsedInstant" value="1765548162" />
                   </RecentBranch>
                 </list>
               </option>
@@ -146,7 +72,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/codinviec-team/codinviec-fe.git&quot;,
-    &quot;accountId&quot;: &quot;8fba04d3-bc7a-42a2-a872-9a3f27f03e12&quot;
+    &quot;accountId&quot;: &quot;8b0375f4-08fb-4d8d-9b0d-f23f83737749&quot;
   },
   &quot;recentNewPullRequestHead&quot;: {
     &quot;server&quot;: {
@@ -186,12 +112,12 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;pattern&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
     &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Learn/FE/codinviec-fe&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Wordspace/Backend study/Spring boot/final_project/codinviec-fe&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -200,7 +126,7 @@
     &quot;npm.Next.js: server-side.executor&quot;: &quot;Run&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\Learn\\FE\\codinviec-fe\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\Wordspace\\Backend study\\Spring boot\\final_project\\codinviec-fe\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -236,8 +162,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28238.7" />
-        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28238.7" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
       </set>
     </attachedChunks>
   </component>
@@ -275,6 +201,9 @@
       <workItem from="1765337209951" duration="1630000" />
       <workItem from="1765338869752" duration="107000" />
       <workItem from="1765338997907" duration="5702000" />
+      <workItem from="1765548107108" duration="68000" />
+      <workItem from="1765555667531" duration="710000" />
+      <workItem from="1765556435852" duration="608000" />
     </task>
     <task id="LOCAL-00001" summary="fix-refresh-api">
       <option name="closed" value="true" />
@@ -368,5 +297,24 @@
     <MESSAGE value="fix-refresh-api" />
     <MESSAGE value="add-more" />
     <option name="LAST_COMMIT_MESSAGE" value="add-more" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/(public)/companies/components/CompaniesListingClient.tsx</url>
+          <line>216</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
