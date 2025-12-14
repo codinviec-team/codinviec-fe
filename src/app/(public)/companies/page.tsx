@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { generatePublicMetadata } from "@/utils/metadata";
-import CompaniesListingClient from "./CompaniesListingClient";
+import CompaniesListingClient from "./components/CompaniesListingClient";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Danh sách công ty IT hàng đầu Việt Nam - CodinViec",
@@ -11,4 +11,3 @@ export const metadata: Metadata = generatePublicMetadata(
 export default function CompaniesPage() {
   return <CompaniesListingClient />;
 }
-

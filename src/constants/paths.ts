@@ -13,3 +13,7 @@ export const PATHS = {
   JOBS: "/jobs",
 } as const;
 
+export const IMAGES_PATH = {
+  DEFAULT_COMPANY_LOGO:
+    "https://placehold.co/120x60/4DB6AC/ffffff?text=Company",
+};

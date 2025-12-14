@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Tabs } from "antd";
 import Container from "@/components/ui/Container";
-import { Company } from "../CompaniesListingClient";
+import { Company } from "../components/CompaniesListingClient";
 import JobListCard from "@/app/(public)/jobs/components/JobListCard";
 import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
 
@@ -37,7 +37,8 @@ const companies: Company[] = [
     country: "Vietnam",
     type: "Product & Service",
     jobCount: 45,
-    description: "FPT Software là công ty phần mềm hàng đầu Việt Nam với hơn 30 năm kinh nghiệm.",
+    description:
+      "FPT Software là công ty phần mềm hàng đầu Việt Nam với hơn 30 năm kinh nghiệm.",
     isHot: true,
     isFeatured: true,
   },
@@ -52,7 +53,8 @@ const companies: Company[] = [
     country: "Vietnam",
     type: "Product",
     jobCount: 32,
-    description: "VNG là công ty công nghệ hàng đầu với các sản phẩm như Zalo, Zing MP3.",
+    description:
+      "VNG là công ty công nghệ hàng đầu với các sản phẩm như Zalo, Zing MP3.",
     isHot: true,
     isFeatured: true,
   },
@@ -67,7 +69,8 @@ const companies: Company[] = [
     country: "Vietnam",
     type: "Service",
     jobCount: 15,
-    description: "NEC Vietnam là một trong những công ty ICT Nhật Bản hàng đầu tại Việt Nam.",
+    description:
+      "NEC Vietnam là một trong những công ty ICT Nhật Bản hàng đầu tại Việt Nam.",
     isFeatured: true,
   },
 ];
@@ -150,7 +153,9 @@ type CompanyDetailClientProps = {
   slug: string;
 };
 
-export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) {
+export default function CompanyDetailClient({
+  slug,
+}: CompanyDetailClientProps) {
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
@@ -300,27 +305,32 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
                   Giới thiệu công ty
                 </h2>
                 <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
+                  <p>{company.description}</p>
                   <p>
-                    {company.description}
-                  </p>
-                  <p>
-                    {company.name} là một trong những công ty công nghệ hàng đầu tại Việt Nam,
-                    chuyên cung cấp các giải pháp phần mềm và dịch vụ công nghệ thông tin chất lượng cao.
-                    Với đội ngũ nhân viên tài năng và môi trường làm việc năng động, chúng tôi
-                    luôn tạo điều kiện tốt nhất cho nhân viên phát triển sự nghiệp.
+                    {company.name} là một trong những công ty công nghệ hàng đầu
+                    tại Việt Nam, chuyên cung cấp các giải pháp phần mềm và dịch
+                    vụ công nghệ thông tin chất lượng cao. Với đội ngũ nhân viên
+                    tài năng và môi trường làm việc năng động, chúng tôi luôn
+                    tạo điều kiện tốt nhất cho nhân viên phát triển sự nghiệp.
                   </p>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Sứ mệnh</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Sứ mệnh
+                    </h3>
                     <p>
-                      Chúng tôi cam kết mang đến những giải pháp công nghệ tiên tiến nhất,
-                      góp phần phát triển ngành công nghệ thông tin Việt Nam và khu vực.
+                      Chúng tôi cam kết mang đến những giải pháp công nghệ tiên
+                      tiến nhất, góp phần phát triển ngành công nghệ thông tin
+                      Việt Nam và khu vực.
                     </p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Tầm nhìn</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      Tầm nhìn
+                    </h3>
                     <p>
-                      Trở thành công ty công nghệ hàng đầu khu vực, được công nhận về chất lượng
-                      sản phẩm và dịch vụ, cũng như môi trường làm việc tốt nhất cho nhân viên.
+                      Trở thành công ty công nghệ hàng đầu khu vực, được công
+                      nhận về chất lượng sản phẩm và dịch vụ, cũng như môi
+                      trường làm việc tốt nhất cho nhân viên.
                     </p>
                   </div>
                 </div>
@@ -367,22 +377,26 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
                     {
                       icon: <DollarOutlined className="text-2xl" />,
                       title: "Lương thưởng cạnh tranh",
-                      description: "Mức lương và thưởng hấp dẫn, đánh giá theo năng lực và đóng góp.",
+                      description:
+                        "Mức lương và thưởng hấp dẫn, đánh giá theo năng lực và đóng góp.",
                     },
                     {
                       icon: <TrophyOutlined className="text-2xl" />,
                       title: "Cơ hội phát triển",
-                      description: "Chương trình đào tạo và phát triển nghề nghiệp rõ ràng, cơ hội thăng tiến.",
+                      description:
+                        "Chương trình đào tạo và phát triển nghề nghiệp rõ ràng, cơ hội thăng tiến.",
                     },
                     {
                       icon: <RocketOutlined className="text-2xl" />,
                       title: "Môi trường năng động",
-                      description: "Làm việc với các công nghệ mới nhất, dự án thú vị và đội ngũ chuyên nghiệp.",
+                      description:
+                        "Làm việc với các công nghệ mới nhất, dự án thú vị và đội ngũ chuyên nghiệp.",
                     },
                     {
                       icon: <CheckCircleOutlined className="text-2xl" />,
                       title: "Phúc lợi đầy đủ",
-                      description: "Bảo hiểm đầy đủ, nghỉ phép linh hoạt, chế độ làm việc remote/hybrid.",
+                      description:
+                        "Bảo hiểm đầy đủ, nghỉ phép linh hoạt, chế độ làm việc remote/hybrid.",
                     },
                   ].map((benefit, index) => (
                     <div
@@ -426,28 +440,36 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
                     <EnvironmentOutlined className="text-primary-400 mt-1" />
                     <div>
                       <p className="text-gray-500">Địa điểm</p>
-                      <p className="font-medium text-gray-900">{company.location}</p>
+                      <p className="font-medium text-gray-900">
+                        {company.location}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <TeamOutlined className="text-primary-400 mt-1" />
                     <div>
                       <p className="text-gray-500">Quy mô</p>
-                      <p className="font-medium text-gray-900">{company.size} nhân viên</p>
+                      <p className="font-medium text-gray-900">
+                        {company.size} nhân viên
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <CalendarOutlined className="text-primary-400 mt-1" />
                     <div>
                       <p className="text-gray-500">Loại hình</p>
-                      <p className="font-medium text-gray-900">{company.type}</p>
+                      <p className="font-medium text-gray-900">
+                        {company.type}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <GlobalOutlined className="text-primary-400 mt-1" />
                     <div>
                       <p className="text-gray-500">Quốc gia</p>
-                      <p className="font-medium text-gray-900">{company.country}</p>
+                      <p className="font-medium text-gray-900">
+                        {company.country}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -482,4 +504,3 @@ export default function CompanyDetailClient({ slug }: CompanyDetailClientProps) 
     </div>
   );
 }
-
