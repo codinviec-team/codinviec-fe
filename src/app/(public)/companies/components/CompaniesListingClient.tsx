@@ -1,60 +1,107 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Button, Select } from "antd";
+import Container from "@/components/ui/Container";
+import PaginationComponent from "@/components/ui/Pagination";
+import SearchBar from "@/components/ui/SearchBar";
+import { UIButton } from "@/components/ui/UIButton";
+import useCompanySize, {
+  CompanySizeOption,
+} from "@/hooks/Common/CompanySize/useCompanySize";
+import useLocation, {
+  ProvinceOption,
+} from "@/hooks/Common/location/useLocation";
+import CompanyServices from "@/services/home/companies/CompanyServices";
+import { BasePageResponse } from "@/types/common/BasePageResponse";
+import { CompanyType } from "@/types/home/company/CompanyType";
+import { removeVietnameseTones } from "@/utils/removeVietnameseTones ";
 import {
   BuildOutlined,
   EnvironmentOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import Container from "@/components/ui/Container";
-import SearchBar from "@/components/ui/SearchBar";
-import CompanyCard from "./CompanyCard";
-import PaginationComponent from "@/components/ui/Pagination";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
-import { CompanyType } from "@/types/home/company/CompanyType";
 import { useQuery } from "@tanstack/react-query";
-import CompanyServices from "@/services/home/companies/CompanyServices";
+import { Form, Select } from "antd";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import CompanyCard from "./CompanyCard";
 
-const sizes = [
-  { value: "all", label: "Tất cả quy mô" },
-  { value: "50 - 100", label: "50 - 100 nhân viên" },
-  { value: "100 - 500", label: "100 - 500 nhân viên" },
-  { value: "500 - 1,000", label: "500 - 1,000 nhân viên" },
-  { value: "1,000 - 5,000", label: "1,000 - 5,000 nhân viên" },
-  { value: "5,000 - 10,000", label: "5,000 - 10,000 nhân viên" },
-];
-
-const locations = [
-  { value: "all", label: "Tất cả địa điểm" },
-  { value: "Hà Nội", label: "Hà Nội" },
-  { value: "Hồ Chí Minh", label: "Hồ Chí Minh" },
-  { value: "Đà Nẵng", label: "Đà Nẵng" },
-];
+const pageSizeBlogDefault = 9;
 
 export default function CompaniesListingClient() {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [inputingState, setInputingState] = useState("");
 
+  const { dataLocation, provinceData, handleProvinceChange } = useLocation();
+  const { dataCompanySize, companySizeState, handleCompanySizeChange } =
+    useCompanySize();
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12;
+  const [form] = Form.useForm();
 
-  const handleSearch = (values: { keyword?: string; location?: string }) => {
-    if (values.keyword) {
-      setSearchKeyword(values.keyword);
-    }
-    if (values.location && values.location !== "all") {
-      setSelectedLocation(values.location);
-    }
-    setCurrentPage(1);
-  };
-
-  const { data, isLoading } = useQuery<CompanyType[], Error>({
-    queryKey: ["company"],
-    queryFn: () => CompanyServices.getAllCompany(),
+  const { data: dataCompany, isLoading: isLoadingCompany } = useQuery<
+    BasePageResponse<CompanyType>,
+    Error
+  >({
+    queryKey: [
+      "company",
+      currentPage,
+      provinceData,
+      companySizeState,
+      searchKeyword,
+    ],
+    queryFn: () => {
+      return CompanyServices.getAllCompanyHavePage({
+        keyword: searchKeyword,
+        minEmployees: companySizeState?.minEmployees || 0,
+        maxEmployees: companySizeState?.maxEmployees || 0,
+        location: provinceData?.name || "",
+        pageSize: pageSizeBlogDefault || 0,
+        pageNumber: currentPage || 1,
+      });
+    },
   });
 
-  console.log("da", data);
+  const totalCompany = dataCompany?.content?.length || 0;
+
+  const handleFinishSearch = () => {
+    setSearchKeyword(inputingState);
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputingState(e?.target?.value);
+  };
+
+  const handleChangeLocatation = (
+    value: number,
+    option?: ProvinceOption | ProvinceOption[]
+  ) => {
+    if (!option || Array.isArray(option)) {
+      handleProvinceChange(undefined);
+      return;
+    }
+    handleProvinceChange?.(option);
+  };
+
+  const handleChangeCompanySize = (
+    value: number,
+    option?: CompanySizeOption | CompanySizeOption[]
+  ) => {
+    if (!option || Array.isArray(option)) {
+      handleCompanySizeChange(undefined);
+      return;
+    }
+    handleCompanySizeChange?.(option);
+  };
+
+  const handleChangePagination = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleResetFilter = () => {
+    handleProvinceChange?.(undefined);
+    handleCompanySizeChange?.(undefined);
+    setSearchKeyword("");
+    form.resetFields();
+  };
 
   return (
     <div className="w-full">
@@ -68,7 +115,10 @@ export default function CompaniesListingClient() {
             transition={{ duration: 0.4 }}
           >
             <SearchBar
-              onFinish={handleSearch}
+              form={form}
+              showLocation={false}
+              onFinish={handleFinishSearch}
+              onKeywordChange={onChangeSearch}
               placeholder="Tìm kiếm công ty..."
               locationPlaceholder="Tất cả thành phố"
             />
@@ -85,43 +135,47 @@ export default function CompaniesListingClient() {
               <Select
                 size="large"
                 placeholder="Quy mô"
-                // value={}
-                // onChange={}
-                options={sizes}
+                showSearch
+                onChange={handleChangeCompanySize}
+                filterOption={(input, option) =>
+                  removeVietnameseTones(option?.label ?? "").includes(
+                    removeVietnameseTones(input)
+                  )
+                }
+                value={companySizeState?.value}
+                options={dataCompanySize}
                 className="lg:w-[200px] !h-[48px] [&_.ant-select-selector]:!h-[48px] [&_.ant-select-selector]:!rounded-xl"
               />
 
+              {/* location */}
               <Select
                 size="large"
                 placeholder="Địa điểm"
-                // value={selectedLocation}
-                // onChange={setSelectedLocation}
-                options={locations}
+                showSearch
+                filterOption={(input, option) =>
+                  removeVietnameseTones(option?.label ?? "").includes(
+                    removeVietnameseTones(input)
+                  )
+                }
+                onChange={handleChangeLocatation}
+                value={provinceData?.value}
+                options={dataLocation}
                 suffixIcon={
                   <EnvironmentOutlined className="text-primary-400" />
                 }
                 className="lg:w-[200px] !h-[48px] [&_.ant-select-selector]:!h-[48px] [&_.ant-select-selector]:!rounded-xl"
               />
 
-              <Select
-                size="large"
-                placeholder="Sắp xếp"
-                // value={sortBy}
-                // onChange={setSortBy}
-                // options={sortOptions}
-                className="lg:w-[180px] !h-[48px] [&_.ant-select-selector]:!h-[48px] [&_.ant-select-selector]:!rounded-xl"
-              />
-
               <div className="flex-1" />
-
-              <Button
+              <UIButton
+                variantCustom="accent"
                 size="large"
                 icon={<ReloadOutlined />}
-                // onClick={handleReset}
+                onClick={handleResetFilter}
                 className="!h-[48px] !rounded-xl"
               >
                 Đặt lại
-              </Button>
+              </UIButton>
             </div>
           </motion.div>
         </Container>
@@ -142,16 +196,16 @@ export default function CompaniesListingClient() {
             </h1>
           </div>
           <p className="text-lg text-gray-600">
-            Tìm thấy <strong>10</strong> công ty phù hợp
+            Tìm thấy <strong>{totalCompany}</strong> công ty phù hợp
           </p>
         </motion.div>
 
         {/* Companies Grid */}
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {data &&
-              data?.length > 0 &&
-              data?.map((company) => (
+            {dataCompany &&
+              dataCompany?.content?.length > 0 &&
+              dataCompany?.content?.map((company) => (
                 <CompanyCard key={company.id} company={company} />
               ))}
           </div>
@@ -159,12 +213,9 @@ export default function CompaniesListingClient() {
           {/* Pagination */}
           <PaginationComponent
             current={currentPage}
-            total={10}
-            pageSize={pageSize}
-            onChange={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            total={dataCompany?.totalElements || 0}
+            pageSize={pageSizeBlogDefault}
+            onChange={handleChangePagination}
           />
         </>
       </Container>

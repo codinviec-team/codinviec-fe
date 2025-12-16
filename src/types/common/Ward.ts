@@ -1,5 +1,4 @@
-export interface Ward {
+export interface Wardtype {
   id: number;
   name: string;
-  idProvince: number;
 }

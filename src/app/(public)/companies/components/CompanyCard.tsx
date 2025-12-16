@@ -1,6 +1,6 @@
 import CustomBadge from "@/components/ui/CustomBadge";
 import { IMAGES_PATH } from "@/constants/paths";
-import { badgeType, BadgeVariant } from "@/types/common/BadgeType";
+import { BadgeVariant } from "@/types/common/BadgeType";
 import { CompanyType } from "@/types/home/company/CompanyType";
 import { EnvironmentOutlined, TeamOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
@@ -37,6 +37,7 @@ export default function CompanyCard({ company, countjob }: CompanyCardProps) {
                   if (status?.title === "spotlight") return;
                   return (
                     <CustomBadge
+                      key={status.id}
                       variant={
                         (status!.title.toLowerCase() as BadgeVariant) || ""
                       }
