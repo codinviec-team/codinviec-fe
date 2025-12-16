@@ -4,6 +4,7 @@ import { EnvironmentOutlined, SearchOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input, Select } from "antd";
 import clsx from "clsx";
 import { motion } from "framer-motion";
+import React from "react";
 
 type SearchBarProps = FormProps & {
   showLocation?: boolean;
@@ -12,6 +13,7 @@ type SearchBarProps = FormProps & {
   locationPlaceholder?: string;
   withBackground?: boolean;
   defaultValuesSearch?: string;
+  onKeywordChange?: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 export type SearchFormFields = {
@@ -35,6 +37,7 @@ const SearchBar = ({
   locationPlaceholder = "Địa điểm",
   withBackground = false,
   defaultValuesSearch = "",
+  onKeywordChange,
   onFinish,
   ...props
 }: SearchBarProps) => {
@@ -52,6 +55,7 @@ const SearchBar = ({
       // giá trị mặc định của form
       initialValues={{
         keyword: defaultValuesSearch,
+        location: "all",
       }}
       {...props}
     >
@@ -61,7 +65,6 @@ const SearchBar = ({
             size="large"
             placeholder={locationPlaceholder}
             options={locations}
-            defaultValue="all"
             suffixIcon={<EnvironmentOutlined className="text-primary-400" />}
             className="!h-[52px] w-full [&_.ant-select-selector]:!h-[52px] [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-primary-200 [&_.ant-select-selection-item]:!leading-[52px]"
           />
@@ -74,6 +77,7 @@ const SearchBar = ({
           placeholder={placeholder}
           className="!h-[52px] !text-base !rounded-xl !border-primary-200 hover:!border-primary-400 focus:!border-primary-500"
           allowClear
+          onChange={onKeywordChange}
         />
       </Form.Item>
 

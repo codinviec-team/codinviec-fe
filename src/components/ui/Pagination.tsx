@@ -16,4 +16,3 @@ const PaginationComponent = ({
   );
 };
 export default PaginationComponent;
-
