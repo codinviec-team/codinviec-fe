@@ -16,4 +16,5 @@ export const PATHS = {
 export const IMAGES_PATH = {
   DEFAULT_COMPANY_LOGO:
     "https://placehold.co/120x60/4DB6AC/ffffff?text=Company",
+  PATHS_BE: "https://api.codinviec.io.vn/file",
 };

@@ -11,7 +11,7 @@ type CompanyCardProps = {
   countjob?: number;
 };
 
-export default function CompanyCard({ company, countjob }: CompanyCardProps) {
+const CompanyCard = ({ company, countjob }: CompanyCardProps) => {
   const companyAddress =
     company.companyAddress.filter((company) => company.headOffice)[0] || null;
 
@@ -87,4 +87,5 @@ export default function CompanyCard({ company, countjob }: CompanyCardProps) {
       </Link>
     </motion.div>
   );
-}
+};
+export default CompanyCard;

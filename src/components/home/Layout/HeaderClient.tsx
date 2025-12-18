@@ -15,9 +15,12 @@ import {
   UserOutlined,
   LogoutOutlined,
   SettingOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 import MobileCategoryList from "@/components/home/HomePage/Category/MobileCategoryList";
 import { motion, AnimatePresence } from "framer-motion";
+import { Switch } from "antd";
+import clsx from "clsx";
 
 const getUserDisplayName = (user: IUser | null): string => {
   if (!user) return "User";
@@ -77,13 +80,13 @@ export default function HeaderClient() {
             <div className="relative group">
               <button className="flex items-center justify-center hover:opacity-90 transition-all cursor-pointer p-1.5 rounded-xl hover:bg-primary-800/40 active:scale-95">
                 <div className="w-11 h-11 rounded-full bg-gradient-to-br from-accent-200 to-accent-300 flex items-center justify-center overflow-hidden border-2 border-accent-400/50 shadow-lg ring-2 ring-accent-500/20">
-                  {user.avatar ? (
+                  {user?.avatar ? (
                     <Image
-                      src={user.avatar}
+                      src={user?.avatar}
                       alt="User avatar"
                       width={44}
                       height={44}
-                      className="object-cover"
+                      className="object-"
                     />
                   ) : (
                     <span className="text-accent-700 font-bold text-xl">
@@ -116,14 +119,14 @@ export default function HeaderClient() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="absolute right-0 top-full pt-2 w-52 bg-primary-900/98 rounded-xl shadow-xl border border-primary-700/50 py-1.5 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible backdrop-blur-sm pointer-events-auto"
+                  className="absolute right-0 top-full pt-2 w-52 bg-primary-900/98 rounded-xl shadow-xl border invisible border-primary-700/50 py-1.5 z-50 opacity-0  group-hover:opacity-100 group-hover:visible backdrop-blur-sm pointer-events-auto"
                 >
                   {/* User Info Section */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.05 }}
-                    className="px-3 py-2.5 border-b border-primary-700/40 mb-1"
+                    className="px-3 py-2.5 border-b border-primary-700/40 mb-1 mx-1"
                   >
                     <p className="text-sm font-semibold text-accent-100 truncate">
                       {displayName}
@@ -131,6 +134,17 @@ export default function HeaderClient() {
                     <p className="text-xs text-accent-200/70 truncate mt-0.5">
                       {user.email}
                     </p>
+                  </motion.div>
+                  <motion.div className="px-3 py-2.5 mb-1 mx-1 flex gap-[6px] items-center cursor-pointer">
+                    <Switch
+                      size="small"
+                      className={clsx(
+                        "px-4 py-2 rounded",
+                        user?.findJob ? "" : "!bg-gray-400"
+                      )}
+                      defaultChecked
+                    />
+                    <p className="text-[14px]">Đang tìm việc</p>
                   </motion.div>
 
                   <motion.div

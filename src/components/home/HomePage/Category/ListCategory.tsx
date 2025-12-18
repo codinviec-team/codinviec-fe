@@ -5,6 +5,7 @@ import { useCategories } from "@/hooks/home/category/useCategories";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from "framer-motion";
+import { PATHS } from "@/constants/paths";
 
 export default function ListCategory() {
   const { data, isLoading } = useCategories();
@@ -89,7 +90,10 @@ export default function ListCategory() {
                               key={sub.id}
                               initial={{ opacity: 0, y: -5 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.15, delay: subIndex * 0.02 }}
+                              transition={{
+                                duration: 0.15,
+                                delay: subIndex * 0.02,
+                              }}
                               className="hover:bg-primary-800/70 rounded-md px-3 py-2 transition"
                             >
                               <Link
@@ -104,7 +108,10 @@ export default function ListCategory() {
                           <motion.li
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ duration: 0.2, delay: child.children.length * 0.02 }}
+                            transition={{
+                              duration: 0.2,
+                              delay: child.children.length * 0.02,
+                            }}
                             className="col-span-3 border-t border-primary-700 mt-2 pt-2 text-center"
                           >
                             <Link
@@ -124,6 +131,23 @@ export default function ListCategory() {
           </AnimatePresence>
         </li>
       ))}
+      {/* Blog */}
+      <li className="relative group">
+        <Link
+          href={PATHS.BLOG}
+          className="flex items-center space-x-1 hover:text-accent transition px-2 py-2"
+        >
+          <span>Xem Blog</span>
+        </Link>
+      </li>
+      <li className="relative group">
+        <Link
+          href={PATHS.COMPANIES}
+          className="flex items-center space-x-1 hover:text-accent transition px-2 py-2"
+        >
+          <span>Companies</span>
+        </Link>
+      </li>
     </ul>
   );
 }

@@ -1,6 +1,6 @@
-import { Province } from "@/types/common/ProvinceType";
+import { ProvinceType } from "@/types/common/ProvinceType";
 import { StatusSpecial } from "@/types/common/StatusSpecial";
-import { Ward } from "@/types/common/Ward";
+import { Wardtype } from "@/types/common/Ward";
 
 export interface CompanyType {
   id: string;
@@ -24,8 +24,8 @@ export interface CompanySize {
 
 export interface CompanyAddress {
   id: number;
-  province: Province;
-  ward: Ward;
+  province: ProvinceType;
+  ward: Wardtype;
   detail: string;
   headOffice: boolean;
 }

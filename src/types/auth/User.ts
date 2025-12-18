@@ -10,7 +10,7 @@ export interface IUser {
   address?: string;
   websiteLink?: string;
   birthDate?: string; // ISO date string từ BE
-  isFindJob?: boolean;
+  findJob?: boolean;
   groupSoftSkill?: string;
   companyId?: string;
   roleId?: string;
@@ -18,4 +18,3 @@ export interface IUser {
   createdDate?: string;
   updatedDate?: string;
 }
-
