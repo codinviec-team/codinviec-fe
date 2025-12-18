@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.codinviec.io.vn",
+        pathname: "/**",
+      },
     ],
   },
 };
