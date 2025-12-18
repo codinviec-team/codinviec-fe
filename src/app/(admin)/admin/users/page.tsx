@@ -1,26 +1,37 @@
 "use client";
 
-import React, {useState} from "react";
-import {motion} from "framer-motion";
-import {Avatar, Button, Dropdown, Input, message, Modal, Select, Table, Tag, Tooltip,} from "antd";
-import type {ColumnsType} from "antd/es/table";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import {
-    DeleteOutlined,
-    EditOutlined,
-    ExclamationCircleOutlined,
-    EyeOutlined,
-    FilterOutlined,
-    LockOutlined,
-    MailOutlined,
-    MoreOutlined,
-    PlusOutlined,
-    ReloadOutlined,
-    SearchOutlined,
-    UnlockOutlined,
-    UserOutlined,
+  Avatar,
+  Button,
+  Dropdown,
+  Input,
+  message,
+  Modal,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
+import type { ColumnsType } from "antd/es/table";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  EyeOutlined,
+  FilterOutlined,
+  LockOutlined,
+  MailOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  SearchOutlined,
+  UnlockOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import {IUser} from "@/types/auth/User";
-import {UIButton} from "@/components/ui/UIButton";
+import { IUser } from "@/types/auth/User";
+import { UIButton } from "@/components/ui/UIButton";
 
 // Sample users data
 const sampleUsers: IUser[] = [
@@ -40,7 +51,7 @@ const sampleUsers: IUser[] = [
     lastName: "A",
     role: "ROLE_USER",
     phone: "0912345678",
-    isFindJob: true,
+    findJob: true,
     createdDate: "2024-01-10",
   },
   {
@@ -50,7 +61,7 @@ const sampleUsers: IUser[] = [
     lastName: "B",
     role: "ROLE_USER",
     phone: "0923456789",
-    isFindJob: false,
+    findJob: false,
     createdDate: "2024-01-12",
   },
   {
@@ -78,7 +89,7 @@ const sampleUsers: IUser[] = [
     lastName: "C",
     role: "ROLE_USER",
     phone: "0945678901",
-    isFindJob: true,
+    findJob: true,
     createdDate: "2024-01-14",
   },
   {
@@ -98,7 +109,7 @@ const sampleUsers: IUser[] = [
     lastName: "D",
     role: "ROLE_USER",
     phone: "0967890123",
-    isFindJob: true,
+    findJob: true,
     createdDate: "2024-01-11",
   },
   {
@@ -139,7 +150,10 @@ interface UserWithStatus extends IUser {
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<UserWithStatus[]>(
-    sampleUsers.map((u) => ({ ...u, status: u.id === "5" ? "suspended" : u.id === "9" ? "pending" : "active" }))
+    sampleUsers.map((u) => ({
+      ...u,
+      status: u.id === "5" ? "suspended" : u.id === "9" ? "pending" : "active",
+    }))
   );
   const [loading, setLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -248,13 +262,13 @@ export default function AdminUsersPage() {
     },
     {
       title: "Tìm việc",
-      dataIndex: "isFindJob",
-      key: "isFindJob",
+      dataIndex: "findJob",
+      key: "findJob",
       width: 100,
       align: "center",
-      render: (isFindJob, record) =>
+      render: (findJob, record) =>
         record.role === "ROLE_USER" ? (
-          isFindJob ? (
+          findJob ? (
             <Tag color="green" className="!rounded-lg">
               Đang tìm
             </Tag>
@@ -514,4 +528,3 @@ export default function AdminUsersPage() {
     </div>
   );
 }
-
