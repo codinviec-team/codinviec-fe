@@ -15,6 +15,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function CompanyDetailPage({ params }: Props) {
-  return <CompanyDetailClient slug={params.slug} />;
+  // return <CompanyDetailClient slug={params.slug} />;
 }
-
