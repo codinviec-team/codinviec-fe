@@ -6,6 +6,7 @@ import { IUser } from "@/types/auth/User";
 import api from "@/interceptor/api";
 import axios from "axios";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
+import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
 
 // Tạo axios instance riêng cho refresh endpoint để tránh interceptor xử lý lại
 const refreshApi = axios.create({
@@ -36,6 +37,14 @@ export const authService = {
 
   async getProfile(): Promise<IUser> {
     const res = await api.get<IBaseResponse<IUser>>("/auth/profile");
+    if (!res.data.data) {
+      throw new Error("Không nhận được thông tin người dùng từ server");
+    }
+    return res.data.data;
+  },
+
+  async updateProfile(payload: UpdateProfileServiceType): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>("/auth/profile", payload);
     if (!res.data.data) {
       throw new Error("Không nhận được thông tin người dùng từ server");
     }
