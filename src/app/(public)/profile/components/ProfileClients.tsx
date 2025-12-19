@@ -1,11 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import Container from "@/components/ui/Container";
+import { UIButton } from "@/components/ui/UIButton";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { authService } from "@/services/auth/authService";
 import { RootState } from "@/store";
 import { checkAuth } from "@/store/slice/auth/authSlice";
+import { IUser } from "@/types/auth/User";
+import { formatToLocalDateTime } from "@/utils/DateHelper";
+import { alert } from "@/utils/notification";
+import {
+  CameraOutlined,
+  EditOutlined,
+  GlobalOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  SaveOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import type { UploadFile } from "antd";
 import {
   Avatar,
@@ -14,26 +26,14 @@ import {
   Divider,
   Form,
   Input,
-  message,
   Select,
   Switch,
   Upload,
 } from "antd";
-import {
-  CameraOutlined,
-  EditOutlined,
-  EnvironmentOutlined,
-  GlobalOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  SaveOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { UIButton } from "@/components/ui/UIButton";
-import Container from "@/components/ui/Container";
 import dayjs from "dayjs";
-import { removeVietnameseTones } from "@/utils/removeVietnameseTones ";
-import useLocation from "@/hooks/Common/location/useLocation";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const { Option } = Select;
 
@@ -43,11 +43,19 @@ type FormPropsProfiles = {
   email: string;
   phone: string;
   gender: string;
-  birthDate: string;
-  address: string;
+  birthDate: Date;
+  address?: string;
   education: string;
   websiteLink: string;
 };
+
+const optionGender = [
+  {
+    value: "male",
+    label: "Nam",
+  },
+  { value: "female", label: "Nữ" },
+];
 
 export default function ProfileClients() {
   const router = useRouter();
@@ -56,10 +64,10 @@ export default function ProfileClients() {
     (state: RootState) => state.auth
   );
   const [form] = Form.useForm();
+
   const [editing, setEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [avatarFile, setAvatarFile] = useState<UploadFile | null>(null);
-  const { dataLocation, provinceData, handleProvinceChange } = useLocation();
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -74,7 +82,7 @@ export default function ProfileClients() {
         lastName: user.lastName,
         email: user.email,
         phone: user.phone,
-        gender: user.gender,
+        gender: user?.gender,
         birthDate: user.birthDate ? dayjs(user.birthDate) : null,
         address: user.address,
         websiteLink: user.websiteLink,
@@ -85,20 +93,58 @@ export default function ProfileClients() {
   }, [user, form]);
 
   const handleSubmit = async (values: FormPropsProfiles) => {
-    console.log("values", values);
     try {
+      console.log("values", values);
+      let isChange = false;
+
+      for (const key in values) {
+        const k = key as keyof FormPropsProfiles;
+        if (user?.[k]) {
+          if (k === "birthDate") {
+            if (formatToLocalDateTime(values[k]) !== user[k]) {
+              isChange = true;
+            }
+            break;
+          }
+          if (values[k]?.toLowerCase() !== user[k].toLowerCase()) {
+            isChange = true;
+          }
+        }
+      }
+
+      if (!isChange) {
+        setSubmitting(false);
+        setEditing(false);
+        alert.warning("Không có gì để cập nhật!");
+        return;
+      }
+
       setSubmitting(true);
+      const payload = {
+        email: values?.email?.trim() || "",
+        education: values?.education?.trim() || "",
+        firstName: values?.firstName?.trim() || "",
+        gender: values?.gender?.trim() || "",
+        lastName: values?.lastName?.trim() || "",
+        address: values?.address?.trim() || "",
+        phone: values?.phone?.trim() || "",
+        websiteLink: values?.websiteLink?.trim() || "",
+        birthDate: values?.birthDate
+          ? formatToLocalDateTime(values.birthDate)
+          : "",
+      };
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      await dispatch(checkAuth()).unwrap();
-
-      message.success("Cập nhật hồ sơ thành công!");
+      const userUpdate = await authService.updateProfile(payload);
+      if (userUpdate?.id) {
+        alert.success("Cập nhật hồ sơ thành công!");
+        dispatch(checkAuth()).unwrap();
+      }
       setEditing(false);
     } catch (error) {
-      message.error("Có lỗi xảy ra khi cập nhật hồ sơ!");
+      alert.error("Cập nhật hồ sơ thành công!");
     } finally {
       setSubmitting(false);
+      setEditing(false);
     }
   };
 
@@ -110,7 +156,7 @@ export default function ProfileClients() {
         lastName: user.lastName,
         email: user.email,
         phone: user.phone,
-        gender: user.gender,
+        gender: user?.gender,
         birthDate: user.birthDate ? dayjs(user.birthDate) : null,
         address: user.address,
         websiteLink: user.websiteLink,
@@ -307,10 +353,8 @@ export default function ProfileClients() {
                         placeholder="Chọn giới tính"
                         className="!rounded-xl"
                         size="large"
-                      >
-                        <Option value="male">Nam</Option>
-                        <Option value="female">Nữ</Option>
-                      </Select>
+                        options={optionGender}
+                      ></Select>
                     </Form.Item>
                   </div>
 
@@ -323,7 +367,7 @@ export default function ProfileClients() {
                     />
                   </Form.Item>
 
-                  <Form.Item name="location" label="Địa điểm">
+                  <Form.Item name="address" label="Địa điểm">
                     <Input
                       placeholder="Gò vắp..."
                       className="!rounded-xl"
