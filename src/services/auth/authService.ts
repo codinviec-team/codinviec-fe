@@ -1,12 +1,11 @@
-import { IBaseResponse } from "@/types/common/BaseResponse";
+import api from "@/interceptor/api";
 import { ILogin } from "@/types/auth/Login";
 import { IRegister, RegisterType } from "@/types/auth/Register";
 import { IToken } from "@/types/auth/Token";
-import { IUser } from "@/types/auth/User";
-import api from "@/interceptor/api";
-import axios from "axios";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
+import { IUser } from "@/types/auth/User";
+import { IBaseResponse } from "@/types/common/BaseResponse";
+import axios from "axios";
 
 // Tạo axios instance riêng cho refresh endpoint để tránh interceptor xử lý lại
 const refreshApi = axios.create({
@@ -47,6 +46,22 @@ export const authService = {
     const res = await api.put<IBaseResponse<IUser>>("/auth/profile", payload);
     if (!res.data.data) {
       throw new Error("Không nhận được thông tin người dùng từ server");
+    }
+    return res.data.data;
+  },
+
+  async updateAvatar(payload: FormData): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>(
+      "/auth/profile/avatar",
+      payload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    if (!res.data.data) {
+      throw new Error("Không nhận được token mới từ server");
     }
     return res.data.data;
   },

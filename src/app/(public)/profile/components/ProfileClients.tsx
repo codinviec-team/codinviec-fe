@@ -18,7 +18,7 @@ import {
   SaveOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import type { UploadFile } from "antd";
+import type { UploadFile, UploadProps } from "antd";
 import {
   Avatar,
   Card,
@@ -64,10 +64,10 @@ export default function ProfileClients() {
     (state: RootState) => state.auth
   );
   const [form] = Form.useForm();
-
   const [editing, setEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [avatarFile, setAvatarFile] = useState<UploadFile | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -112,7 +112,7 @@ export default function ProfileClients() {
         }
       }
 
-      if (!isChange) {
+      if (!isChange && !avatarFile) {
         setSubmitting(false);
         setEditing(false);
         alert.warning("Không có gì để cập nhật!");
@@ -136,9 +136,17 @@ export default function ProfileClients() {
 
       const userUpdate = await authService.updateProfile(payload);
       if (userUpdate?.id) {
-        alert.success("Cập nhật hồ sơ thành công!");
-        dispatch(checkAuth()).unwrap();
+        if (avatarFile) {
+          const formData = new FormData();
+          formData.append("avatarFile", avatarFile);
+          const updateAvatar = await authService.updateAvatar(formData);
+          if (updateAvatar?.id) {
+            alert.success("Cập nhật hồ sơ thành công!");
+            dispatch(checkAuth()).unwrap();
+          }
+        }
       }
+
       setEditing(false);
     } catch (error) {
       alert.error("Cập nhật hồ sơ thành công!");
@@ -166,12 +174,19 @@ export default function ProfileClients() {
     }
     setEditing(false);
     setAvatarFile(null);
+    setPreviewUrl(null);
+  };
+  const handleChange: UploadProps["onChange"] = (info) => {
+    const file = info.file as unknown as File;
+    if (file) {
+      setAvatarFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
   if (!isAuthenticated || !user) {
     return null;
   }
-
   const displayName =
     user.firstName && user.lastName
       ? `${user.firstName} ${user.lastName}`
@@ -218,10 +233,10 @@ export default function ProfileClients() {
                 <div className="relative inline-block mb-4">
                   <Avatar
                     size={120}
-                    src={avatarFile?.preview || user.avatar}
-                    icon={!user.avatar && !avatarFile && <UserOutlined />}
+                    src={previewUrl || user.avatar}
                     className="bg-gradient-to-br from-primary-400 to-primary-600 border-4 border-white shadow-lg"
                   >
+                    {/* Avatar theo chữ */}
                     {!user.avatar && !avatarFile && (
                       <span className="text-white font-bold text-4xl">
                         {user.email?.charAt(0).toUpperCase() || "U"}
@@ -230,22 +245,10 @@ export default function ProfileClients() {
                   </Avatar>
                   {editing && (
                     <Upload
+                      accept="image/png, image/jpeg, image/jpg, image/webp"
                       showUploadList={false}
-                      beforeUpload={(file) => {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                          setAvatarFile({
-                            uid: file.uid,
-                            name: file.name,
-                            status: "done",
-                            url: reader.result as string,
-                            preview: reader.result as string,
-                          } as UploadFile);
-                        };
-                        reader.readAsDataURL(file);
-                        return false;
-                      }}
-                      accept="image/*"
+                      beforeUpload={() => false}
+                      onChange={handleChange}
                     >
                       <button className="absolute bottom-0 right-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors shadow-lg border-2 border-white">
                         <CameraOutlined />
