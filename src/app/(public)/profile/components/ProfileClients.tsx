@@ -4,40 +4,29 @@ import Container from "@/components/ui/Container";
 import { UIButton } from "@/components/ui/UIButton";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { authService } from "@/services/auth/authService";
+import AvailableSkillExperienceService from "@/services/common/AvailableSkillExperience";
+import AvailableSkillService from "@/services/common/AvailableSkillService";
+import ExperienceService from "@/services/common/ExperienceService";
 import { RootState } from "@/store";
 import { checkAuth } from "@/store/slice/auth/authSlice";
-import { IUser } from "@/types/auth/User";
+import { AvailableSkillType } from "@/types/common/AvailableSkill";
+import { AvailableSkillExperienceType } from "@/types/common/AvailableSkillExperienceType";
+import { ExperienceType } from "@/types/common/Experience";
 import { formatToLocalDateTime } from "@/utils/DateHelper";
 import { alert } from "@/utils/notification";
-import {
-  CameraOutlined,
-  EditOutlined,
-  GlobalOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  SaveOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { UploadFile, UploadProps } from "antd";
-import {
-  Avatar,
-  Card,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Select,
-  Switch,
-  Upload,
-} from "antd";
+import { CameraOutlined, EditOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import type { UploadProps } from "antd";
+import { Avatar, Card, Form, Upload } from "antd";
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import GeneralInfo from "./GeneralInfo";
+import SkillProfile from "./SkillProfile";
+import TabProfile from "./TabProfile";
 
-const { Option } = Select;
-
-type FormPropsProfiles = {
+export type FormPropsProfiles = {
   firstName: string;
   lastName: string;
   email: string;
@@ -49,13 +38,10 @@ type FormPropsProfiles = {
   websiteLink: string;
 };
 
-const optionGender = [
-  {
-    value: "male",
-    label: "Nam",
-  },
-  { value: "female", label: "Nữ" },
-];
+const TabsInforConst = {
+  general: "general",
+  skills: "skills",
+};
 
 export default function ProfileClients() {
   const router = useRouter();
@@ -68,6 +54,37 @@ export default function ProfileClients() {
   const [submitting, setSubmitting] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [tabsInfor, setTabsInfor] = useState<string>(TabsInforConst.general);
+
+  // CALL API SKILL CỦA USER
+  const {
+    data: skillUser,
+    isLoading: isLoadingSkillUser,
+    refetch: fetchingSkillUser,
+  } = useQuery<AvailableSkillExperienceType[], Error>({
+    queryKey: ["getSkillUser", user?.id],
+    queryFn: () =>
+      AvailableSkillExperienceService.getAllAvailableSkillExperienceById(
+        user?.id || ""
+      ),
+    enabled: !!user?.id,
+  });
+
+  // CALL API SKILL AVAIABLE
+  const { data: availableSkillData, isLoading: isLoadingavailableSkill } =
+    useQuery<AvailableSkillType[], Error>({
+      queryKey: ["availableskill"],
+      queryFn: () => AvailableSkillService.getAllAvailableSkill(),
+    });
+
+  // CALL API EXPERIENCE
+  const { data: experienceData, isLoading: isLoadingExperience } = useQuery<
+    ExperienceType[],
+    Error
+  >({
+    queryKey: ["experience"],
+    queryFn: () => ExperienceService.getAllExperience(),
+  });
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -192,6 +209,30 @@ export default function ProfileClients() {
       ? `${user.firstName} ${user.lastName}`
       : user.firstName || user.email?.split("@")[0] || "User";
 
+  const propsGeneralInfo = {
+    user: user || [],
+    form,
+    handleSubmit,
+    editing,
+    handleCancel,
+    submitting,
+  };
+
+  const propsSkillsInfo = {
+    user: user || [],
+    skillUser: skillUser || [],
+    groupSkillCount: Array.from(new Set(skillUser?.map((s) => s.groupCoreId))),
+    availableSkillData: availableSkillData || [],
+    experienceData: experienceData || [],
+    fetchingSkillUser,
+  };
+
+  const onChangeTabs = (tabsStatus: string) => {
+    setTabsInfor(tabsStatus);
+    setEditing(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <Container className="py-8">
       <div className="max-w-4xl mx-auto">
@@ -204,7 +245,7 @@ export default function ProfileClients() {
         >
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">Hồ sơ của tôi</h1>
-            {!editing && (
+            {!editing && tabsInfor === TabsInforConst.general && (
               <UIButton
                 type="primary"
                 icon={<EditOutlined />}
@@ -271,178 +312,35 @@ export default function ProfileClients() {
                 )}
               </div>
             </Card>
-            <div>SKILLS soft</div>
-            <div>SKILLS core</div>
+            <TabProfile
+              onClick={() => {
+                onChangeTabs(TabsInforConst.general);
+              }}
+            >
+              Thông tin chung
+            </TabProfile>
+            <TabProfile
+              onClick={() => {
+                onChangeTabs(TabsInforConst.skills);
+              }}
+            >
+              Kỹ năng
+            </TabProfile>
           </motion.div>
 
           {/* Right Column - Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="lg:col-span-2"
-          >
-            <Card className="border border-primary-100 rounded-2xl">
-              <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleSubmit}
-                disabled={!editing}
-              >
-                {/* Personal Information */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Thông tin cá nhân
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Form.Item
-                      name="firstName"
-                      label="Họ"
-                      rules={[{ required: true, message: "Vui lòng nhập họ!" }]}
-                    >
-                      <Input
-                        prefix={<UserOutlined className="text-gray-400" />}
-                        placeholder="Nhập họ"
-                        className="!rounded-xl"
-                        size="large"
-                      />
-                    </Form.Item>
+          {/* General */}
+          {tabsInfor === TabsInforConst.general ? (
+            <GeneralInfo {...propsGeneralInfo} />
+          ) : (
+            ""
+          )}
 
-                    <Form.Item
-                      name="lastName"
-                      label="Tên"
-                      rules={[
-                        { required: true, message: "Vui lòng nhập tên!" },
-                      ]}
-                    >
-                      <Input
-                        prefix={<UserOutlined className="text-gray-400" />}
-                        placeholder="Nhập tên"
-                        className="!rounded-xl"
-                        size="large"
-                      />
-                    </Form.Item>
-                  </div>
-
-                  <Form.Item
-                    name="email"
-                    label="Email"
-                    rules={[
-                      { required: true, message: "Vui lòng nhập email!" },
-                      { type: "email", message: "Email không hợp lệ!" },
-                    ]}
-                  >
-                    <Input
-                      prefix={<MailOutlined className="text-gray-400" />}
-                      placeholder="Email"
-                      className="!rounded-xl"
-                      size="large"
-                      disabled
-                    />
-                  </Form.Item>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Form.Item name="phone" label="Số điện thoại">
-                      <Input
-                        prefix={<PhoneOutlined className="text-gray-400" />}
-                        placeholder="Số điện thoại"
-                        className="!rounded-xl"
-                        size="large"
-                      />
-                    </Form.Item>
-
-                    <Form.Item name="gender" label="Giới tính">
-                      <Select
-                        placeholder="Chọn giới tính"
-                        className="!rounded-xl"
-                        size="large"
-                        options={optionGender}
-                      ></Select>
-                    </Form.Item>
-                  </div>
-
-                  <Form.Item name="birthDate" label="Ngày sinh">
-                    <DatePicker
-                      className="w-full !rounded-xl"
-                      size="large"
-                      format="DD/MM/YYYY"
-                      placeholder="Chọn ngày sinh"
-                    />
-                  </Form.Item>
-
-                  <Form.Item name="address" label="Địa điểm">
-                    <Input
-                      placeholder="Gò vắp..."
-                      className="!rounded-xl"
-                      size="large"
-                    />
-                  </Form.Item>
-                </div>
-
-                <Divider />
-
-                {/* Additional Information */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Thông tin bổ sung
-                  </h3>
-
-                  <Form.Item name="education" label="Học vấn">
-                    <Input
-                      placeholder="VD: Đại học, Cao đẳng..."
-                      className="!rounded-xl"
-                      size="large"
-                    />
-                  </Form.Item>
-
-                  <Form.Item name="websiteLink" label="Website/Link cá nhân">
-                    <Input
-                      prefix={<GlobalOutlined className="text-gray-400" />}
-                      placeholder="https://..."
-                      className="!rounded-xl"
-                      size="large"
-                    />
-                  </Form.Item>
-
-                  {user.role === "ROLE_USER" && (
-                    <Form.Item
-                      name="isFindJob"
-                      label="Đang tìm việc"
-                      valuePropName="checked"
-                    >
-                      <Switch
-                        checkedChildren="Có"
-                        unCheckedChildren="Không"
-                        className="!bg-gray-300 [&.ant-switch-checked]:!bg-green-500"
-                      />
-                    </Form.Item>
-                  )}
-                </div>
-
-                {/* Action Buttons */}
-                {editing && (
-                  <div className="flex gap-3 justify-end pt-4 border-t border-primary-100">
-                    <UIButton
-                      onClick={handleCancel}
-                      size="large"
-                      className="!rounded-xl"
-                    >
-                      Hủy
-                    </UIButton>
-                    <UIButton
-                      htmlType="submit"
-                      variantCustom="primary"
-                      className="!h-10"
-                      loading={submitting}
-                    >
-                      <SaveOutlined className="mr-1" />
-                      Lưu thay đổi
-                    </UIButton>
-                  </div>
-                )}
-              </Form>
-            </Card>
-          </motion.div>
+          {tabsInfor === TabsInforConst.skills ? (
+            <SkillProfile {...propsSkillsInfo} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </Container>
