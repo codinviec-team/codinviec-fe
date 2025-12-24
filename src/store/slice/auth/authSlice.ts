@@ -89,6 +89,28 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
+export const changeIsFindJob = createAsyncThunk(
+  "auth/changeisfindjob",
+  async (_, { rejectWithValue }) => {
+    try {
+      // thay đổi trạng thái findjob
+      await authService.changeIsFindJob();
+
+      // Gọi service để lấy thông tin user
+      return await authService.getProfile();
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+
+      // Nếu lỗi 401 token không hợp lệ logout
+      if (axiosError.response?.status === 401) {
+        cookieHelper.remove("access_token");
+      }
+
+      return rejectWithValue(axiosError);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,

@@ -77,4 +77,12 @@ export const authService = {
     }
     return res.data.data;
   },
+
+  async changeIsFindJob(): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>("/auth/change-find-job");
+    if (!res.data.data) {
+      throw new Error("Không thay đổi được trạng thái tìm việc");
+    }
+    return res.data.data;
+  },
 };

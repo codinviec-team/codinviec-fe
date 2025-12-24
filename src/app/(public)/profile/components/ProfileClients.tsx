@@ -301,11 +301,11 @@ export default function ProfileClients() {
                   {displayName}
                 </h2>
                 <p className="text-gray-500 text-sm mb-4">{user.email}</p>
-                {user.role && (
+                {user?.role?.roleName && (
                   <span className="inline-block px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
-                    {user.role === "ROLE_ADMIN"
+                    {user?.role?.roleName === "ROLE_ADMIN"
                       ? "Admin"
-                      : user.role === "ROLE_EMPLOYER"
+                      : user?.role?.roleName === "ROLE_EMPLOYER"
                       ? "Nhà tuyển dụng"
                       : "Ứng viên"}
                   </span>

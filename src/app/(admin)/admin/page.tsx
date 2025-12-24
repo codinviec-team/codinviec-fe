@@ -1,20 +1,21 @@
 "use client";
 
-import {motion} from "framer-motion";
-import {useAppSelector} from "@/hooks/hooks";
-import {RootState} from "@/store";
+import { useAppSelector } from "@/hooks/hooks";
+import { RootState } from "@/store";
 import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    EyeOutlined,
-    FallOutlined,
-    FileTextOutlined,
-    RiseOutlined,
-    TeamOutlined,
-    UserOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  EyeOutlined,
+  FallOutlined,
+  FileTextOutlined,
+  RiseOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import {Card, Col, Progress, Row, Statistic, Table, Tag} from "antd";
-import type {ColumnsType} from "antd/es/table";
+import { Card, Col, Progress, Row, Statistic, Table, Tag } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 // Sample data for recent activities
 const recentJobs = [
@@ -147,9 +148,7 @@ export default function AdminDashboardPage() {
                   </span>
                 }
                 value={1284}
-                prefix={
-                  <UserOutlined className="text-primary-600 text-2xl" />
-                }
+                prefix={<UserOutlined className="text-primary-600 text-2xl" />}
                 suffix={
                   <div className="flex items-center gap-1 text-xs text-green-600">
                     <RiseOutlined />
@@ -306,7 +305,11 @@ export default function AdminDashboardPage() {
                     <span className="text-gray-600">Admin</span>
                     <span className="font-medium text-red-600">44</span>
                   </div>
-                  <Progress percent={3} strokeColor="#ef4444" showInfo={false} />
+                  <Progress
+                    percent={3}
+                    strokeColor="#ef4444"
+                    showInfo={false}
+                  />
                 </div>
               </div>
             </Card>
@@ -351,4 +354,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
