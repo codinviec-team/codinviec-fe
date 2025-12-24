@@ -172,7 +172,7 @@ const GeneralInfo = ({
               />
             </Form.Item>
 
-            {user.role === "ROLE_USER" && (
+            {user?.role?.roleName === "ROLE_USER" && (
               <Form.Item
                 name="isFindJob"
                 label="Đang tìm việc"
