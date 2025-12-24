@@ -8,7 +8,7 @@ export const BlogService = {
   async getAllBlog(): Promise<BlogType[]> {
     const res = await api.get<IBaseResponse<BlogType[]>>("/blog");
     if (!res.data.data) {
-      throw new Error("Không lấy được category");
+      throw new Error("Không lấy được blog");
     }
     return res?.data?.data;
   },
@@ -23,7 +23,7 @@ export const BlogService = {
       }
     );
     if (!res.data.data) {
-      throw new Error("Không lấy được category");
+      throw new Error("Không lấy được blog");
     }
     return res?.data?.data;
   },

@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { PATHS } from "@/constants/paths";
 import ListCategory from "@/components/home/HomePage/Category/ListCategory";
-import { useAppSelector } from "@/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
 import { useLogout } from "@/hooks/auth/useLogout";
 import { IUser } from "@/types/auth/User";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MenuOutlined,
   CloseOutlined,
@@ -21,6 +21,7 @@ import MobileCategoryList from "@/components/home/HomePage/Category/MobileCatego
 import { motion, AnimatePresence } from "framer-motion";
 import { Switch } from "antd";
 import clsx from "clsx";
+import { changeIsFindJob } from "@/store/slice/auth/authSlice";
 
 const getUserDisplayName = (user: IUser | null): string => {
   if (!user) return "User";
@@ -39,8 +40,25 @@ export default function HeaderClient() {
   const { handleLogout } = useLogout();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileUserMenuOpen, setMobileUserMenuOpen] = useState(false);
+  const [statusIsFindJob, setStatusIsFindJob] = useState<boolean | undefined>(
+    user?.findJob || false
+  );
 
   const displayName = getUserDisplayName(user);
+  const dispatch = useAppDispatch();
+
+  const onChangeIsFindJob = async () => {
+    setStatusIsFindJob((prev) => !prev);
+    dispatch(changeIsFindJob());
+  };
+
+  useEffect(() => {
+    if (user) {
+      setStatusIsFindJob(user?.findJob);
+    }
+  }, [user?.findJob]);
+
+  console.log("user", user);
 
   return (
     <header className="bg-brand-gradient border-b border-primary-700 sticky top-0 z-50">
@@ -135,14 +153,18 @@ export default function HeaderClient() {
                       {user.email}
                     </p>
                   </motion.div>
-                  <motion.div className="px-3 py-2.5 mb-1 mx-1 flex gap-[6px] items-center cursor-pointer">
+                  <motion.div
+                    className="px-3 py-2.5 mb-1 mx-1 flex gap-[6px] items-center cursor-pointer"
+                    onClick={onChangeIsFindJob}
+                  >
                     <Switch
                       size="small"
+                      checked={statusIsFindJob}
+                      onChange={onChangeIsFindJob} // optional nhưng nên giữ
                       className={clsx(
                         "px-4 py-2 rounded",
-                        user?.findJob ? "" : "!bg-gray-400"
+                        statusIsFindJob ? "" : "!bg-gray-400"
                       )}
-                      defaultChecked
                     />
                     <p className="text-[14px]">Đang tìm việc</p>
                   </motion.div>
@@ -176,7 +198,7 @@ export default function HeaderClient() {
                   </motion.div>
 
                   {/* Admin Link - Chỉ hiển thị nếu user có role admin */}
-                  {user.role === "ADMIN" && (
+                  {user?.role?.roleName === "ADMIN" && (
                     <motion.div
                       initial={{ opacity: 0, x: -5 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -194,8 +216,8 @@ export default function HeaderClient() {
                     </motion.div>
                   )}
 
-                  {user.role === "HR" ||
-                    (user.role === "ADMIN" && (
+                  {user?.role?.roleName === "HR" ||
+                    (user?.role?.roleName === "ADMIN" && (
                       <motion.div
                         initial={{ opacity: 0, x: -5 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -218,7 +240,9 @@ export default function HeaderClient() {
                   <motion.div
                     initial={{ opacity: 0, x: -5 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: user.role === "ADMIN" ? 0.2 : 0.15 }}
+                    transition={{
+                      delay: user?.role?.roleName === "ADMIN" ? 0.2 : 0.15,
+                    }}
                   >
                     <button
                       onClick={handleLogout}
@@ -408,7 +432,7 @@ export default function HeaderClient() {
                 </Link>
 
                 {/* Admin Link - Chỉ hiển thị nếu user có role admin */}
-                {user && user.role === "ADMIN" && (
+                {user && user?.role?.roleName === "ADMIN" && (
                   <Link
                     href={PATHS.ADMIN}
                     onClick={() => setMobileUserMenuOpen(false)}
@@ -421,8 +445,8 @@ export default function HeaderClient() {
                   </Link>
                 )}
 
-                {(user && user.role === "HR") ||
-                  (user && user.role === "ADMIN" && (
+                {(user && user?.role?.roleName === "HR") ||
+                  (user && user?.role?.roleName === "ADMIN" && (
                     <Link
                       href={PATHS.HR}
                       onClick={() => setMobileUserMenuOpen(false)}

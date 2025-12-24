@@ -1,7 +1,6 @@
 import api from "@/interceptor/api";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { IBaseResponse } from "@/types/common/BaseResponse";
-import { BlogType } from "@/types/home/blog/BlogType";
 import { CompanyType } from "@/types/home/company/CompanyType";
 import { SearchCompanyType } from "./SearchCompanyType";
 

@@ -1,3 +1,5 @@
+import { RoleType } from "./Role";
+
 export interface IUser {
   id: string;
   email: string;
@@ -14,7 +16,38 @@ export interface IUser {
   groupSoftSkill?: string;
   companyId?: string;
   roleId?: string;
-  role?: string; // Role name (nếu BE trả về)
+  role?: RoleType; // Role name (nếu BE trả về)
+  block?: boolean;
   createdDate?: string;
   updatedDate?: string;
+}
+
+export interface SearchUserType {
+  pageNumber?: number;
+  pageSize?: number;
+  keyword?: string;
+  roleId?: string | null;
+  block?: boolean | null;
+}
+
+export interface BlockUserType {
+  userId: string;
+}
+
+export interface SaveUserType {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  gender: string;
+  education: string;
+  address: string;
+  websiteLink: string;
+  birthDate: string;
+  companyId: string;
+  roleId: string;
+}
+
+export interface DeleteUserType {
+  userId: string;
 }
