@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import GeneralInfo from "./GeneralInfo";
 import SkillProfile from "./SkillProfile";
 import TabProfile from "./TabProfile";
+import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
 
 export type FormPropsProfiles = {
   firstName: string;
@@ -137,7 +138,7 @@ export default function ProfileClients() {
       }
 
       setSubmitting(true);
-      const payload = {
+      const payload: UpdateProfileServiceType = {
         email: values?.email?.trim() || "",
         education: values?.education?.trim() || "",
         firstName: values?.firstName?.trim() || "",
@@ -146,9 +147,7 @@ export default function ProfileClients() {
         address: values?.address?.trim() || "",
         phone: values?.phone?.trim() || "",
         websiteLink: values?.websiteLink?.trim() || "",
-        birthDate: values?.birthDate
-          ? formatToLocalDateTime(values.birthDate)
-          : "",
+        birthDate: formatToLocalDateTime(values?.birthDate) || "",
       };
 
       const userUpdate = await authService.updateProfile(payload);
