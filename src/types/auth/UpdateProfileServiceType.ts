@@ -4,7 +4,7 @@ export type UpdateProfileServiceType = {
   email: string;
   phone: string;
   gender: string;
-  birthDate: Date;
+  birthDate: string;
   address: string;
   education: string;
   websiteLink: string;
