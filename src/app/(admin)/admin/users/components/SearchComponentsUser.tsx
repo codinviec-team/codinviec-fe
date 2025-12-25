@@ -1,6 +1,12 @@
 import { UIButton } from "@/components/ui/UIButton";
 import { RoleType } from "@/types/auth/Role";
-import { ReloadOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  LockOutlined,
+  ReloadOutlined,
+  SearchOutlined,
+  UnlockOutlined,
+} from "@ant-design/icons";
 import { Button, Input, Select, Tooltip } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import { motion } from "framer-motion";
@@ -21,6 +27,11 @@ type SearchComponentUserType = {
     option?: DefaultOptionType | DefaultOptionType[]
   ) => void;
   handleResetFilter: () => void;
+  selectedRowKeys: React.Key[];
+  handleSetSelectedRowKeys: (keys: React.Key[]) => void;
+  handleDeleteUsers: () => void;
+  handleBlockUsers: () => void;
+  handleUnblockUsers: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const STATUS_OPTION = [
@@ -37,6 +48,11 @@ const SearchComponentUser = ({
   filterStatus,
   handleStatusChange,
   handleResetFilter,
+  selectedRowKeys,
+  handleSetSelectedRowKeys,
+  handleDeleteUsers,
+  handleBlockUsers,
+  handleUnblockUsers,
 }: SearchComponentUserType) => {
   return (
     <motion.div
@@ -88,25 +104,42 @@ const SearchComponentUser = ({
           </Tooltip>
         </div>
       </div>
-      {/* Bulk Actions
       {selectedRowKeys.length > 0 && (
         <div className="mt-4 pt-4 border-t border-primary-100 flex items-center gap-4">
           <span className="text-sm text-gray-600">
             Đã chọn <strong>{selectedRowKeys.length}</strong> người dùng
           </span>
           <Button
-            danger
+            color="danger"
+            variant="solid"
             size="small"
             icon={<DeleteOutlined />}
-            // onClick={handleBulkDelete}
+            onClick={() => handleDeleteUsers?.()}
           >
             Xóa đã chọn
           </Button>
-          <Button size="small" onClick={() => setSelectedRowKeys([])}>
+          <Button
+            danger
+            size="small"
+            icon={<LockOutlined />}
+            onClick={() => handleBlockUsers?.()}
+          >
+            Khóa đã chọn
+          </Button>
+          <Button
+            color="blue"
+            variant="solid"
+            size="small"
+            icon={<UnlockOutlined />}
+            onClick={() => handleUnblockUsers?.()}
+          >
+            Mở khóa đã chọn
+          </Button>
+          <Button size="small" onClick={() => handleSetSelectedRowKeys?.([])}>
             Bỏ chọn
           </Button>
         </div>
-      )} */}
+      )}
     </motion.div>
   );
 };

@@ -30,6 +30,8 @@ export const login = createAsyncThunk(
       // Lưu access token vào cookie
       if (tokenData.accessToken) {
         cookieHelper.set("access_token", tokenData.accessToken);
+      } else {
+        cookieHelper.remove("access_token");
       }
 
       // Gọi checkAuth để lấy user info

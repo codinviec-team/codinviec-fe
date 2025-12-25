@@ -2,7 +2,6 @@ import { IUser } from "@/types/auth/User";
 import { formatToDDMMYYYY } from "@/utils/DateHelper";
 import {
   DeleteOutlined,
-  EditOutlined,
   EyeOutlined,
   LockOutlined,
   MailOutlined,
@@ -13,24 +12,32 @@ import {
 import { Avatar, Button, Dropdown, message, Tag } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
 
 type TableUserType = {
   dataUser: IUser[];
-  selectedRowKeys: any;
-  setSelectedRowKeys: any;
   loadingPage: boolean;
   handleToggleBlock: (user: IUser) => void;
   handleDeleteUser: (user: IUser) => void;
+  pageSize: number;
+  onChangePageNumber: (page: number, pageSize?: number) => void;
+  pageNumber: number;
+  handleOpenEdditUserInfor: (user: IUser) => void;
+  selectedRowKeys: React.Key[];
+  handleSetSelectedRowKeys: (keys: React.Key[]) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const TableUser = ({
   dataUser,
   selectedRowKeys,
-  setSelectedRowKeys,
+  handleSetSelectedRowKeys,
   loadingPage,
   handleToggleBlock,
   handleDeleteUser,
+  onChangePageNumber,
+  pageSize,
+  pageNumber,
+  handleOpenEdditUserInfor,
 }: TableUserType) => {
   const columns: ColumnsType<IUser> = [
     {
@@ -41,7 +48,7 @@ const TableUser = ({
         <div className="flex items-center gap-3 py-1">
           <Avatar
             size={42}
-            src={record?.avatar}
+            src={record?.avatar || null}
             icon={!record?.avatar && <UserOutlined />}
             className="bg-gradient-to-br from-primary-400 to-primary-600"
           />
@@ -148,13 +155,7 @@ const TableUser = ({
                 key: "view",
                 label: "Xem chi tiết",
                 icon: <EyeOutlined />,
-                onClick: () => message.info("Chức năng đang phát triển"),
-              },
-              {
-                key: "edit",
-                label: "Chỉnh sửa",
-                icon: <EditOutlined />,
-                onClick: () => message.info("Chức năng đang phát triển"),
+                onClick: () => handleOpenEdditUserInfor(record),
               },
               {
                 key: "email",
@@ -203,16 +204,18 @@ const TableUser = ({
       <Table
         columns={columns}
         dataSource={dataUser}
-        rowKey="id"
         loading={loadingPage}
+        rowKey="id"
         rowSelection={{
           selectedRowKeys,
-          onChange: setSelectedRowKeys,
+          onChange: handleSetSelectedRowKeys,
         }}
         pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
+          pageSize: pageSize,
+          current: pageNumber,
+          total: dataUser.length,
           showTotal: (total) => `Tổng ${total} người dùng`,
+          onChange: onChangePageNumber,
         }}
         scroll={{ x: 1000 }}
         className="[&_.ant-table-thead>tr>th]:!bg-primary-50 [&_.ant-table-thead>tr>th]:!text-gray-700 [&_.ant-table-thead>tr>th]:!font-semibold"

@@ -9,12 +9,15 @@ import { useQuery } from "@tanstack/react-query";
 import { SelectProps } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import HeaderUserAdmin from "./components/HeaderUserAdmin";
+import HeaderUserAdmin, {
+  UserEditFormValues,
+} from "./components/HeaderUserAdmin";
 import SearchComponentUser from "./components/SearchComponentsUser";
 import TableUser from "./components/TablesUser";
 import { alert } from "@/utils/notification";
 import CompanyServices from "@/services/home/companies/CompanyServices";
 import { CompanyType } from "@/types/home/company/CompanyType";
+import dayjs from "dayjs";
 
 const PageSizeDefault = 9;
 
@@ -27,7 +30,6 @@ export type GeneralUserType = {
 };
 
 export default function AdminUsersPage() {
-  const [loading, setLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filterRole, setFilterRole] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
@@ -40,7 +42,14 @@ export default function AdminUsersPage() {
     blocked: 0,
     admin: 0,
   });
+  const [openEditUser, setopenEditUser] = useState(false);
+  const [editUserInfo, setEditUserInfo] = useState<
+    (UserEditFormValues & { id: string }) | null
+  >(null);
+
   const [debouncedKeyword] = useDebounce(searchKeyword, 500);
+
+  console.log("selectedRowKeys", selectedRowKeys);
 
   const {
     data: dataUser,
@@ -92,57 +101,106 @@ export default function AdminUsersPage() {
             .length,
         };
       });
+      setSelectedRowKeys([]);
     }
   }, [dataUser]);
 
-  // const handleDelete = (id: string) => {
-  //   Modal.confirm({
-  //     title: "Xác nhận xóa",
-  //     icon: <ExclamationCircleOutlined className="text-red-500" />,
-  //     content: "Bạn có chắc chắn muốn xóa người dùng này?",
-  //     okText: "Xóa",
-  //     okType: "danger",
-  //     cancelText: "Hủy",
-  //     onOk: () => {
-  //       setUsers(users.filter((user) => user.id !== id));
-  //       message.success("Đã xóa người dùng!");
-  //     },
-  //   });
-  // };
+  // Xóa nhiều người dùng
+  const handleDeleteUsers = async () => {
+    const oke = await alert.confirm(
+      "Xác nhận xóa",
+      "Bạn có chắc chắn muốn xóa người dùng này?"
+    );
+    if (!oke) return;
 
-  // const handleBulkDelete = () => {
-  //   if (selectedRowKeys.length === 0) {
-  //     message.warning("Vui lòng chọn ít nhất một người dùng!");
-  //     return;
-  //   }
+    // Xử lý xóa người dùng với id
+    if (selectedRowKeys && selectedRowKeys?.length > 0) {
+      for (let index = 0; index < selectedRowKeys.length; index++) {
+        const userId = selectedRowKeys[index];
+        await UserService.deleteUser({ userId: userId as string });
+      }
+      alert.success("Đã xóa nhiều người dùng thành công!");
+    } else {
+      alert.warning("Không có người dùng nào được chọn!");
+    }
+    setSelectedRowKeys([]);
+    refetchUserData();
+  };
 
-  //   Modal.confirm({
-  //     title: "Xác nhận xóa",
-  //     icon: <ExclamationCircleOutlined className="text-red-500" />,
-  //     content: `Bạn có chắc chắn muốn xóa ${selectedRowKeys.length} người dùng đã chọn?`,
-  //     okText: "Xóa",
-  //     okType: "danger",
-  //     cancelText: "Hủy",
-  //     onOk: () => {
-  //       setUsers(users.filter((user) => !selectedRowKeys.includes(user.id)));
-  //       setSelectedRowKeys([]);
-  //       message.success(`Đã xóa ${selectedRowKeys.length} người dùng!`);
-  //     },
-  //   });
-  // };
+  // Khóa nhiều người dùng
+  const handleBlockUsers = async () => {
+    const oke = await alert.confirm(
+      "Xác nhận khóa",
+      "Bạn có chắc chắn muốn khóa người dùng này?"
+    );
+    if (!oke) return;
 
+    // Xử lý xóa người dùng với id
+    if (selectedRowKeys && selectedRowKeys?.length > 0) {
+      for (let index = 0; index < selectedRowKeys.length; index++) {
+        const userId = selectedRowKeys[index];
+        await UserService.blockUser({ userId: userId as string });
+      }
+      alert.success("Đã khóa nhiều người dùng thành công!");
+    } else {
+      alert.warning("Không có người dùng nào được chọn!");
+    }
+    setSelectedRowKeys([]);
+    refetchUserData();
+  };
+
+  // Mở Khóa nhiều người dùng
+  const handleUnblockUsers = async () => {
+    const oke = await alert.confirm(
+      "Xác nhận mở khóa",
+      "Bạn có chắc chắn muốn mở  khóa người dùng này?"
+    );
+    if (!oke) return;
+
+    // Xử lý xóa người dùng với id
+    if (selectedRowKeys && selectedRowKeys?.length > 0) {
+      for (let index = 0; index < selectedRowKeys.length; index++) {
+        const userId = selectedRowKeys[index];
+        await UserService.unblockUser({ userId: userId as string });
+      }
+      alert.success("Đã mở khóa nhiều người dùng thành công!");
+    } else {
+      alert.warning("Không có người dùng nào được chọn!");
+    }
+    setSelectedRowKeys([]);
+    refetchUserData();
+  };
+
+  // Handle open edit user modal
+  const handleOpenEditUser = (open: boolean) => {
+    setopenEditUser(open);
+  };
+
+  // HANDLE SEARCH CHANGE
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   };
 
+  // HANDLE ROLE CHANGE
   const handleRoleChange: SelectProps<string | null>["onChange"] = (value) => {
     setFilterRole(value);
   };
 
+  // HANDLE SET SELECTED ROW KEYS
+  const handleSetSelectedRowKeys = (keys: React.Key[]) => {
+    setSelectedRowKeys(keys);
+  };
+
+  // HANDLE STATUS CHANGE
   const handleStatusChange: SelectProps<string | null>["onChange"] = (
     value
   ) => {
     setFilterStatus(value);
+  };
+
+  //  HANDLE PAGE CHANGE
+  const onChangePageNumber = (page: number, pageSize?: number) => {
+    setPageNumber(page);
   };
 
   // RESET FILTER
@@ -166,9 +224,38 @@ export default function AdminUsersPage() {
     }
   };
 
+  // open modal Edit user info
+  const handleOpenEdditUserInfor = async (user: IUser) => {
+    if (user) {
+      setEditUserInfo({
+        id: user?.id || "",
+        email: user?.email || "",
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        phone: user?.phone || "",
+        gender: user?.gender || "",
+        birthDate: dayjs(user?.birthDate) || "",
+        education: user?.education || "",
+        address: user?.address || "",
+        websiteLink: user?.websiteLink || "",
+        companyId: user?.companyId || "",
+        roleId: user?.role?.id || "",
+      });
+      setopenEditUser(true);
+    }
+  };
+
+  const handleChangeEditUserInfo = (
+    userInfo: (UserEditFormValues & { id: string }) | null
+  ) => {
+    setEditUserInfo(userInfo);
+  };
+
   // XÓA USER
   const handleDeleteUser = async (user: IUser) => {
     if (user) {
+      const ok = await alert.warning("Xác nhận", "Bạn có chắc muốn xóa?");
+      if (!ok) return;
       const userDelete = await UserService.deleteUser({ userId: user?.id });
       if (userDelete?.id) {
         alert.success("Xóa người dùng thành công!");
@@ -180,21 +267,30 @@ export default function AdminUsersPage() {
   };
   const loadingPage = isLoadingUser && isLoadingRoles && isLoadingCompany;
 
-  const StatusCardProps = {
+  const HeaderUserProps = {
     generalUserInfo,
     dataCompany: dataCompany || [],
     dataRoles: dataRoles || [],
     loadingPage,
     refetchUserData,
+    handleOpenEditUser,
+    openEditUser,
+    handleOpenEdditUserInfor,
+    editUserInfo,
+    handleChangeEditUserInfo,
   };
 
   const TableProps = {
     dataUser: dataUser?.content || [],
-    selectedRowKeys,
-    setSelectedRowKeys,
     loadingPage,
     handleToggleBlock,
     handleDeleteUser,
+    pageSize: PageSizeDefault || 9,
+    onChangePageNumber,
+    pageNumber: pageNumber || 1,
+    handleOpenEdditUserInfor,
+    selectedRowKeys,
+    handleSetSelectedRowKeys,
   };
 
   const SearchUserProps = {
@@ -206,11 +302,16 @@ export default function AdminUsersPage() {
     filterStatus: filterStatus || null,
     handleStatusChange,
     handleResetFilter,
+    selectedRowKeys,
+    handleSetSelectedRowKeys,
+    handleDeleteUsers,
+    handleBlockUsers,
+    handleUnblockUsers,
   };
 
   return (
     <div className="space-y-6">
-      <HeaderUserAdmin {...StatusCardProps} />
+      <HeaderUserAdmin {...HeaderUserProps} />
 
       {/* Filters */}
       <SearchComponentUser {...SearchUserProps} />

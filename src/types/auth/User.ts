@@ -15,7 +15,6 @@ export interface IUser {
   findJob?: boolean;
   groupSoftSkill?: string;
   companyId?: string;
-  roleId?: string;
   role?: RoleType; // Role name (nếu BE trả về)
   block?: boolean;
   createdDate?: string;
@@ -44,7 +43,22 @@ export interface SaveUserType {
   address: string;
   websiteLink: string;
   birthDate: string;
-  companyId: string;
+  companyId: string | null;
+  roleId: string;
+}
+
+export interface UpdateUserType {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  gender: string;
+  education: string;
+  address: string;
+  websiteLink: string;
+  birthDate: string;
+  companyId: string | null;
   roleId: string;
 }
 
