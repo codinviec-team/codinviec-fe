@@ -5,6 +5,7 @@ import {
   IUser,
   SaveUserType,
   SearchUserType,
+  UpdateUserType,
 } from "@/types/auth/User";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { IBaseResponse } from "@/types/common/BaseResponse";
@@ -43,6 +44,17 @@ const UserService = {
 
   async saveUser(payload: SaveUserType): Promise<IUser> {
     const res = await api.post<IBaseResponse<IUser>>("/user", payload);
+    if (!res.data.data) {
+      throw new Error("Không lấy được user");
+    }
+    return res?.data?.data;
+  },
+
+  async updateUser(payload: UpdateUserType): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>(
+      `/user/${payload?.id}`,
+      payload
+    );
     if (!res.data.data) {
       throw new Error("Không lấy được user");
     }

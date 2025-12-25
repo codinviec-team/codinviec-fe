@@ -1,28 +1,17 @@
 "use client";
 import { UIButton } from "@/components/ui/UIButton";
-import { PlusOutlined } from "@ant-design/icons";
-import {
-  DatePicker,
-  Form,
-  FormProps,
-  Input,
-  message,
-  Modal,
-  Select,
-  Switch,
-} from "antd";
-import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { GeneralUserType } from "../page";
-import { PASSWORDREGEX } from "@/utils/pattermhelper";
-import { CompanyType } from "@/types/home/company/CompanyType";
-import { RoleType } from "@/types/auth/Role";
-import { rm } from "fs";
-import { Dayjs } from "dayjs";
-import { formatToLocalDateTime } from "@/utils/DateHelper";
 import UserService from "@/services/auth/UserServices";
+import { RoleType } from "@/types/auth/Role";
 import { SaveUserType } from "@/types/auth/User";
+import { CompanyType } from "@/types/home/company/CompanyType";
+import { formatToLocalDateTime } from "@/utils/DateHelper";
 import { alert } from "@/utils/notification";
+import { PlusOutlined } from "@ant-design/icons";
+import { DatePicker, Form, FormProps, Input, Modal, Select } from "antd";
+import { Dayjs } from "dayjs";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { GeneralUserType } from "../page";
 
 type HeaderUserAdminType = {
   generalUserInfo: GeneralUserType;
@@ -30,9 +19,15 @@ type HeaderUserAdminType = {
   dataRoles: RoleType[];
   loadingPage: boolean;
   refetchUserData: () => void;
+  handleOpenEditUser: (open: boolean) => void;
+  openEditUser: boolean;
+  editUserInfo: (UserEditFormValues & { id: string }) | null;
+  handleChangeEditUserInfo: (
+    userInfo: (UserEditFormValues & { id: string }) | null
+  ) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export interface UserEditFormValues {
+export type UserEditFormValues = {
   email: string;
   firstName: string;
   lastName: string;
@@ -44,7 +39,7 @@ export interface UserEditFormValues {
   websiteLink?: string;
   companyId: string;
   roleId: string;
-}
+};
 
 const HeaderUserAdmin = ({
   generalUserInfo,
@@ -52,18 +47,16 @@ const HeaderUserAdmin = ({
   dataRoles,
   loadingPage,
   refetchUserData,
+  handleOpenEditUser,
+  openEditUser,
+  editUserInfo,
+  handleChangeEditUserInfo,
 }: HeaderUserAdminType) => {
   const [form] = Form.useForm();
-  const [openEditUser, setopenEditUser] = useState(false);
-
-  const handleOpenEditUser = (open: boolean) => {
-    setopenEditUser(open);
-  };
 
   const onFinishUserEdit: FormProps<UserEditFormValues>["onFinish"] = async (
     values
   ) => {
-    console.log(values);
     const {
       email,
       firstName,
@@ -88,19 +81,47 @@ const HeaderUserAdmin = ({
       address: address || "",
       websiteLink: websiteLink || "",
       birthDate: formatToLocalDateTime(birthDate) || "",
-      companyId: companyId || "",
+      companyId: companyId || null,
       roleId: roleId || "",
     };
 
-    const userData = await UserService.saveUser(payload);
-    if (userData?.id) {
-      alert.success("Thêm user thành công!");
-      refetchUserData?.();
+    console.log("editUserInfo", editUserInfo);
+    if (!editUserInfo) {
+      // tạo mới user
+      console.log("payload tạo mới", payload);
+      const userData = await UserService.saveUser(payload);
+      if (userData?.id) {
+        alert.success("Thêm user thành công!");
+        refetchUserData?.();
+      } else {
+        alert.error("Thêm user thất bại!");
+      }
     } else {
-      alert.error("Thêm user thất bại!");
+      console.log("payload cập nhật", payload);
+
+      // cập nhật user
+      const userData = await UserService.updateUser({
+        ...payload,
+        id: editUserInfo?.id,
+      });
+      if (userData?.id) {
+        alert.success("Cập nhật user thành công!");
+        refetchUserData?.();
+      } else {
+        alert.error("Cập nhật user thất bại!");
+      }
+      handleChangeEditUserInfo(null);
     }
-    // setopenEditUser(false);
+    handleOpenEditUser?.(false);
   };
+
+  useEffect(() => {
+    if (editUserInfo && editUserInfo?.id) {
+      form.setFieldsValue({ ...editUserInfo });
+    } else {
+      form.resetFields();
+    }
+  }, [editUserInfo]);
 
   return (
     <>
@@ -167,6 +188,7 @@ const HeaderUserAdmin = ({
         open={openEditUser}
         onCancel={() => {
           handleOpenEditUser(false);
+          handleChangeEditUserInfo(null);
         }}
         onOk={() => form.submit()}
         confirmLoading={loadingPage}
@@ -181,7 +203,7 @@ const HeaderUserAdmin = ({
               { type: "email", message: "Email không hợp lệ" },
             ]}
           >
-            <Input placeholder="Nhập email" />
+            <Input placeholder="Nhập email" disabled={!!editUserInfo?.email} />
           </Form.Item>
 
           <div className="flex gap-[20px]">
@@ -242,21 +264,17 @@ const HeaderUserAdmin = ({
           </Form.Item>
 
           <div className="flex gap-[20px]">
-            <Form.Item
-              label="Công ty"
-              name="companyId"
-              rules={[
-                { required: true, message: "Company không được để trống" },
-              ]}
-              className="basis-1/2"
-            >
+            <Form.Item label="Công ty" name="companyId" className="basis-1/2">
               <Select
                 placeholder="Chọn công ty"
-                options={dataCompany.map((c) => ({
-                  ...c,
-                  label: c.name,
-                  value: c.id,
-                }))}
+                options={[
+                  { label: "— Không chọn —", value: "" },
+                  ...dataCompany.map((c) => ({
+                    ...c,
+                    label: c.name,
+                    value: c.id,
+                  })),
+                ]}
               />
             </Form.Item>
 

@@ -48,7 +48,7 @@ const SearchBar = ({
   };
   const formContent = (
     <Form
-      form={props.form}
+      form={props?.form}
       onFinish={handleSearch}
       className="flex flex-col md:flex-row gap-3"
       layout="vertical"
