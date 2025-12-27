@@ -1,5 +1,6 @@
 "use client";
 import {
+  DeleteOutlined,
   EditOutlined,
   MinusCircleOutlined,
   PlusOutlined,
@@ -9,6 +10,7 @@ import {
   Card,
   Divider,
   Form,
+  Input,
   Modal,
   Select,
   Space,
@@ -17,6 +19,7 @@ import {
 
 const { Text } = Typography;
 
+import TagSkill from "@/components/ui/TagSkill";
 import { UIButton } from "@/components/ui/UIButton";
 import AvailableSkillExperienceService from "@/services/common/AvailableSkillExperience";
 import GroupCoreSkillService from "@/services/common/GroupCoreSkillService";
@@ -39,6 +42,12 @@ export type propsSkillProfileType = {
   availableSkillData: AvailableSkillType[];
   experienceData: ExperienceType[];
   fetchingSkillUser: RefetchSkillUserType;
+  handleDeleteSkillByGroupCoreId: (groupCoreId: number) => Promise<void>;
+  softSkill: string | null;
+  openSoftSkill: boolean;
+  handleOpenSoftSkill: (open: boolean) => void;
+  handleChangeSoftSkill: (value: string) => void;
+  handleSubmitSoftSkill: (value: string) => Promise<void>;
 };
 
 type groupSkillType = {
@@ -68,9 +77,16 @@ const SkillProfile = ({
   availableSkillData,
   experienceData,
   fetchingSkillUser,
+  handleDeleteSkillByGroupCoreId,
+  softSkill,
+  openSoftSkill,
+  handleOpenSoftSkill,
+  handleChangeSoftSkill,
+  handleSubmitSoftSkill,
 }: propsSkillProfileType) => {
   const [open, setOpen] = useState(false);
-  const [form] = Form.useForm();
+  const [formCore] = Form.useForm();
+  const [formSoft] = Form.useForm();
 
   const [groups, setGroups] = useState<groupSkillType[]>([]);
   const changedRef = useRef<any>({});
@@ -113,7 +129,7 @@ const SkillProfile = ({
   //   add skill mới qua submit
   const handleSubmit = async () => {
     try {
-      await form.validateFields();
+      await formCore.validateFields();
       console.log("CHANGED ONLY:", changedRef.current);
 
       if (changedRef.current) {
@@ -259,14 +275,14 @@ const SkillProfile = ({
       }
 
       setOpen(false);
-      form.resetFields();
+      formCore.resetFields();
     } catch (_) {}
   };
 
   //   set giá trị mặc định
   useEffect(() => {
     if (open && indexEditGroup !== null && groups) {
-      form.setFieldsValue({
+      formCore.setFieldsValue({
         groupName: groups[indexEditGroup].groupCoreName,
         skills: groups[indexEditGroup].skills.map((s) => {
           return {
@@ -290,186 +306,285 @@ const SkillProfile = ({
   const onCancelModal = () => {
     onChangeModalOpen(false);
     changedRef.current = {};
-    form.resetFields();
+    formCore.resetFields();
+  };
+
+  const handleSubmitSoft = async (values: { softSkill: string }) => {
+    if (!user) return;
+    handleSubmitSoftSkill(values.softSkill || "");
+  };
+
+  const handleCancelSoft = () => {
+    handleOpenSoftSkill(false);
+    formSoft.resetFields();
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, delay: 0.2 }}
-      className="lg:col-span-2"
-    >
-      <Card className="border border-primary-100 rounded-2xl">
-        <p>Quản lý kỹ năng của bạn tại đây</p>
-        <UIButton
-          onClick={() => {
-            onChangeModalOpen(true);
-            onChangeIndexEditGroup(null);
-          }}
-          className="!my-[10px] "
-          variantCustom="primarySmall"
-        >
-          Thêm kỹ năng
-        </UIButton>
-        {groups.length === 0 && <Text type="secondary">Chưa có kỹ năng</Text>}
-
-        {groups.map((g, index) => (
-          <div key={g.groupCoreId} className="relative mb-[16px]">
-            <Text strong style={{ fontSize: 16 }}>
-              {g.groupCoreName}
-            </Text>
-            <Divider className="!my-[6px]" />
-            {g.skills?.map((s) => (
-              <div key={s.skillId} style={{ marginBottom: 6 }}>
-                • {s.skillName} — {s.experienceName} kinh nghiệm
-              </div>
-            ))}
-            <motion.div
-              className=" h-[32px] bg-primary w-[32px] absolute right-0 top-1/2 -translate-y-1/2 flex justify-center items-center rounded-full cursor-pointer"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.1 }}
-              whileHover={{
-                opacity: 0.8,
-              }}
-              onClick={() => {
-                onChangeIndexEditGroup(index);
-                onChangeModalOpen(true);
-              }}
-            >
-              <EditOutlined className="!text-[14px] !text-white" />
-            </motion.div>
-          </div>
-        ))}
-        {/* ==== MODAL ==== */}
-        <Modal
-          title="Thêm nhóm kỹ năng"
-          open={open}
-          onOk={handleSubmit}
-          onCancel={() => onCancelModal()}
-          okText="Lưu"
-          cancelText="Hủy"
-        >
-          <Form
-            form={form}
-            layout="vertical"
-            onValuesChange={(changed, all) => {
-              changedRef.current = {
-                ...changedRef.current,
-                ...all,
-              };
+    <>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="lg:col-span-2"
+      >
+        <Card className="border border-primary-100 rounded-2xl">
+          <p>Quản lý kỹ năng làm việc của bạn tại đây</p>
+          <UIButton
+            onClick={() => {
+              onChangeModalOpen(true);
+              onChangeIndexEditGroup(null);
             }}
+            className="!my-[10px] "
+            variantCustom="primarySmall"
           >
-            {/* Group Name */}
-            <Form.Item
-              label="Tên nhóm"
-              name="groupName"
-              rules={[{ required: true, message: "Nhập tên nhóm" }]}
-            >
-              <input
-                className="ant-input"
-                placeholder="Ví dụ: Backend, Frontend..."
-              />
-            </Form.Item>
+            Thêm kỹ năng
+          </UIButton>
+          {groups.length === 0 && <Text type="secondary">Chưa có kỹ năng</Text>}
 
-            {/* Skills */}
-            <Form.List
-              name="skills"
-              rules={[
-                {
-                  validator: async (_, value) => {
-                    if (!value || value.length === 0) {
-                      return Promise.reject(
-                        new Error("Phải thêm ít nhất 1 skill")
-                      );
-                    }
+          {groups.map((g, index) => (
+            <div key={g.groupCoreId} className="relative mb-[16px]">
+              <Text strong style={{ fontSize: 16 }}>
+                {g.groupCoreName}
+              </Text>
+              <Divider className="!my-[6px]" />
+              {g.skills?.map((s) => (
+                <TagSkill
+                  key={s?.skillId}
+                  skillName={s.skillName}
+                  experienceName={s.experienceName}
+                />
+              ))}
+              <motion.div
+                className=" h-[25px] bg-primary w-[25px] absolute right-[30px] top-1/2 -translate-y-1/2 flex justify-center items-center rounded-full cursor-pointer"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.1 }}
+                whileHover={{
+                  opacity: 0.8,
+                }}
+                onClick={() => {
+                  onChangeIndexEditGroup(index);
+                  onChangeModalOpen(true);
+                }}
+              >
+                <EditOutlined className="!text-[12px] !text-white" />
+              </motion.div>
+              <motion.div
+                className=" h-[25px] bg-red-500  w-[25px] absolute right-0 top-1/2 -translate-y-1/2 flex justify-center items-center rounded-full cursor-pointer"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.1 }}
+                whileHover={{
+                  opacity: 0.8,
+                }}
+                onClick={() => {
+                  handleDeleteSkillByGroupCoreId(g.groupCoreId);
+                }}
+              >
+                <DeleteOutlined className="!text-[12px] !text-white" />
+              </motion.div>
+            </div>
+          ))}
+          {/* ==== MODAL ==== */}
+          <Modal
+            title="Thêm nhóm kỹ năng"
+            open={open}
+            onOk={handleSubmit}
+            onCancel={() => onCancelModal()}
+            okText="Lưu"
+            cancelText="Hủy"
+          >
+            <Form
+              form={formCore}
+              layout="vertical"
+              onValuesChange={(changed, all) => {
+                changedRef.current = {
+                  ...changedRef.current,
+                  ...all,
+                };
+              }}
+            >
+              {/* Group Name */}
+              <Form.Item
+                label="Tên nhóm"
+                name="groupName"
+                rules={[{ required: true, message: "Nhập tên nhóm" }]}
+              >
+                <input
+                  className="ant-input"
+                  placeholder="Ví dụ: Backend, Frontend..."
+                />
+              </Form.Item>
+
+              {/* Skills */}
+              <Form.List
+                name="skills"
+                rules={[
+                  {
+                    validator: async (_, value) => {
+                      if (!value || value.length === 0) {
+                        return Promise.reject(
+                          new Error("Phải thêm ít nhất 1 skill")
+                        );
+                      }
+                    },
                   },
-                },
-              ]}
+                ]}
+              >
+                {(fields, { add, remove }, { errors }) => (
+                  <>
+                    {fields.map((field) => (
+                      <Space
+                        key={field.key}
+                        align="baseline"
+                        style={{ display: "flex", marginBottom: 10 }}
+                      >
+                        {/* id */}
+                        <Form.Item name={[field.name, "id"]} hidden>
+                          <input />
+                        </Form.Item>
+
+                        {/* Skill */}
+                        <Form.Item
+                          name={[field.name, "skill"]}
+                          rules={[{ required: true, message: "Chọn skill" }]}
+                        >
+                          <Select
+                            labelInValue
+                            placeholder="Chọn kỹ năng"
+                            style={{ width: 200 }}
+                            options={availableSkillData?.map((s) => ({
+                              ...s,
+                              value: s.id,
+                              label: s.name,
+                            }))}
+                          />
+                        </Form.Item>
+
+                        {/* Years */}
+                        <Form.Item
+                          name={[field.name, "years"]}
+                          rules={[
+                            { required: true, message: "Chọn năm kinh nghiệm" },
+                          ]}
+                        >
+                          <Select
+                            labelInValue
+                            placeholder="Năm KN"
+                            style={{ width: 140 }}
+                            options={experienceData?.map((s) => ({
+                              ...s,
+                              value: s.id,
+                              label: s.name,
+                            }))}
+                          />
+                        </Form.Item>
+
+                        <MinusCircleOutlined
+                          onClick={() => {
+                            const values = formCore.getFieldValue("skills");
+                            const item = values[field.name];
+
+                            if (item?.id) {
+                              removedSkillIdsRef.current.push(item.id);
+                            }
+
+                            remove(field.name);
+                          }}
+                        />
+                      </Space>
+                    ))}
+
+                    <Form.Item>
+                      <Button
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        Thêm skill
+                      </Button>
+                      <Form.ErrorList errors={errors} />
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
+            </Form>
+          </Modal>
+        </Card>
+        <Card className="border border-primary-100 rounded-2xl !mt-[20px]">
+          <Typography.Title level={5} style={{ marginBottom: 4 }}>
+            Kỹ năng mềm của bạn
+          </Typography.Title>
+          {!softSkill && (
+            <Button
+              type="primary"
+              className="!mt-[10px]"
+              onClick={() => handleOpenSoftSkill(true)}
             >
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map((field) => (
-                    <Space
-                      key={field.key}
-                      align="baseline"
-                      style={{ display: "flex", marginBottom: 10 }}
-                    >
-                      {/* id */}
-                      <Form.Item name={[field.name, "id"]} hidden>
-                        <input />
-                      </Form.Item>
+              Thêm kỹ năng mềm
+            </Button>
+          )}
 
-                      {/* Skill */}
-                      <Form.Item
-                        name={[field.name, "skill"]}
-                        rules={[{ required: true, message: "Chọn skill" }]}
-                      >
-                        <Select
-                          labelInValue
-                          placeholder="Chọn kỹ năng"
-                          style={{ width: 200 }}
-                          options={availableSkillData?.map((s) => ({
-                            ...s,
-                            value: s.id,
-                            label: s.name,
-                          }))}
-                        />
-                      </Form.Item>
+          {softSkill && (
+            <div style={{ position: "relative" }}>
+              <Typography.Paragraph
+                style={{
+                  background: "#f5f5f5",
+                  padding: "12px 14px",
+                  borderRadius: 8,
+                  border: "1px solid #e6e6e6",
+                  fontSize: 14,
+                }}
+              >
+                {softSkill}
+              </Typography.Paragraph>
 
-                      {/* Years */}
-                      <Form.Item
-                        name={[field.name, "years"]}
-                        rules={[
-                          { required: true, message: "Chọn năm kinh nghiệm" },
-                        ]}
-                      >
-                        <Select
-                          labelInValue
-                          placeholder="Năm KN"
-                          style={{ width: 140 }}
-                          options={experienceData?.map((s) => ({
-                            ...s,
-                            value: s.id,
-                            label: s.name,
-                          }))}
-                        />
-                      </Form.Item>
+              <Button
+                icon={<EditOutlined />}
+                type="text"
+                onClick={() => handleOpenSoftSkill(true)}
+                style={{ position: "absolute", right: 0, top: 0 }}
+              >
+                Sửa
+              </Button>
+            </div>
+          )}
 
-                      <MinusCircleOutlined
-                        onClick={() => {
-                          const values = form.getFieldValue("skills");
-                          const item = values[field.name];
-
-                          if (item?.id) {
-                            removedSkillIdsRef.current.push(item.id);
-                          }
-
-                          remove(field.name);
-                        }}
-                      />
-                    </Space>
-                  ))}
-
-                  <Form.Item>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      Thêm skill
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form>
-        </Modal>
-      </Card>
-    </motion.div>
+          {/* MODAL */}
+          <Modal
+            title={softSkill ? "Sửa kỹ năng mềm" : "Thêm kỹ năng mềm"}
+            open={openSoftSkill}
+            onOk={() => formSoft.submit()}
+            onCancel={() => {
+              handleCancelSoft();
+            }}
+            okText="Lưu"
+            cancelText="Hủy"
+          >
+            <Form
+              layout="vertical"
+              form={formSoft}
+              onFinish={(values) => handleSubmitSoft(values)}
+              initialValues={{
+                softSkill: softSkill || "",
+              }}
+            >
+              <Form.Item
+                label="Kỹ năng mềm"
+                name="softSkill"
+                rules={[{ required: true, message: "Nhập kỹ năng mềm" }]}
+              >
+                <Input.TextArea
+                  placeholder="Ví dụ: Kỹ năng giao tiếp, làm việc nhóm, chịu áp lực tốt..."
+                  autoSize={{ minRows: 3, maxRows: 6 }}
+                />
+              </Form.Item>
+            </Form>
+          </Modal>
+        </Card>
+      </motion.div>
+    </>
   );
 };
 export default SkillProfile;

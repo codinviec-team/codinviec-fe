@@ -1,6 +1,7 @@
 import api from "@/interceptor/api";
 import {
   AvailableSkillExperienceType,
+  deleteAvailableSkillExperienceByGroupCoreIdType,
   DeleteAvailableSkillExperienceType,
   SaveAvailableSkillExperienceType,
   UpdateAvailableSkillExperienceType,
@@ -51,6 +52,21 @@ const AvailableSkillExperienceService = {
   ): Promise<AvailableSkillExperienceType> {
     const res = await api.delete<IBaseResponse<AvailableSkillExperienceType>>(
       `/available-skill-experience/${payload.availableSkillExperienceId}`
+    );
+    if (!res.data.data) {
+      throw new Error("Xóa skill user thất bại");
+    }
+    return res?.data?.data;
+  },
+
+  async deleteAvailableSkillExperienceByGroupCoreId(
+    payload: deleteAvailableSkillExperienceByGroupCoreIdType
+  ): Promise<AvailableSkillExperienceType[]> {
+    const res = await api.delete<IBaseResponse<AvailableSkillExperienceType[]>>(
+      `/available-skill-experience/group-core-skill`,
+      {
+        data: payload,
+      }
     );
     if (!res.data.data) {
       throw new Error("Xóa skill user thất bại");

@@ -65,3 +65,7 @@ export interface UpdateUserType {
 export interface DeleteUserType {
   userId: string;
 }
+
+export interface changeSoftSkillType {
+  softSkill: string | null;
+}

@@ -56,6 +56,8 @@ export default function ProfileClients() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [tabsInfor, setTabsInfor] = useState<string>(TabsInforConst.general);
+  const [softSkill, setSoftSkill] = useState<string | null>(null);
+  const [openSoftSkill, setOpenSoftSkill] = useState(false);
 
   // CALL API SKILL CỦA USER
   const {
@@ -93,6 +95,7 @@ export default function ProfileClients() {
     }
   }, [loading, isAuthenticated, router]);
 
+  // set form mặc định
   useEffect(() => {
     if (user) {
       form.setFieldsValue({
@@ -109,6 +112,12 @@ export default function ProfileClients() {
       });
     }
   }, [user, form]);
+
+  useEffect(() => {
+    if (user && user.groupSoftSkill) {
+      setSoftSkill(user.groupSoftSkill || null);
+    }
+  }, [user]);
 
   const handleSubmit = async (values: FormPropsProfiles) => {
     try {
@@ -200,6 +209,55 @@ export default function ProfileClients() {
     }
   };
 
+  const handleDeleteSkillByGroupCoreId = async (groupCoreId: number) => {
+    if (!user || !groupCoreId) return;
+    const oke = await alert.warning(
+      "Bạn có chắc chắn muốn xóa nhóm kỹ năng này không?"
+    );
+    if (!oke) return;
+
+    const payload = {
+      groupCoreId: groupCoreId,
+      userId: user.id,
+    };
+
+    const res =
+      await AvailableSkillExperienceService.deleteAvailableSkillExperienceByGroupCoreId(
+        payload
+      );
+    console.log("res", res);
+    if (res) {
+      alert.success("Xóa kỹ năng thành công!");
+      fetchingSkillUser();
+    } else {
+      alert.error("Xóa kỹ năng thất bại!");
+    }
+  };
+
+  const handleOpenSoftSkill = (open: boolean) => {
+    setOpenSoftSkill(open);
+  };
+
+  const handleChangeSoftSkill = (value: string) => {
+    setSoftSkill(value);
+  };
+
+  const handleSubmitSoftSkill = async (value: string) => {
+    if (!user) return;
+    const payload = {
+      softSkill: value.trim() || null,
+    };
+    setSoftSkill(payload.softSkill?.trim() || null);
+    const res = await authService.changeSoftSkill(payload);
+    if (res) {
+      alert.success("Cập nhật kỹ năng mềm thành công!");
+      await dispatch(checkAuth()).unwrap();
+      handleOpenSoftSkill(false);
+    } else {
+      alert.error("Cập nhật kỹ năng mềm thất bại!");
+    }
+  };
+
   if (!isAuthenticated || !user) {
     return null;
   }
@@ -207,6 +265,15 @@ export default function ProfileClients() {
     user.firstName && user.lastName
       ? `${user.firstName} ${user.lastName}`
       : user.firstName || user.email?.split("@")[0] || "User";
+
+  // Change Tabs
+  const onChangeTabs = (tabsStatus: string) => {
+    setTabsInfor(tabsStatus);
+    setEditing(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // ===================== PROPS AREA =====================
 
   const propsGeneralInfo = {
     user: user || [],
@@ -224,12 +291,12 @@ export default function ProfileClients() {
     availableSkillData: availableSkillData || [],
     experienceData: experienceData || [],
     fetchingSkillUser,
-  };
-
-  const onChangeTabs = (tabsStatus: string) => {
-    setTabsInfor(tabsStatus);
-    setEditing(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    handleDeleteSkillByGroupCoreId,
+    softSkill,
+    openSoftSkill,
+    handleOpenSoftSkill,
+    handleChangeSoftSkill,
+    handleSubmitSoftSkill,
   };
 
   return (
