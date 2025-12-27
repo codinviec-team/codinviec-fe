@@ -58,8 +58,6 @@ export default function HeaderClient() {
     }
   }, [user?.findJob]);
 
-  console.log("user", user);
-
   return (
     <header className="bg-brand-gradient border-b border-primary-700 sticky top-0 z-50">
       <nav className="max-w px-12 mx-auto flex items-center justify-between py-4">

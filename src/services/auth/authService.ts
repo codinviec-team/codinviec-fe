@@ -3,7 +3,7 @@ import { ILogin } from "@/types/auth/Login";
 import { IRegister, RegisterType } from "@/types/auth/Register";
 import { IToken } from "@/types/auth/Token";
 import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
-import { IUser } from "@/types/auth/User";
+import { changeSoftSkillType, IUser } from "@/types/auth/User";
 import { IBaseResponse } from "@/types/common/BaseResponse";
 import axios from "axios";
 
@@ -82,6 +82,19 @@ export const authService = {
     const res = await api.put<IBaseResponse<IUser>>("/auth/change-find-job");
     if (!res.data.data) {
       throw new Error("Không thay đổi được trạng thái tìm việc");
+    }
+    return res.data.data;
+  },
+
+  async changeSoftSkill(payload: changeSoftSkillType): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>(
+      "/auth/profile/soft-skill",
+      {
+        softSkill: payload.softSkill,
+      }
+    );
+    if (!res.data.data) {
+      throw new Error("Không thay đổi được soft skill");
     }
     return res.data.data;
   },

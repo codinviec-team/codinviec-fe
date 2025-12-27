@@ -27,3 +27,8 @@ export type SaveAvailableSkillExperienceType = {
 export type DeleteAvailableSkillExperienceType = {
   availableSkillExperienceId: number;
 };
+
+export type deleteAvailableSkillExperienceByGroupCoreIdType = {
+  groupCoreId: number;
+  userId: string;
+};
