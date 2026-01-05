@@ -1,5 +1,6 @@
 "use client";
 import { UIButton } from "@/components/ui/UIButton";
+import { ProvinceOption } from "@/hooks/Common/location/useLocation";
 import { EnvironmentOutlined, SearchOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input, Select } from "antd";
 import clsx from "clsx";
@@ -8,12 +9,13 @@ import React from "react";
 
 type SearchBarProps = FormProps & {
   showLocation?: boolean;
-  locations?: Array<{ value: string; label: string }>;
+  locations?: any;
   placeholder?: string;
   locationPlaceholder?: string;
   withBackground?: boolean;
   defaultValuesSearch?: string;
   onKeywordChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChangeLocation?: (province: ProvinceOption | undefined) => void;
 };
 
 export type SearchFormFields = {
@@ -21,23 +23,16 @@ export type SearchFormFields = {
   location?: string;
 };
 
-const defaultLocations = [
-  { value: "all", label: "Tất cả thành phố" },
-  { value: "hanoi", label: "Hà Nội" },
-  { value: "hcm", label: "Hồ Chí Minh" },
-  { value: "danang", label: "Đà Nẵng" },
-  { value: "other", label: "Khác" },
-];
-
 const SearchBar = ({
   className,
   showLocation = true,
-  locations = defaultLocations,
+  locations = [],
   placeholder = "Nhập từ khóa, vị trí, công ty...",
   locationPlaceholder = "Địa điểm",
   withBackground = false,
   defaultValuesSearch = "",
   onKeywordChange,
+  onChangeLocation,
   onFinish,
   ...props
 }: SearchBarProps) => {
@@ -64,7 +59,11 @@ const SearchBar = ({
           <Select
             size="large"
             placeholder={locationPlaceholder}
-            options={locations}
+            options={[{ value: "all", label: "Tất cả địa điểm" }, ...locations]}
+            onChange={(value, option) => {
+              onChangeLocation?.(option);
+              console.log("value search", value);
+            }}
             suffixIcon={<EnvironmentOutlined className="text-primary-400" />}
             className="!h-[52px] w-full [&_.ant-select-selector]:!h-[52px] [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-primary-200 [&_.ant-select-selection-item]:!leading-[52px]"
           />

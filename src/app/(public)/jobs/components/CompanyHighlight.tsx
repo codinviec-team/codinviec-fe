@@ -21,7 +21,7 @@ const featuredCompany = {
 export default function CompanyHighlight() {
   return (
     <section className="bg-white py-6 border-b border-primary-100">
-      <div className="container mx-auto px-6 lg:px-12">
+      <div className="container mx-auto  px-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Company Spotlight Ad Card */}
           <motion.div
@@ -120,4 +120,3 @@ export default function CompanyHighlight() {
     </section>
   );
 }
-

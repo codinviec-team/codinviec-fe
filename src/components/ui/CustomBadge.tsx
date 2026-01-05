@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 type badgePropsType = React.HTMLAttributes<HTMLSpanElement> & BadgeType;
 
 const CustomBadge = ({ variant = "hot" }: badgePropsType) => {
+  if (!variant) return null;
   switch (variant) {
     case "hot":
       return (
