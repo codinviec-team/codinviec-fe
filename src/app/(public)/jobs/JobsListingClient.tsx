@@ -1,19 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Button } from "antd";
-import {
-  FilterOutlined,
-} from "@ant-design/icons";
+import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
 import Container from "@/components/ui/Container";
-import FilterModal from "./components/FilterModal";
-import JobListCard from "./components/JobListCard";
-import JobDetail from "./components/JobDetail";
-import CompanyHighlight from "./components/CompanyHighlight";
 import PaginationComponent from "@/components/ui/Pagination";
 import SearchBar from "@/components/ui/SearchBar";
-import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
+import JobServices from "@/services/home/job/JobServices";
+import { BasePageResponse } from "@/types/common/BasePageResponse";
+import { JobType } from "@/types/home/job/JobType";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "antd";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import CompanyHighlight from "./components/CompanyHighlight";
+import FilterModal from "./components/FilterModal";
+import JobDetail from "./components/JobDetail";
+import JobListCard from "./components/JobListCard";
+import { FilterOutlined, ReloadOutlined } from "@ant-design/icons";
+import DropdownButtonCustomer from "@/components/ui/CheckboxDropdown";
+import CheckboxDropdown from "@/components/ui/CheckboxDropdown";
+import SalarySliderDropdown from "@/components/ui/SalarySliderDropdown ";
+import { ProvinceType } from "@/types/common/ProvinceType";
+import ProvinceService from "@/services/common/ProvinceService";
+import useLocation from "@/hooks/Common/location/useLocation";
+import LevelJobService from "@/services/common/LevelJobService";
+import { JobLevelType } from "@/types/common/JobLevelType";
+import EmploymentTypeService from "@/services/common/EmploymentTypeService";
+import { EmploymentTypeType } from "@/types/common/EmploymentType";
+import { IndustryType } from "@/types/common/IndustryType";
+import IndustryService from "@/services/common/IndustryService";
+import { useDebounce } from "use-debounce";
+import { UIButton } from "@/components/ui/UIButton";
 
 // Demo data - tương tự itviec
 const demoJobs: Job[] = [
@@ -146,101 +162,155 @@ const demoJobs: Job[] = [
   },
 ];
 
+const LEVEL_OPTIONS = ["Intern", "Fresher", "Junior", "Senior", "Leader"];
 
+const WORKING_MODEL_OPTIONS = ["Onsite", "Remote", "Hybrid"];
+
+const SALARY_OPTIONS = [
+  "Dưới 10 triệu",
+  "10 – 20 triệu",
+  "20 – 30 triệu",
+  "Trên 30 triệu",
+];
+
+const DOMAIN_OPTIONS = ["Backend", "Frontend", "Fullstack", "Mobile", "DevOps"];
+
+const SALARY_MIN = 0;
+const SALARY_MAX = 100000;
+const pageSizeDefault = 9;
 export default function JobsListingClient() {
+  // ======= GENERAL =======
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("newest");
   const [showFilterModal, setShowFilterModal] = useState(false);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedJob, setSelectedJob] = useState<JobType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
-
-  // Filter và sort jobs (demo logic)
-  const filteredJobs = demoJobs.filter((job) => {
-    if (searchKeyword && !job.title.toLowerCase().includes(searchKeyword.toLowerCase()) && 
-        !job.company.toLowerCase().includes(searchKeyword.toLowerCase())) {
-      return false;
-    }
-    return !(selectedLocation !== "all" && job.location !== selectedLocation);
-
+  const [filters, setFilters] = useState({
+    level: [] as string[],
+    workingModel: [] as string[],
+    domain: [] as string[],
+    salaryRange: [SALARY_MIN, SALARY_MAX] as [number, number],
   });
 
-  const sortedJobs = [...filteredJobs].sort((a, b) => {
-    if (sortBy === "newest") return 0; // Giữ nguyên thứ tự
-    if (sortBy === "salary_desc") {
-      const aSalary = parseInt(a.salary.split(" - ")[0]);
-      const bSalary = parseInt(b.salary.split(" - ")[0]);
-      return bSalary - aSalary;
-    }
-    if (sortBy === "salary_asc") {
-      const aSalary = parseInt(a.salary.split(" - ")[0]);
-      const bSalary = parseInt(b.salary.split(" - ")[0]);
-      return aSalary - bSalary;
-    }
-    return 0;
+  // useDebounce
+  const debouncedFilters = useDebounce(filters, 500);
+  // ======= API CALL =======
+
+  // location
+  const { dataLocation, provinceData, handleProvinceChange } = useLocation();
+
+  // job
+  const { data: dataJob, isLoading: isLoadingJob } = useQuery<
+    BasePageResponse<JobType>,
+    Error
+  >({
+    queryKey: [
+      "job",
+      currentPage,
+      searchKeyword,
+      provinceData?.name,
+      debouncedFilters,
+    ],
+    queryFn: () => {
+      return JobServices.getAllJobFilter({
+        keyword: searchKeyword.trim() || "",
+        pageSize: pageSizeDefault || 9,
+        pageNumber: currentPage || 1,
+        provinceName: provinceData?.name || "",
+        industryNames: filters?.domain || [],
+        jobLevelNames: filters?.level || [],
+        employmentTypeNames: filters?.workingModel || [],
+        salaryMin: filters?.salaryRange ? filters.salaryRange[0] : 0,
+        salaryMax: filters?.salaryRange ? filters.salaryRange[1] : 100000,
+      });
+    },
   });
 
-  const paginatedJobs = sortedJobs.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  // level
+  const { data: dataLevelJob, isLoading: isLoadingLevelJob } = useQuery<
+    JobLevelType[],
+    Error
+  >({
+    queryKey: ["level-job"],
+    queryFn: () => {
+      return LevelJobService.getAllLevelJob();
+    },
+  });
+
+  // working model
+  const { data: dataEmploymentType, isLoading: isLoadingEmploymentType } =
+    useQuery<EmploymentTypeType[], Error>({
+      queryKey: ["employment-type"],
+      queryFn: () => {
+        return EmploymentTypeService.getAllEmploymentType();
+      },
+    });
+
+  // industry
+  const { data: dataIndustry, isLoading: isLoadingIndustry } = useQuery<
+    IndustryType[],
+    Error
+  >({
+    queryKey: ["industry"],
+    queryFn: () => {
+      return IndustryService.getAllIndustry();
+    },
+  });
+
+  // ====== CONSOLE LOG & DATA PROCESSING =======
+  // console.log("dataIndustry", dataIndustry);
+  // console.log("dataEmploymentType", dataEmploymentType);
+  // console.log("dataLevelJob", dataLevelJob);
+  // console.log("object", dataJob);
+  // console.log("filters", filters);
+  // console.log("dataLo", dataLocation);
 
   // Tự động select job đầu tiên khi load hoặc khi paginatedJobs thay đổi
   useEffect(() => {
-    if (paginatedJobs.length > 0) {
-      if (!selectedJob) {
-        // Nếu chưa có job nào được chọn, chọn job đầu tiên
-        setSelectedJob(paginatedJobs[0]);
-      } else {
-        // Kiểm tra xem selectedJob có còn trong paginatedJobs không
-        const isJobInCurrentPage = paginatedJobs.some(job => job.id === selectedJob.id);
-        if (!isJobInCurrentPage) {
-          // Nếu job đã chọn không còn trong trang hiện tại, chọn job đầu tiên
-          setSelectedJob(paginatedJobs[0]);
-        }
-      }
+    if (dataJob?.content && dataJob.content.length > 0) {
+      setSelectedJob(dataJob.content[0]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginatedJobs]);
+  }, [dataJob]);
 
   const handleReset = () => {
     setSearchKeyword("");
-    setSelectedLocation("all");
-    setSortBy("newest");
+    setFilters((prev) => {
+      return {
+        level: [] as string[],
+        workingModel: [] as string[],
+        domain: [] as string[],
+        salaryRange: [SALARY_MIN, SALARY_MAX] as [number, number],
+      };
+    });
     setCurrentPage(1);
-    setSelectedJob(null);
+    if (dataJob?.content && dataJob.content.length > 0) {
+      setSelectedJob(dataJob.content[0]);
+    } else {
+      setSelectedJob(null);
+    }
   };
 
   const handleSearch = (values: { keyword?: string; location?: string }) => {
     if (values.keyword) {
       setSearchKeyword(values.keyword);
     }
-    if (values.location) {
-      setSelectedLocation(values.location);
-    }
     setCurrentPage(1);
   };
 
   return (
-    <div className="min-h-screen bg-primary-50">
+    <Container className="min-h-screen bg-primary-50">
       {/* Search Section at Top */}
-      <div className="bg-white border-b border-primary-100 py-8">
-        <Container className="!py-0">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <SearchBar onFinish={handleSearch} />
-          </motion.div>
-        </Container>
+      <div className="bg-white border-b border-primary-100 py-8  px-6">
+        <SearchBar
+          onFinish={handleSearch}
+          locations={dataLocation || []}
+          onChangeLocation={handleProvinceChange}
+        />
       </div>
 
       {/* Company Highlight */}
       <CompanyHighlight />
 
-      <Container className="!py-8">
+      <div className="!py-8">
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -251,8 +321,9 @@ export default function JobsListingClient() {
           <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
             {searchKeyword ? (
               <>
-                <span>{filteredJobs.length}</span>{" "}
-                <span className="text-red-600">{searchKeyword}</span> jobs in Vietnam
+                <span>{dataJob?.content.length}</span>{" "}
+                <span className="text-red-600">{searchKeyword}</span> jobs in
+                Vietnam
               </>
             ) : (
               <>
@@ -263,58 +334,79 @@ export default function JobsListingClient() {
         </motion.div>
 
         {/* Filter Buttons Row */}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex flex-wrap items-center gap-3 mb-6"
+          className="flex mb-6 gap-2 justify-between items-center w-full"
         >
-          <Button
+          <div className="flex flex-wrap gap-2 flex-wrap items-center">
+            <CheckboxDropdown
+              label="Level"
+              values={filters.level}
+              options={
+                dataLevelJob?.map((level) => {
+                  return { label: level.name, value: level.name };
+                }) || []
+              }
+              onChange={(v) => setFilters((p) => ({ ...p, level: v }))}
+            />
+
+            <CheckboxDropdown
+              label="Working Model"
+              values={filters.workingModel}
+              options={
+                dataEmploymentType?.map((employmentType) => {
+                  return {
+                    label: employmentType.name,
+                    value: employmentType.name,
+                  };
+                }) || []
+              }
+              onChange={(v) => setFilters((p) => ({ ...p, workingModel: v }))}
+            />
+
+            <SalarySliderDropdown
+              value={filters.salaryRange}
+              onChange={(v) => setFilters((p) => ({ ...p, salaryRange: v }))}
+              min={SALARY_MIN}
+              max={SALARY_MAX}
+            />
+
+            <CheckboxDropdown
+              label="Job Domain"
+              values={filters.domain}
+              options={
+                dataIndustry?.map((industry) => {
+                  return { label: industry.name, value: industry.name };
+                }) || []
+              }
+              onChange={(v) => setFilters((p) => ({ ...p, domain: v }))}
+            />
+          </div>
+          <UIButton
+            variantCustom="accent"
             size="large"
-            className="!h-10 !px-4 !rounded-lg !border-primary-200 hover:!border-primary-400"
-            icon={<FilterOutlined />}
+            icon={<ReloadOutlined />}
+            onClick={handleReset}
+            className="!h-[48px] !rounded-xl"
           >
-            Level
-          </Button>
-          <Button
-            size="large"
-            className="!h-10 !px-4 !rounded-lg !border-primary-200 hover:!border-primary-400"
-            icon={<FilterOutlined />}
-          >
-            Working Model
-          </Button>
-          <Button
-            size="large"
-            className="!h-10 !px-4 !rounded-lg !border-primary-200 hover:!border-primary-400"
-            icon={<FilterOutlined />}
-          >
-            Salary
-          </Button>
-          <Button
-            size="large"
-            className="!h-10 !px-4 !rounded-lg !border-primary-200 hover:!border-primary-400"
-            icon={<FilterOutlined />}
-          >
-            Job Domain
-          </Button>
-          <div className="flex-1" />
-          <Button
-            size="large"
-            icon={<FilterOutlined />}
-            onClick={() => setShowFilterModal(true)}
-            className="!h-10 !px-4 !rounded-lg"
-          >
-            Filter
-          </Button>
+            Đặt lại
+          </UIButton>
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Jobs List - Left Side */}
-          <div className={`${selectedJob ? "lg:w-1/2" : "lg:w-full"} transition-all duration-300`}>
-            {paginatedJobs.length > 0 ? (
+          <div
+            className={`${
+              selectedJob ? "lg:w-3/7" : "lg:w-full"
+            } transition-all duration-300`}
+          >
+            {(dataJob?.content || []).length > 0 ? (
               <>
                 <div className="space-y-4 mb-6">
-                  {paginatedJobs.map((job, index) => (
+                  {dataJob?.content.map((job, index) => (
                     <motion.div
                       key={job.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -323,7 +415,10 @@ export default function JobsListingClient() {
                       onClick={() => setSelectedJob(job)}
                       className="cursor-pointer"
                     >
-                      <JobListCard job={job} isSelected={selectedJob?.id === job.id} />
+                      <JobListCard
+                        job={job}
+                        isSelected={selectedJob?.id === job.id}
+                      />
                     </motion.div>
                   ))}
                 </div>
@@ -331,8 +426,8 @@ export default function JobsListingClient() {
                 {/* Pagination */}
                 <PaginationComponent
                   current={currentPage}
-                  total={filteredJobs.length}
-                  pageSize={pageSize}
+                  total={dataJob?.totalElements || 0}
+                  pageSize={pageSizeDefault}
                   onChange={(page) => {
                     setCurrentPage(page);
                     setSelectedJob(null);
@@ -363,7 +458,11 @@ export default function JobsListingClient() {
           </div>
 
           {/* Job Detail - Right Side */}
-          <div className={`${selectedJob ? "lg:w-1/2" : "lg:hidden"} transition-all duration-300`}>
+          <div
+            className={`${
+              selectedJob ? "lg:w-4/7" : "lg:hidden"
+            } transition-all duration-300`}
+          >
             <JobDetail job={selectedJob} />
           </div>
         </div>
@@ -377,8 +476,7 @@ export default function JobsListingClient() {
             setShowFilterModal(false);
           }}
         />
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
-

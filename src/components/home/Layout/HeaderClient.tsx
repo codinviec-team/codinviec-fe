@@ -59,7 +59,7 @@ export default function HeaderClient() {
   }, [user?.findJob]);
 
   return (
-    <header className="bg-brand-gradient border-b border-primary-700 sticky top-0 z-50">
+    <header className="bg-brand-gradient border-b border-primary-700 sticky top-0 z-[2000]">
       <nav className="max-w px-12 mx-auto flex items-center justify-between py-4">
         <div className="flex items-center space-x-6">
           {/* Mobile Menu Button */}

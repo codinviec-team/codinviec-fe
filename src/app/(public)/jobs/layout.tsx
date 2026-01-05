@@ -9,15 +9,6 @@ export const metadata: Metadata = generatePublicMetadata(
   "/jobs"
 );
 
-export default function JobsLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return <>
-    <Container>
-        {children}
-    </Container>
-  </>;
+export default function JobsLayout({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 }
-
