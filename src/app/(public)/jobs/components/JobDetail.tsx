@@ -2,6 +2,7 @@
 
 import CustomBadge from "@/components/ui/CustomBadge";
 import TagCustomer from "@/components/ui/TagCustomer";
+import { PATHS } from "@/constants/paths";
 import { BadgeVariant } from "@/types/common/BadgeType";
 import { JobType } from "@/types/home/job/JobType";
 import { timeAgo } from "@/utils/DateHelper";
@@ -82,7 +83,7 @@ export default function JobDetail({ job, onClose }: JobDetailProps) {
               {job.jobPosition}
             </h2>
             <Link
-              href={`/company/${job.id}`}
+              href={`${PATHS.COMPANIES}/${job.id}`}
               className="text-lg text-primary-600 hover:text-primary-700 font-semibold"
             >
               {job.company.name}
@@ -220,7 +221,7 @@ export default function JobDetail({ job, onClose }: JobDetailProps) {
           nghệ thông tin.
         </p>
         <Link
-          href={`/company/${job.id}`}
+          href={`${PATHS.COMPANIES}/${job.id}`}
           className="text-primary-600 hover:text-primary-700 font-semibold text-sm"
         >
           Xem thêm về công ty →
