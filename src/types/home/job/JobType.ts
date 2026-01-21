@@ -25,6 +25,7 @@ export interface JobType {
   statusSpecials: StatusSpecial[];
   skills: AvailableSkillType[];
   isAgreedSalary: boolean;
+  responsibility: string;
   salary: number;
   createdDate: string;
   updatedDate: string;

@@ -1,4 +1,5 @@
 import api from "@/interceptor/api";
+import apiServer from "@/interceptor/api-server";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { IBaseResponse } from "@/types/common/BaseResponse";
 import {
@@ -11,7 +12,7 @@ const JobServices = {
   async getAllJOb(): Promise<JobType[]> {
     const res = await api.get<IBaseResponse<JobType[]>>("/job");
     if (!res.data.data) {
-      throw new Error("Không lấy được company");
+      throw new Error("Không lấy được công việc");
     }
     return res?.data?.data;
   },
@@ -26,7 +27,7 @@ const JobServices = {
       }
     );
     if (!res.data.data) {
-      throw new Error("Không lấy được company");
+      throw new Error("Không lấy được công việc");
     }
     return res?.data?.data;
   },
@@ -41,7 +42,23 @@ const JobServices = {
       }
     );
     if (!res.data.data) {
-      throw new Error("Không lấy được company");
+      throw new Error("Không lấy được công việc");
+    }
+    return res?.data?.data;
+  },
+
+  async getJobById(id: number): Promise<JobType> {
+    const res = await api.get<IBaseResponse<JobType>>(`/job/${id}`);
+    if (!res.data.data) {
+      throw new Error("Không lấy được công việc");
+    }
+    return res?.data?.data;
+  },
+
+  async getJobByIdInServer(id: number): Promise<JobType> {
+    const res = await apiServer.get<IBaseResponse<JobType>>(`/job/${id}`);
+    if (!res.data.data) {
+      throw new Error("Không lấy được công việc");
     }
     return res?.data?.data;
   },

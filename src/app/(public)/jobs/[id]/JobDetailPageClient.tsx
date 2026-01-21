@@ -1,24 +1,34 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter} from "next/navigation";
-import {motion} from "framer-motion";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
-    ArrowLeftOutlined,
-    BookOutlined,
-    ClockCircleOutlined,
-    DollarOutlined,
-    EnvironmentOutlined,
-    FireOutlined,
-    HeartFilled,
-    HeartOutlined,
-    ShareAltOutlined,
-    TeamOutlined,
-    ThunderboltOutlined,
+  ArrowLeftOutlined,
+  BookOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+  EnvironmentOutlined,
+  FireOutlined,
+  HeartFilled,
+  HeartOutlined,
+  ShareAltOutlined,
+  TeamOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons";
-import {Button} from "antd";
+import { Button } from "antd";
 import Container from "@/components/ui/Container";
-import {Job} from "@/components/home/HomePage/FeaturedJobs/JobCard";
+import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
+import Link from "next/link";
+import { PATHS } from "@/constants/paths";
+import { useQuery } from "@tanstack/react-query";
+import { JobType } from "@/types/home/job/JobType";
+import JobServices from "@/services/home/job/JobServices";
+import CustomBadge from "@/components/ui/CustomBadge";
+import { BadgeVariant } from "@/types/common/BadgeType";
+import { timeAgo } from "@/utils/DateHelper";
+import TagCustomer from "@/components/ui/TagCustomer";
+import LoadingCustom from "@/components/ui/LoadingCustom";
 
 // Demo data - trong thực tế sẽ fetch từ API
 const demoJobs: Job[] = [
@@ -155,293 +165,294 @@ type JobDetailPageClientProps = {
   jobId: string;
 };
 
-export default function JobDetailPageClient({ jobId }: JobDetailPageClientProps) {
+export default function JobDetailPageClient({
+  jobId,
+}: JobDetailPageClientProps) {
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
-  
-  const job = demoJobs[0];
 
-  // if (!job) {
-  //   return (
-  //     <ContainerPage className="!py-16">
-  //       <div className="bg-white rounded-2xl p-12 text-center border border-primary-100">
-  //         <div className="text-6xl mb-4">😕</div>
-  //         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-  //           Không tìm thấy việc làm
-  //         </h2>
-  //         <p className="text-gray-600 mb-6">
-  //           Việc làm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
-  //         </p>
-  //         <Button
-  //           type="primary"
-  //           icon={<ArrowLeftOutlined />}
-  //           onClick={() => router.push("/jobs")}
-  //           className="!rounded-xl"
-  //         >
-  //           Quay lại danh sách việc làm
-  //         </Button>
-  //       </div>
-  //     </ContainerPage>
-  //   );
-  // }
+  // job
+  const { data: dataJob, isLoading: isLoadingJob } = useQuery<JobType, Error>({
+    queryKey: ["job"],
+    queryFn: () => {
+      return JobServices.getJobById(Number(jobId || 0));
+    },
+  });
 
-  return (
-    <div className="min-h-screen bg-primary-50">
-      <Container className="!py-8">
-        {/* Back Button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
+  console.log("dataJob", dataJob);
+
+  const loadingPage = isLoadingJob;
+  if (loadingPage) {
+    return (
+      <Container>
+        <LoadingCustom />;
+      </Container>
+    );
+  }
+
+  if (!dataJob && !loadingPage) {
+    return (
+      <Container className="!py-16">
+        <div className="bg-white rounded-2xl p-12 text-center border border-primary-100">
+          <div className="text-6xl mb-4">😕</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Không tìm thấy việc làm
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Việc làm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+          </p>
           <Button
+            type="primary"
             icon={<ArrowLeftOutlined />}
-            onClick={() => router.back()}
+            onClick={() => router.push("/jobs")}
             className="!rounded-xl"
           >
-            Quay lại
+            Quay lại danh sách việc làm
           </Button>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl border border-primary-100 p-8"
-            >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-6 pb-6 border-b border-primary-100">
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="w-20 h-20 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center overflow-hidden flex-shrink-0">
-                    <img
-                      src={job.companyLogo}
-                      alt={job.company}
-                      className="w-16 h-16 object-contain"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      {job.isSuperHot && (
-                        <motion.span
-                          animate={{ 
-                            scale: [1, 1.08, 1],
-                            boxShadow: [
-                              "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)",
-                              "0 0 0 10px rgba(251, 191, 36, 0), 0 0 30px rgba(251, 191, 36, 0.4)",
-                              "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)"
-                            ]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="px-3 py-1.5 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 text-white text-xs font-bold rounded-full shadow-2xl shadow-orange-500/80 border-3 border-yellow-200 ring-2 ring-yellow-300 ring-offset-2 ring-offset-white flex items-center gap-1"
-                          style={{ borderWidth: '3px' }}
-                        >
-                          <FireOutlined className="text-yellow-100" />
-                          Super Hot
-                        </motion.span>
-                      )}
-                      {job.isUrgent && !job.isSuperHot && (
-                        <motion.span
-                          animate={{ 
-                            scale: [1, 1.05, 1],
-                            boxShadow: [
-                              "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)",
-                              "0 0 0 8px rgba(239, 68, 68, 0), 0 0 25px rgba(239, 68, 68, 0.4)",
-                              "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)"
-                            ]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-bold rounded-full flex items-center gap-1 shadow-2xl shadow-red-600/70 border-3 border-red-400 ring-2 ring-red-500 ring-offset-2 ring-offset-white"
-                          style={{ borderWidth: '3px' }}
-                        >
-                          <ThunderboltOutlined className="text-yellow-200" />
-                          Urgent
-                        </motion.span>
-                      )}
-                      {job.isHot && !job.isSuperHot && (
-                        <span className="px-2.5 py-1 bg-gradient-to-r from-red-100 to-orange-100 text-red-700 text-xs font-semibold rounded-full shadow-md shadow-red-200/50 border border-red-200 flex items-center gap-1">
-                          <FireOutlined />
-                          Hot
-                        </span>
-                      )}
-                    </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                      {job.title}
-                    </h1>
-                    <p className="text-xl text-primary-600 font-semibold">
-                      {job.company}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <button
-                    onClick={() => setIsSaved(!isSaved)}
-                    className="p-2 hover:bg-primary-50 rounded-lg transition-colors"
-                    aria-label={isSaved ? "Bỏ lưu" : "Lưu việc làm"}
-                  >
-                    {isSaved ? (
-                      <HeartFilled className="text-xl text-red-500" />
-                    ) : (
-                      <HeartOutlined className="text-xl text-gray-400 hover:text-red-500" />
-                    )}
-                  </button>
-                  <button className="p-2 hover:bg-primary-50 rounded-lg transition-colors">
-                    <ShareAltOutlined className="text-xl text-gray-400 hover:text-primary-600" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Quick Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
-                  <DollarOutlined className="text-2xl text-accent-500" />
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Mức lương</p>
-                    <p className="font-bold text-accent-600">{job.salary}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
-                  <EnvironmentOutlined className="text-2xl text-primary-500" />
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Địa điểm</p>
-                    <p className="font-bold text-gray-900">{job.location}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
-                  <ClockCircleOutlined className="text-2xl text-secondary-500" />
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Đăng tải</p>
-                    <p className="font-bold text-gray-900">{job.postedAt}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
-                  <BookOutlined className="text-2xl text-accent-500" />
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">Kinh nghiệm</p>
-                    <p className="font-bold text-gray-900">2-5 năm</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tags */}
-              <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Kỹ năng yêu cầu</h3>
-                <div className="flex flex-wrap gap-2">
-                  {job.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-4 py-2 bg-primary-50 text-primary-600 text-sm font-medium rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Job Description */}
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Mô tả công việc</h2>
-                <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
-                  <p>
-                    Chúng tôi đang tìm kiếm một <strong>{job.title}</strong> có kinh nghiệm để
-                    tham gia vào đội ngũ phát triển sản phẩm của chúng tôi.
-                  </p>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Trách nhiệm:</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Phát triển và duy trì các ứng dụng web hiện đại</li>
-                      <li>Tham gia vào quá trình thiết kế và xây dựng kiến trúc hệ thống</li>
-                      <li>Hợp tác với team để đảm bảo chất lượng code và best practices</li>
-                      <li>Tối ưu hóa hiệu suất và trải nghiệm người dùng</li>
-                      <li>Tham gia code review và mentoring các developer junior</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Yêu cầu:</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Kinh nghiệm làm việc với {job.tags.join(", ")}</li>
-                      <li>Hiểu biết về các design patterns và best practices</li>
-                      <li>Kỹ năng giao tiếp tốt, làm việc nhóm hiệu quả</li>
-                      <li>Khả năng giải quyết vấn đề và tư duy logic</li>
-                      <li>Kinh nghiệm với Git, CI/CD, và các công cụ phát triển hiện đại</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Quyền lợi:</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Mức lương cạnh tranh: {job.salary}</li>
-                      <li>Làm việc tại {job.location}</li>
-                      <li>Môi trường làm việc chuyên nghiệp, năng động</li>
-                      <li>Cơ hội phát triển nghề nghiệp và học hỏi</li>
-                      <li>Bảo hiểm đầy đủ, chế độ nghỉ phép linh hoạt</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Company Info */}
-              <div className="p-6 bg-primary-50 rounded-xl">
-                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <TeamOutlined className="text-primary-500" />
-                  Về công ty
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  {job.company} là một trong những công ty công nghệ hàng đầu tại Việt Nam,
-                  chuyên phát triển các giải pháp phần mềm và dịch vụ công nghệ thông tin.
-                  Với đội ngũ nhân viên tài năng và môi trường làm việc năng động, chúng tôi
-                  luôn tạo điều kiện tốt nhất cho nhân viên phát triển sự nghiệp.
-                </p>
-                <Button
-                  type="link"
-                  href={`/company/${job.id}`}
-                  className="!p-0 !h-auto text-primary-600 hover:text-primary-700 font-semibold"
-                >
-                  Xem thêm về công ty →
-                </Button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-2xl border border-primary-100 p-6 sticky top-24"
-            >
-              <Button
-                type="primary"
-                block
-                size="large"
-                href={`/job/${job.id}/apply`}
-                className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
-              >
-                Ứng tuyển ngay
-              </Button>
-              <Button
-                block
-                size="large"
-                onClick={() => setIsSaved(!isSaved)}
-                className="!h-12 !rounded-xl !mb-4"
-                icon={isSaved ? <HeartFilled className="text-red-500" /> : <HeartOutlined />}
-              >
-                {isSaved ? "Đã lưu" : "Lưu việc làm"}
-              </Button>
-              <Button
-                block
-                size="large"
-                icon={<ShareAltOutlined />}
-                className="!h-12 !rounded-xl"
-              >
-                Chia sẻ
-              </Button>
-            </motion.div>
-          </div>
         </div>
       </Container>
-    </div>
+    );
+  }
+
+  const job = demoJobs[0];
+
+  return (
+    <Container className="!py-8">
+      {/* Back Button */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-6"
+      >
+        <Button
+          type="primary"
+          icon={<ArrowLeftOutlined />}
+          onClick={() => router.push("/jobs")}
+          className="!rounded-xl"
+        >
+          Quay lại
+        </Button>
+      </motion.div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-2xl border border-primary-100 p-8"
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between mb-6 pb-6 border-b border-primary-100">
+              <div className="flex items-start gap-4 flex-1">
+                <div className="w-20 h-20 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <img
+                    src={dataJob?.company?.logo || "/defaultCompanyLogo.webp"}
+                    alt={dataJob?.company?.name || "Tên công ty"}
+                    className="w-16 h-16 object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    {dataJob?.statusSpecials &&
+                      dataJob?.statusSpecials.map((item) => {
+                        if (!item?.title || item?.title === "spotlight")
+                          return "";
+                        return (
+                          <CustomBadge
+                            key={item.id}
+                            variant={item?.title as BadgeVariant}
+                          />
+                        );
+                      })}
+                  </div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {dataJob?.jobPosition}
+                  </h1>
+                  <p className="text-xl text-primary-600 font-semibold">
+                    {dataJob?.company?.name}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => setIsSaved(!isSaved)}
+                  className="p-2 hover:bg-primary-50 rounded-lg transition-colors"
+                  aria-label={isSaved ? "Bỏ lưu" : "Lưu việc làm"}
+                >
+                  {isSaved ? (
+                    <HeartFilled className="text-xl text-red-500" />
+                  ) : (
+                    <HeartOutlined className="text-xl text-gray-400 hover:text-red-500" />
+                  )}
+                </button>
+                <button className="p-2 hover:bg-primary-50 rounded-lg transition-colors">
+                  <ShareAltOutlined className="text-xl text-gray-400 hover:text-primary-600" />
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Info */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
+                <DollarOutlined className="text-2xl text-accent-500" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Mức lương</p>
+                  <p className="font-bold text-accent-600">
+                    {dataJob?.isAgreedSalary
+                      ? "Thỏa thuận"
+                      : `${dataJob?.salary}$`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
+                <EnvironmentOutlined className="text-2xl text-primary-500" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Địa điểm</p>
+                  <p className="font-bold text-gray-900">
+                    {dataJob?.provinceName || "Nơi làm việc"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
+                <ClockCircleOutlined className="text-2xl text-secondary-500" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Đăng tải</p>
+                  <p className="font-bold text-gray-900">
+                    {timeAgo(dataJob?.createdDate || "")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl">
+                <BookOutlined className="text-2xl text-accent-500" />
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">Kinh nghiệm</p>
+                  <p className="font-bold text-gray-900">
+                    {dataJob?.experienceName}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Tags */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Kỹ năng yêu cầu
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {dataJob?.skills.map((item) => (
+                  <TagCustomer key={item?.id}>{item?.name}</TagCustomer>
+                ))}
+              </div>
+            </div>
+
+            {/* Job Description */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Mô tả công việc
+              </h2>
+              <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
+                <p>{dataJob?.descriptionJob || ""}</p>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    Trách nhiệm:
+                  </h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-600">
+                    {dataJob &&
+                      dataJob?.responsibility
+                        ?.split(", ")
+                        ?.map((res) => <li>{res}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Yêu cầu:</h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-600">
+                    {dataJob?.requirement?.split(", ")?.map((res) => (
+                      <li>{res}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    Quyền lợi:
+                  </h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-600">
+                    {dataJob?.benefits?.split(", ")?.map((res) => (
+                      <li>{res}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Company Info */}
+            <div className="p-6 bg-primary-50 rounded-xl">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <TeamOutlined className="text-primary-500" />
+                Về công ty
+              </h3>
+              <p className="text-gray-700 mb-4">
+                {dataJob?.company?.name} là một trong những công ty công nghệ
+                hàng đầu tại Việt Nam, chuyên phát triển các giải pháp phần mềm
+                và dịch vụ công nghệ thông tin. Với đội ngũ nhân viên tài năng
+                và môi trường làm việc năng động, chúng tôi luôn tạo điều kiện
+                tốt nhất cho nhân viên phát triển sự nghiệp. {` `}
+                {dataJob?.company?.description}
+              </p>
+              <Button
+                type="link"
+                href={`${PATHS.COMPANIES}/${dataJob?.company?.id}`}
+                className="!p-0 !h-auto text-primary-600 hover:text-primary-700 font-semibold"
+              >
+                Xem thêm về công ty →
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white rounded-2xl border border-primary-100 p-6 sticky top-24"
+          >
+            <Button
+              type="primary"
+              block
+              size="large"
+              href={`/job/${job.id}/apply`}
+              className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
+            >
+              Ứng tuyển ngay
+            </Button>
+            <Button
+              block
+              size="large"
+              onClick={() => setIsSaved(!isSaved)}
+              className="!h-12 !rounded-xl !mb-4"
+              icon={
+                isSaved ? (
+                  <HeartFilled className="text-red-500" />
+                ) : (
+                  <HeartOutlined />
+                )
+              }
+            >
+              {isSaved ? "Đã lưu" : "Lưu việc làm"}
+            </Button>
+            <Button
+              block
+              size="large"
+              icon={<ShareAltOutlined />}
+              className="!h-12 !rounded-xl"
+            >
+              Chia sẻ
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+    </Container>
   );
 }
-

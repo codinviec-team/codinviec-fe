@@ -13,9 +13,9 @@ import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
-import LoadingBlog from "@/components/ui/LoadingBlog";
 import ScFeature from "./ScFeature";
 import ScNew from "./ScNew";
+import LoadingCustom from "@/components/ui/LoadingCustom";
 
 const BlogPageClients = () => {
   const router = useRouter();
@@ -60,7 +60,7 @@ const BlogPageClients = () => {
   if (isLoading) {
     return (
       <div className="w-full">
-        <LoadingBlog />
+        <LoadingCustom />
       </div>
     );
   }
