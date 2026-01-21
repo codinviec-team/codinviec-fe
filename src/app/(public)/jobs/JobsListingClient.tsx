@@ -1,187 +1,43 @@
 "use client";
 
-import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
+import CheckboxDropdown from "@/components/ui/CheckboxDropdown";
 import Container from "@/components/ui/Container";
 import PaginationComponent from "@/components/ui/Pagination";
+import SalarySliderDropdown from "@/components/ui/SalarySliderDropdown ";
 import SearchBar from "@/components/ui/SearchBar";
+import { UIButton } from "@/components/ui/UIButton";
+import { PATHS } from "@/constants/paths";
+import useLocation, {
+  ProvinceOption,
+} from "@/hooks/Common/location/useLocation";
+import EmploymentTypeService from "@/services/common/EmploymentTypeService";
+import IndustryService from "@/services/common/IndustryService";
+import LevelJobService from "@/services/common/LevelJobService";
 import JobServices from "@/services/home/job/JobServices";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
-import { JobType } from "@/types/home/job/JobType";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "antd";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import CompanyHighlight from "./components/CompanyHighlight";
-import FilterModal from "./components/FilterModal";
-import JobDetail from "./components/JobDetail";
-import JobListCard from "./components/JobListCard";
-import { FilterOutlined, ReloadOutlined } from "@ant-design/icons";
-import DropdownButtonCustomer from "@/components/ui/CheckboxDropdown";
-import CheckboxDropdown from "@/components/ui/CheckboxDropdown";
-import SalarySliderDropdown from "@/components/ui/SalarySliderDropdown ";
-import { ProvinceType } from "@/types/common/ProvinceType";
-import ProvinceService from "@/services/common/ProvinceService";
-import useLocation from "@/hooks/Common/location/useLocation";
-import LevelJobService from "@/services/common/LevelJobService";
-import { JobLevelType } from "@/types/common/JobLevelType";
-import EmploymentTypeService from "@/services/common/EmploymentTypeService";
 import { EmploymentTypeType } from "@/types/common/EmploymentType";
 import { IndustryType } from "@/types/common/IndustryType";
-import IndustryService from "@/services/common/IndustryService";
+import { JobLevelType } from "@/types/common/JobLevelType";
+import { ProvinceType } from "@/types/common/ProvinceType";
+import { JobType } from "@/types/home/job/JobType";
+import { ReloadOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import { Button, Form } from "antd";
+import { motion } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import { UIButton } from "@/components/ui/UIButton";
+import CompanyHighlight from "./components/CompanyHighlight";
+import JobDetail from "./components/JobDetail";
+import JobListCard from "./components/JobListCard";
 
 // Demo data - tương tự itviec
-const demoJobs: Job[] = [
-  {
-    id: 1,
-    title: "Senior Frontend Developer (ReactJS, TypeScript)",
-    company: "FPT Software",
-    companyLogo: "https://placehold.co/100x100/6b46c1/ffffff?text=FPT",
-    location: "Hà Nội",
-    salary: "25 - 40 triệu",
-    postedAt: "Đăng 2 ngày trước",
-    tags: ["ReactJS", "TypeScript", "TailwindCSS", "Next.js"],
-    isSuperHot: true,
-  },
-  {
-    id: 2,
-    title: "Backend Developer (NodeJS/Python) - Remote",
-    company: "VNG Corporation",
-    companyLogo: "https://placehold.co/100x100/4db6ac/ffffff?text=VNG",
-    location: "Hồ Chí Minh",
-    salary: "30 - 50 triệu",
-    postedAt: "Đăng 1 ngày trước",
-    tags: ["NodeJS", "Python", "MongoDB", "Redis"],
-    isUrgent: true,
-  },
-  {
-    id: 3,
-    title: "Fullstack Developer (MERN Stack)",
-    company: "Tiki Corporation",
-    companyLogo: "https://placehold.co/100x100/f59e0b/ffffff?text=Tiki",
-    location: "Hồ Chí Minh",
-    salary: "28 - 45 triệu",
-    postedAt: "Đăng 3 ngày trước",
-    tags: ["React", "Node.js", "MongoDB", "Express"],
-    isHot: true,
-  },
-  {
-    id: 4,
-    title: "DevOps Engineer (AWS/Kubernetes/Docker)",
-    company: "Shopee Vietnam",
-    companyLogo: "https://placehold.co/100x100/ef4444/ffffff?text=Shopee",
-    location: "Hồ Chí Minh",
-    salary: "35 - 55 triệu",
-    postedAt: "Đăng 1 ngày trước",
-    tags: ["AWS", "Kubernetes", "Docker", "CI/CD", "Terraform"],
-  },
-  {
-    id: 5,
-    title: "Mobile Developer (React Native/Flutter)",
-    company: "MoMo",
-    companyLogo: "https://placehold.co/100x100/ec4899/ffffff?text=MoMo",
-    location: "Hồ Chí Minh",
-    salary: "25 - 40 triệu",
-    postedAt: "Đăng 4 ngày trước",
-    tags: ["React Native", "Flutter", "iOS", "Android"],
-  },
-  {
-    id: 6,
-    title: "AI/ML Engineer (Computer Vision, NLP)",
-    company: "VinAI",
-    companyLogo: "https://placehold.co/100x100/8b5cf6/ffffff?text=VinAI",
-    location: "Hà Nội",
-    salary: "40 - 70 triệu",
-    postedAt: "Đăng 2 ngày trước",
-    tags: ["Python", "TensorFlow", "PyTorch", "Computer Vision"],
-    isSuperHot: true,
-    isUrgent: true,
-  },
-  {
-    id: 7,
-    title: "Java Developer (Spring Boot, Microservices)",
-    company: "Viettel Solutions",
-    companyLogo: "https://placehold.co/100x100/10b981/ffffff?text=Viettel",
-    location: "Hà Nội",
-    salary: "20 - 35 triệu",
-    postedAt: "Đăng 5 ngày trước",
-    tags: ["Java", "Spring Boot", "Microservices", "PostgreSQL"],
-  },
-  {
-    id: 8,
-    title: "QA Engineer (Automation Testing)",
-    company: "Grab Vietnam",
-    companyLogo: "https://placehold.co/100x100/06b6d4/ffffff?text=Grab",
-    location: "Hồ Chí Minh",
-    salary: "18 - 30 triệu",
-    postedAt: "Đăng 3 ngày trước",
-    tags: ["Selenium", "Cypress", "Jest", "API Testing"],
-  },
-  {
-    id: 9,
-    title: "Data Engineer (Spark, Kafka, Airflow)",
-    company: "Lazada Vietnam",
-    companyLogo: "https://placehold.co/100x100/3b82f6/ffffff?text=Lazada",
-    location: "Hồ Chí Minh",
-    salary: "30 - 50 triệu",
-    postedAt: "Đăng 1 ngày trước",
-    tags: ["Spark", "Kafka", "Airflow", "Python", "SQL"],
-    isHot: true,
-  },
-  {
-    id: 10,
-    title: "UI/UX Designer (Figma, Design System)",
-    company: "Be Group",
-    companyLogo: "https://placehold.co/100x100/8b5cf6/ffffff?text=Be",
-    location: "Hồ Chí Minh",
-    salary: "15 - 25 triệu",
-    postedAt: "Đăng 6 ngày trước",
-    tags: ["Figma", "Design System", "Prototyping", "User Research"],
-  },
-  {
-    id: 11,
-    title: "Cloud Architect (AWS/Azure/GCP)",
-    company: "CMC Corporation",
-    companyLogo: "https://placehold.co/100x100/14b8a6/ffffff?text=CMC",
-    location: "Hà Nội",
-    salary: "45 - 80 triệu",
-    postedAt: "Đăng 2 ngày trước",
-    tags: ["AWS", "Azure", "GCP", "Terraform", "Kubernetes"],
-    isUrgent: true,
-  },
-  {
-    id: 12,
-    title: "Blockchain Developer (Solidity, Web3)",
-    company: "Kyber Network",
-    companyLogo: "https://placehold.co/100x100/f97316/ffffff?text=Kyber",
-    location: "Hồ Chí Minh",
-    salary: "35 - 60 triệu",
-    postedAt: "Đăng 4 ngày trước",
-    tags: ["Solidity", "Web3", "Ethereum", "Smart Contracts"],
-  },
-];
-
-const LEVEL_OPTIONS = ["Intern", "Fresher", "Junior", "Senior", "Leader"];
-
-const WORKING_MODEL_OPTIONS = ["Onsite", "Remote", "Hybrid"];
-
-const SALARY_OPTIONS = [
-  "Dưới 10 triệu",
-  "10 – 20 triệu",
-  "20 – 30 triệu",
-  "Trên 30 triệu",
-];
-
-const DOMAIN_OPTIONS = ["Backend", "Frontend", "Fullstack", "Mobile", "DevOps"];
-
 const SALARY_MIN = 0;
 const SALARY_MAX = 100000;
 const pageSizeDefault = 9;
 export default function JobsListingClient() {
   // ======= GENERAL =======
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [showFilterModal, setShowFilterModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -190,13 +46,74 @@ export default function JobsListingClient() {
     domain: [] as string[],
     salaryRange: [SALARY_MIN, SALARY_MAX] as [number, number],
   });
+  const [form] = Form.useForm();
+
+  // location hiện lên lúc đầu
+  const [location, setLocation] = useState<ProvinceType | null>(null);
+
+  // ROUTER & URL PARAMS
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
+  const locationParams = searchParams.get("location") || "";
 
   // useDebounce
   const debouncedFilters = useDebounce(filters, 500);
-  // ======= API CALL =======
-
   // location
   const { dataLocation, provinceData, handleProvinceChange } = useLocation();
+
+  // xét location khởi đầu
+  useEffect(() => {
+    if (dataLocation.length > 0 && locationParams) {
+      const location = dataLocation.find(
+        (item) => item.label === locationParams
+      );
+      setLocation(location || null);
+      handleProvinceChange?.(location);
+      form?.setFieldsValue({ location: location?.id || "all" });
+    }
+  }, [dataLocation?.length]);
+
+  // lấy giá trị từ URL params khi component mount
+  useEffect(() => {
+    const keywordParams = searchParams.get("keyword") || "";
+    const workingModelParams =
+      searchParams.get("workingModel")?.split("-") || [];
+    const levelParams = searchParams.get("level")?.split("-") || [];
+    const domainParams = searchParams.get("domain")?.split("-") || [];
+    const salaryMinParams = parseInt(searchParams.get("salaryMin") || "1") || 0;
+    const salaryMaxParams =
+      parseInt(searchParams.get("salaryMax") || "100000") || 100000;
+    const pageParams = parseInt(searchParams.get("page") || "1") || 0;
+
+    setSearchKeyword(keywordParams);
+    setCurrentPage(pageParams);
+    setFilters({
+      level: levelParams,
+      workingModel: workingModelParams,
+      domain: domainParams,
+      salaryRange: [salaryMinParams, salaryMaxParams],
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!searchParams.get("page")) {
+      params.set("page", "1");
+    }
+    if (!searchParams.get("keyword")) {
+      params.set("keyword", "");
+    }
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  }, []);
+
+  // khi mà ko có search nó sẽ reset form search
+  useEffect(() => {
+    if (!searchParams.get("location")) {
+      form.resetFields();
+    }
+  }, [searchParams]);
+
+  // ======= API CALL =======
 
   // job
   const { data: dataJob, isLoading: isLoadingJob } = useQuery<
@@ -216,11 +133,11 @@ export default function JobsListingClient() {
         pageSize: pageSizeDefault || 9,
         pageNumber: currentPage || 1,
         provinceName: provinceData?.name || "",
-        industryNames: filters?.domain || [],
-        jobLevelNames: filters?.level || [],
-        employmentTypeNames: filters?.workingModel || [],
-        salaryMin: filters?.salaryRange ? filters.salaryRange[0] : 0,
-        salaryMax: filters?.salaryRange ? filters.salaryRange[1] : 100000,
+        industryNames: filters.domain || [],
+        jobLevelNames: filters.level || [],
+        employmentTypeNames: filters.workingModel || [],
+        salaryMin: filters.salaryRange[0] || 0,
+        salaryMax: filters.salaryRange[1] || 100000,
       });
     },
   });
@@ -256,14 +173,6 @@ export default function JobsListingClient() {
     },
   });
 
-  // ====== CONSOLE LOG & DATA PROCESSING =======
-  // console.log("dataIndustry", dataIndustry);
-  // console.log("dataEmploymentType", dataEmploymentType);
-  // console.log("dataLevelJob", dataLevelJob);
-  // console.log("object", dataJob);
-  // console.log("filters", filters);
-  // console.log("dataLo", dataLocation);
-
   // Tự động select job đầu tiên khi load hoặc khi paginatedJobs thay đổi
   useEffect(() => {
     if (dataJob?.content && dataJob.content.length > 0) {
@@ -271,29 +180,131 @@ export default function JobsListingClient() {
     }
   }, [dataJob]);
 
-  const handleReset = () => {
-    setSearchKeyword("");
-    setFilters((prev) => {
-      return {
-        level: [] as string[],
-        workingModel: [] as string[],
-        domain: [] as string[],
-        salaryRange: [SALARY_MIN, SALARY_MAX] as [number, number],
-      };
-    });
+  // ======= HANDLER FUNCTIONS =======
+
+  // Search Handler
+  const handleSearch = (values: { keyword?: string; location?: string }) => {
+    setSearchKeyword(values.keyword || "");
     setCurrentPage(1);
-    if (dataJob?.content && dataJob.content.length > 0) {
-      setSelectedJob(dataJob.content[0]);
-    } else {
-      setSelectedJob(null);
-    }
+    params.set("keyword", values.keyword || "");
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
   };
 
-  const handleSearch = (values: { keyword?: string; location?: string }) => {
-    if (values.keyword) {
-      setSearchKeyword(values.keyword);
-    }
+  // Level Filter
+  const handleChangeLevelFilter = (selectedLevels: string[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      level: selectedLevels,
+    }));
     setCurrentPage(1);
+    const listLevel = selectedLevels.join("-");
+    if (listLevel) {
+      params.set("level", listLevel);
+    } else {
+      params.delete("level");
+    }
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // Working Model Filter
+  const handleChangeWorkingModelFilter = (selectedWorkingModels: string[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      workingModel: selectedWorkingModels,
+    }));
+    setCurrentPage(1);
+    const listWorkingModel = selectedWorkingModels.join("-");
+    if (listWorkingModel) {
+      params.set("workingModel", listWorkingModel);
+    } else {
+      params.delete("workingModel");
+    }
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // Domain Filter
+  const handleChangeDomainFilter = (selectedDomains: string[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      domain: selectedDomains,
+    }));
+    setCurrentPage(1);
+    const listDomain = selectedDomains.join("-");
+    if (listDomain) {
+      params.set("domain", listDomain);
+    } else {
+      params.delete("domain");
+    }
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // Salary Range Filter
+  const handleChangeSalaryRangeFilter = (salaryRange: [number, number]) => {
+    setFilters((prev) => ({
+      ...prev,
+      salaryRange: salaryRange,
+    }));
+    setCurrentPage(1);
+    params.set("salaryMin", salaryRange[0].toString());
+    params.set("salaryMax", salaryRange[1].toString());
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // change location
+  const handleChangeLocation = (provinces: ProvinceOption | undefined) => {
+    handleProvinceChange?.(provinces);
+    setCurrentPage(1);
+    if (provinces && provinces.label) {
+      params.set("location", provinces.label);
+    } else {
+      params.delete("location");
+    }
+    params.set("page", "1");
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // change page
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+    params.set("page", page.toString());
+    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // handle reset
+  const handleReset = () => {
+    if (
+      params.size > 2 ||
+      searchParams.get("keyword") !== "" ||
+      searchParams.get("page") !== "1"
+    ) {
+      setSearchKeyword("");
+      setFilters((prev) => {
+        return {
+          level: [] as string[],
+          workingModel: [] as string[],
+          domain: [] as string[],
+          salaryRange: [SALARY_MIN, SALARY_MAX] as [number, number],
+        };
+      });
+      if (dataJob?.content && dataJob.content.length > 0) {
+        setSelectedJob(dataJob.content[0]);
+      } else {
+        setSelectedJob(null);
+      }
+      setCurrentPage(1);
+      setLocation(null);
+      handleProvinceChange?.(undefined);
+      form?.resetFields();
+      const resetParams = new URLSearchParams();
+      resetParams.set("page", "1");
+      resetParams.set("keyword", "");
+      router.replace(`${PATHS.JOBS}?${resetParams.toString()}`);
+    }
   };
 
   return (
@@ -303,7 +314,10 @@ export default function JobsListingClient() {
         <SearchBar
           onFinish={handleSearch}
           locations={dataLocation || []}
-          onChangeLocation={handleProvinceChange}
+          onChangeLocation={handleChangeLocation}
+          defaultValuesSearch={searchParams.get("keyword") || ""}
+          defaultValuesLocation={location?.id}
+          form={form}
         />
       </div>
 
@@ -350,7 +364,7 @@ export default function JobsListingClient() {
                   return { label: level.name, value: level.name };
                 }) || []
               }
-              onChange={(v) => setFilters((p) => ({ ...p, level: v }))}
+              onChange={(v) => handleChangeLevelFilter(v)}
             />
 
             <CheckboxDropdown
@@ -364,12 +378,12 @@ export default function JobsListingClient() {
                   };
                 }) || []
               }
-              onChange={(v) => setFilters((p) => ({ ...p, workingModel: v }))}
+              onChange={(v) => handleChangeWorkingModelFilter(v)}
             />
 
             <SalarySliderDropdown
               value={filters.salaryRange}
-              onChange={(v) => setFilters((p) => ({ ...p, salaryRange: v }))}
+              onChange={(v) => handleChangeSalaryRangeFilter(v)}
               min={SALARY_MIN}
               max={SALARY_MAX}
             />
@@ -382,14 +396,16 @@ export default function JobsListingClient() {
                   return { label: industry.name, value: industry.name };
                 }) || []
               }
-              onChange={(v) => setFilters((p) => ({ ...p, domain: v }))}
+              onChange={(v) => handleChangeDomainFilter(v)}
             />
           </div>
           <UIButton
             variantCustom="accent"
             size="large"
             icon={<ReloadOutlined />}
-            onClick={handleReset}
+            onClick={() => {
+              handleReset();
+            }}
             className="!h-[48px] !rounded-xl"
           >
             Đặt lại
@@ -429,8 +445,7 @@ export default function JobsListingClient() {
                   total={dataJob?.totalElements || 0}
                   pageSize={pageSizeDefault}
                   onChange={(page) => {
-                    setCurrentPage(page);
-                    setSelectedJob(null);
+                    handleChangePage(page);
                   }}
                   showSizeChanger={false}
                   showQuickJumper
@@ -466,16 +481,6 @@ export default function JobsListingClient() {
             <JobDetail job={selectedJob} />
           </div>
         </div>
-
-        {/* Filter Modal */}
-        <FilterModal
-          open={showFilterModal}
-          onClose={() => setShowFilterModal(false)}
-          onApply={() => {
-            // Apply filters logic here
-            setShowFilterModal(false);
-          }}
-        />
       </div>
     </Container>
   );

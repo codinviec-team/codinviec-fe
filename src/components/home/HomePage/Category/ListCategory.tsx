@@ -20,7 +20,7 @@ export default function ListCategory() {
       {data.map((cat) => (
         <li key={cat.id} className="relative group">
           <Link
-            href={`/category/${cat.name}`}
+            href={`${PATHS.JOBS}?keyword=${cat.name}`}
             className="flex items-center space-x-1 hover:text-accent transition px-2 py-2"
           >
             <span>{cat.name}</span>
@@ -57,7 +57,7 @@ export default function ListCategory() {
                     className="relative group/sub hover:bg-primary-800/70"
                   >
                     <Link
-                      href={`/category/${child.name}`}
+                      href={`${PATHS.JOBS}?keyword=${child.name}`}
                       className="block px-4 py-2 text-accent-100 hover:text-accent transition items-center justify-between"
                     >
                       <span>{child.name}</span>
@@ -97,7 +97,7 @@ export default function ListCategory() {
                               className="hover:bg-primary-800/70 rounded-md px-3 py-2 transition"
                             >
                               <Link
-                                href={`/category/${sub.name}`}
+                                href={`${PATHS.JOBS}?keyword=${sub.name}`}
                                 className="block text-accent-100 hover:text-accent transition text-sm font-medium"
                               >
                                 {sub.name}

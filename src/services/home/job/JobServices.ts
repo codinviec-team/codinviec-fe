@@ -32,11 +32,13 @@ const JobServices = {
   },
 
   async getAllJobFilter(
-    payload: JobFilterType = {}
+    searchs: JobFilterType = {}
   ): Promise<BasePageResponse<JobType>> {
-    const res = await api.post<IBaseResponse<BasePageResponse<JobType>>>(
+    const res = await api.get<IBaseResponse<BasePageResponse<JobType>>>(
       "/job/filter",
-      payload
+      {
+        params: searchs,
+      }
     );
     if (!res.data.data) {
       throw new Error("Không lấy được company");
