@@ -5,6 +5,7 @@ import { EnvironmentOutlined, SearchOutlined } from "@ant-design/icons";
 import { Form, FormProps, Input, Select } from "antd";
 import clsx from "clsx";
 import { motion } from "framer-motion";
+import { a } from "node_modules/framer-motion/dist/types.d-BJcRxCew";
 import React from "react";
 
 type SearchBarProps = FormProps & {
@@ -14,6 +15,7 @@ type SearchBarProps = FormProps & {
   locationPlaceholder?: string;
   withBackground?: boolean;
   defaultValuesSearch?: string;
+  defaultValuesLocation?: number | "all";
   onKeywordChange?: React.ChangeEventHandler<HTMLInputElement>;
   onChangeLocation?: (province: ProvinceOption | undefined) => void;
 };
@@ -31,6 +33,7 @@ const SearchBar = ({
   locationPlaceholder = "Địa điểm",
   withBackground = false,
   defaultValuesSearch = "",
+  defaultValuesLocation = "all",
   onKeywordChange,
   onChangeLocation,
   onFinish,
@@ -41,6 +44,7 @@ const SearchBar = ({
       onFinish(values);
     }
   };
+
   const formContent = (
     <Form
       form={props?.form}
@@ -50,7 +54,7 @@ const SearchBar = ({
       // giá trị mặc định của form
       initialValues={{
         keyword: defaultValuesSearch,
-        location: "all",
+        location: defaultValuesLocation || "all",
       }}
       {...props}
     >
@@ -62,7 +66,6 @@ const SearchBar = ({
             options={[{ value: "all", label: "Tất cả địa điểm" }, ...locations]}
             onChange={(value, option) => {
               onChangeLocation?.(option);
-              console.log("value search", value);
             }}
             suffixIcon={<EnvironmentOutlined className="text-primary-400" />}
             className="!h-[52px] w-full [&_.ant-select-selector]:!h-[52px] [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-primary-200 [&_.ant-select-selection-item]:!leading-[52px]"
@@ -111,9 +114,9 @@ const SearchBar = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
+      transition={{ duration: 0.6 }}
       className={clsx("w-full", className)}
     >
       {formContent}
