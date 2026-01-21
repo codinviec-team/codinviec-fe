@@ -62,5 +62,13 @@ const JobServices = {
     }
     return res?.data?.data;
   },
+
+  async getJobByIdCompany(id: string): Promise<JobType[]> {
+    const res = await api.get<IBaseResponse<JobType[]>>(`/job/company/${id}`);
+    if (!res.data.data) {
+      throw new Error("Không lấy được công việc");
+    }
+    return res?.data?.data;
+  },
 };
 export default JobServices;

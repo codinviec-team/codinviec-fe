@@ -6,7 +6,6 @@ export interface CompanyType {
   id: string;
   name: string;
   description: string;
-  address: any;
   website: string;
   logo: string;
   statusSpecials: StatusSpecial[];

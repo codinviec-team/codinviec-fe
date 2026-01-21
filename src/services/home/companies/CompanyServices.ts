@@ -3,6 +3,7 @@ import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { IBaseResponse } from "@/types/common/BaseResponse";
 import { CompanyType } from "@/types/home/company/CompanyType";
 import { SearchCompanyType } from "./SearchCompanyType";
+import apiServer from "@/interceptor/api-server";
 
 const CompanyServices = {
   async getAllCompany(): Promise<CompanyType[]> {
@@ -27,5 +28,24 @@ const CompanyServices = {
     }
     return res?.data?.data;
   },
+
+  async getCompanyById(id: string) {
+    const res = await api.get<IBaseResponse<CompanyType>>(`/company/${id}`);
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
+
+  async getCompanyByInServer(id: string) {
+    const res = await apiServer.get<IBaseResponse<CompanyType>>(
+      `/company/${id}`
+    );
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
 };
+
 export default CompanyServices;
