@@ -1,7 +1,6 @@
+import { generatePublicMetadata } from "@/utils/metadata";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { generatePublicMetadata } from "@/utils/metadata";
-import Container from "@/components/ui/Container";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Tìm việc làm IT - Hàng nghìn cơ hội việc làm công nghệ",

@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoadingBlog from "@/components/ui/LoadingBlog";
+import LoadingCustom from "@/components/ui/LoadingCustom";
 
 const pageSizeBlogDefault = 9;
 
@@ -180,7 +180,7 @@ const BlogAllClientsPage = () => {
 
         {/* Blog List */}
         {isLoading ? (
-          <LoadingBlog />
+          <LoadingCustom />
         ) : data?.content && data.content.length > 0 ? (
           <>
             <motion.section

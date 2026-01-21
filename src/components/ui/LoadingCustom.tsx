@@ -1,4 +1,4 @@
-const LoadingBlog = () => {
+const LoadingCustom = () => {
   return (
     <div className="text-center py-16">
       <div className="text-4xl mb-4">⏳</div>
@@ -6,4 +6,4 @@ const LoadingBlog = () => {
     </div>
   );
 };
-export default LoadingBlog;
+export default LoadingCustom;

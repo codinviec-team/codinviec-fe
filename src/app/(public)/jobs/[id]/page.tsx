@@ -1,20 +1,37 @@
+import JobServices from "@/services/home/job/JobServices";
 import type { Metadata } from "next";
-import { generatePublicMetadata } from "@/utils/metadata";
 import JobDetailPageClient from "./JobDetailPageClient";
+import { notFound } from "next/navigation";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return generatePublicMetadata(
-    `Chi tiết việc làm - Job ${params.id}`,
-    "Xem chi tiết việc làm IT, developer, lập trình viên tại CodinViec",
-    `/job/${params.id}`
-  );
+  const { id } = await params;
+
+  if (!id) {
+    notFound();
+  }
+
+  const jobId = Number(id);
+  if (Number.isNaN(jobId)) {
+    notFound();
+  }
+
+  try {
+    const job = await JobServices.getJobByIdInServer(jobId);
+
+    return {
+      title: `${job.jobPosition} tại ${job.company.name} | Codinviec`,
+      description: job.descriptionJob,
+    };
+  } catch (error) {
+    notFound();
+  }
 }
 
-export default function JobDetailPage({ params }: Props) {
-  return <JobDetailPageClient jobId={params.id} />;
+export default async function JobDetailPage({ params }: Props) {
+  const { id } = await params;
+  return <JobDetailPageClient jobId={id} />;
 }
-

@@ -2,8 +2,10 @@
 
 import CustomBadge from "@/components/ui/CustomBadge";
 import TagCustomer from "@/components/ui/TagCustomer";
+import { PATHS } from "@/constants/paths";
 import { BadgeVariant } from "@/types/common/BadgeType";
 import { JobType } from "@/types/home/job/JobType";
+
 import {
   ClockCircleOutlined,
   DollarOutlined,
@@ -28,6 +30,7 @@ export default function JobListCard({
   index = 0,
 }: JobListCardProps) {
   const [isSaved, setIsSaved] = useState(false);
+  console.log("job", job);
 
   return (
     <motion.div
@@ -43,7 +46,7 @@ export default function JobListCard({
         {/* Company Logo */}
         <div className="flex-shrink-0">
           <Link
-            href={`/company/${job.id}`}
+            href={`${PATHS.COMPANIES}/${job.company.id}`}
             className="text-base text-gray-600 hover:text-accent-500 transition-colors font-medium"
           >
             <div className="w-20 h-20 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center overflow-hidden">
@@ -73,13 +76,13 @@ export default function JobListCard({
                   })}
               </div>
               <Link
-                href={`/job/${job.id}`}
+                href={`${PATHS.JOBS}/${job.id}`}
                 className="text-xl font-bold text-gray-900 hover:text-primary-600 transition-colors line-clamp-2 mb-2 block"
               >
                 {job.jobPosition}
               </Link>
               <Link
-                href={`/company/${job.id}`}
+                href={`${PATHS.COMPANIES}/${job.company.id}`}
                 className="text-base text-gray-600 hover:text-accent-500 transition-colors font-medium"
               >
                 {job.company.name}
@@ -134,13 +137,13 @@ export default function JobListCard({
           {/* Action Buttons */}
           <div className="flex items-center gap-3 pt-4 border-t border-primary-50">
             <Link
-              href={`/job/${job.id}`}
+              href={`${PATHS.JOBS}/${job.id}`}
               className="flex-1 text-center py-2.5 bg-primary-50 hover:bg-primary-600 text-primary-600 hover:text-white font-semibold rounded-xl transition-all duration-300"
             >
               Xem chi tiết
             </Link>
             <Link
-              href={`/job/${job.id}/apply`}
+              href={`${PATHS.JOBS}/${job.id}/apply`}
               className="flex-1 text-center py-2.5 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded-xl transition-all duration-300"
             >
               Ứng tuyển ngay
