@@ -11,6 +11,14 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import clsx from "clsx";
+import { ApplyJobType } from "@/types/home/job/JobType";
+import JobServices from "@/services/home/job/JobServices";
+import { alert } from "@/utils/notification";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/hooks/hooks";
+import { RootState } from "@/store";
+import { PATHS } from "@/constants/paths";
+import { Button } from "antd";
 
 export type Job = {
   id: number;
@@ -34,7 +42,27 @@ type JobCardProps = {
 
 export default function JobCard({ job, index = 0, className }: JobCardProps) {
   const [isSaved, setIsSaved] = useState(false);
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  const router = useRouter();
 
+  const onClickApplyJob = async () => {
+    if (user && job && job?.id && user?.id) {
+      const payload: ApplyJobType = {
+        userId: user?.id,
+        idJob: job?.id,
+      };
+      const jobApply = await JobServices.applyJobForUser(payload);
+      if (jobApply?.id) {
+        alert.success(
+          "Ứng tuyển thành công!",
+          `Bạn đã ứng tuyển công việc thành công!`,
+        );
+        router.push(PATHS.JOBS);
+      } else {
+        alert.error("Ứng tuyển thất bại!", `Hãy thực hiện lại!`);
+      }
+    }
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -43,7 +71,7 @@ export default function JobCard({ job, index = 0, className }: JobCardProps) {
       transition={{ duration: 0.4, delay: index * 0.1 }}
       className={clsx(
         "group bg-white rounded-2xl border border-primary-100 hover:border-accent-300 p-5 transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
-        className
+        className,
       )}
     >
       {/* Header */}
@@ -91,34 +119,34 @@ export default function JobCard({ job, index = 0, className }: JobCardProps) {
       <div className="flex flex-wrap gap-2 mb-4">
         {job.isSuperHot && (
           <motion.span
-            animate={{ 
+            animate={{
               scale: [1, 1.08, 1],
               boxShadow: [
                 "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)",
                 "0 0 0 10px rgba(251, 191, 36, 0), 0 0 30px rgba(251, 191, 36, 0.4)",
-                "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)"
-              ]
+                "0 0 0 0 rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6)",
+              ],
             }}
             transition={{ duration: 2, repeat: Infinity }}
             className="px-3 py-1.5 bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 text-white text-xs font-bold rounded-full shadow-2xl shadow-orange-500/80 border-3 border-yellow-200 ring-2 ring-yellow-300 ring-offset-2 ring-offset-white"
-            style={{ borderWidth: '3px' }}
+            style={{ borderWidth: "3px" }}
           >
             🔥 Super Hot
           </motion.span>
         )}
         {job.isUrgent && !job.isSuperHot && (
           <motion.span
-            animate={{ 
+            animate={{
               scale: [1, 1.05, 1],
               boxShadow: [
                 "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)",
                 "0 0 0 8px rgba(239, 68, 68, 0), 0 0 25px rgba(239, 68, 68, 0.4)",
-                "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)"
-              ]
+                "0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 15px rgba(239, 68, 68, 0.5)",
+              ],
             }}
             transition={{ duration: 2, repeat: Infinity }}
             className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white text-xs font-bold rounded-full shadow-2xl shadow-red-600/70 border-3 border-red-400 ring-2 ring-red-500 ring-offset-2 ring-offset-white"
-            style={{ borderWidth: '3px' }}
+            style={{ borderWidth: "3px" }}
           >
             ⚡ Urgent
           </motion.span>
@@ -156,14 +184,18 @@ export default function JobCard({ job, index = 0, className }: JobCardProps) {
 
       {/* Apply Button */}
       <div className="mt-4 pt-4 border-t border-primary-50">
-        <Link
-          href={`/job/${job.id}`}
-          className="block w-full text-center py-2.5 bg-primary-50 hover:bg-primary-600 text-primary-600 hover:text-white font-semibold rounded-xl transition-all duration-300"
+        <Button
+          type="primary"
+          block
+          size="large"
+          onClick={() => {
+            onClickApplyJob();
+          }}
+          className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
         >
           Ứng tuyển ngay
-        </Link>
+        </Button>
       </div>
     </motion.div>
   );
 }
-

@@ -120,7 +120,7 @@ const SkillProfile = ({
           groupCoreName: nameGroup,
           skills: skillsResult,
         };
-      }
+      },
     );
 
     setGroups(groupSkillProfile);
@@ -146,7 +146,7 @@ const SkillProfile = ({
                 availableSkillExperienceId: item,
               };
               await AvailableSkillExperienceService.DeleteAvailableSkillExperienceById(
-                payloadDelete
+                payloadDelete,
               );
             }
             removedSkillIdsRef.current = [];
@@ -196,7 +196,7 @@ const SkillProfile = ({
 
                 const skillChanged =
                   await AvailableSkillExperienceService.UpdateAvailableSkillExperienceById(
-                    payload
+                    payload,
                   );
               }
             } else {
@@ -230,7 +230,7 @@ const SkillProfile = ({
 
                 const skillNewInOldGroup =
                   await AvailableSkillExperienceService.SaveAvailableSkillExperienceById(
-                    payload
+                    payload,
                   );
               } else {
                 // Trường hợp thêm mới ở group chưa có luôn
@@ -243,16 +243,12 @@ const SkillProfile = ({
 
                   const groupCoreSkillNew =
                     await GroupCoreSkillService.SaveGroupCoreSkill(
-                      payloadGroup
+                      payloadGroup,
                     );
 
                   if (groupCoreSkillNew?.id) {
                     isCreateNewGroupCoreName = true;
                     idCreateNewGroupCoreName = groupCoreSkillNew?.id;
-                    console.log(
-                      "isCreateNewGroupCoreName",
-                      isCreateNewGroupCoreName
-                    );
                   }
                 }
 
@@ -265,7 +261,7 @@ const SkillProfile = ({
 
                 const skillNewInNewGroup =
                   await AvailableSkillExperienceService.SaveAvailableSkillExperienceById(
-                    payload
+                    payload,
                   );
               }
             }
@@ -424,7 +420,7 @@ const SkillProfile = ({
                     validator: async (_, value) => {
                       if (!value || value.length === 0) {
                         return Promise.reject(
-                          new Error("Phải thêm ít nhất 1 skill")
+                          new Error("Phải thêm ít nhất 1 skill"),
                         );
                       }
                     },

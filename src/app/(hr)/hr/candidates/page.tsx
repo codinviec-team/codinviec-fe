@@ -7,6 +7,7 @@ import { SearchOutlined, EyeOutlined, StarOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { demoCandidates, type Candidate } from "@/data/hr/demoData";
+import { useHrContext } from "@/context/HrContext";
 
 const statusConfig = {
   new: { label: "Mới", color: "blue" },
@@ -18,14 +19,15 @@ const statusConfig = {
 
 export default function HRCandidatesPage() {
   const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState<Candidate["status"] | "all">("all");
+
+  const { dataUserApply, loadingContextHr } = useHrContext();
 
   const filteredCandidates = demoCandidates.filter((candidate) => {
-    const matchesSearch = candidate.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                         candidate.email.toLowerCase().includes(searchText.toLowerCase()) ||
-                         candidate.position.toLowerCase().includes(searchText.toLowerCase());
-    const matchesStatus = statusFilter === "all" || candidate.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesSearch =
+      candidate.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      candidate.email.toLowerCase().includes(searchText.toLowerCase()) ||
+      candidate.position.toLowerCase().includes(searchText.toLowerCase());
+    return matchesSearch;
   });
 
   const columns: ColumnsType<Candidate> = [
@@ -82,9 +84,7 @@ export default function HRCandidatesPage() {
       title: "Ngày ứng tuyển",
       dataIndex: "appliedAt",
       key: "appliedAt",
-      render: (date) => (
-        <span className="text-gray-500 text-sm">{date}</span>
-      ),
+      render: (date) => <span className="text-gray-500 text-sm">{date}</span>,
     },
     {
       title: "Hành động",
@@ -128,21 +128,6 @@ export default function HRCandidatesPage() {
             className="flex-1 !rounded-xl"
             size="large"
           />
-          <Select
-            placeholder="Lọc theo trạng thái"
-            value={statusFilter}
-            onChange={setStatusFilter}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "new", label: "Mới" },
-              { value: "reviewing", label: "Đang xem xét" },
-              { value: "interviewing", label: "Phỏng vấn" },
-              { value: "accepted", label: "Chấp nhận" },
-              { value: "rejected", label: "Từ chối" },
-            ]}
-            className="md:w-[200px] !rounded-xl"
-            size="large"
-          />
         </div>
       </motion.div>
 
@@ -170,4 +155,3 @@ export default function HRCandidatesPage() {
     </div>
   );
 }
-

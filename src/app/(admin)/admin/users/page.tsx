@@ -89,13 +89,13 @@ export default function AdminUsersPage() {
         return {
           total: dataUser?.content?.length || 0,
           candidates: dataUser?.content?.filter(
-            (item) => item?.role?.roleName?.toLocaleLowerCase() === "user"
+            (item) => item?.role?.roleName?.toLocaleLowerCase() === "user",
           ).length,
           hired: dataUser?.content?.filter(
-            (item) => item?.role?.roleName?.toLocaleLowerCase() === "hr"
+            (item) => item?.role?.roleName?.toLocaleLowerCase() === "hr",
           ).length,
           admin: dataUser?.content?.filter(
-            (item) => item?.role?.roleName?.toLocaleLowerCase() === "admin"
+            (item) => item?.role?.roleName?.toLocaleLowerCase() === "admin",
           ).length,
           blocked: dataUser?.content?.filter((item) => item?.block === true)
             .length,
@@ -109,7 +109,7 @@ export default function AdminUsersPage() {
   const handleDeleteUsers = async () => {
     const oke = await alert.confirm(
       "Xác nhận xóa",
-      "Bạn có chắc chắn muốn xóa người dùng này?"
+      "Bạn có chắc chắn muốn xóa người dùng này?",
     );
     if (!oke) return;
 
@@ -131,7 +131,7 @@ export default function AdminUsersPage() {
   const handleBlockUsers = async () => {
     const oke = await alert.confirm(
       "Xác nhận khóa",
-      "Bạn có chắc chắn muốn khóa người dùng này?"
+      "Bạn có chắc chắn muốn khóa người dùng này?",
     );
     if (!oke) return;
 
@@ -153,7 +153,7 @@ export default function AdminUsersPage() {
   const handleUnblockUsers = async () => {
     const oke = await alert.confirm(
       "Xác nhận mở khóa",
-      "Bạn có chắc chắn muốn mở  khóa người dùng này?"
+      "Bạn có chắc chắn muốn mở  khóa người dùng này?",
     );
     if (!oke) return;
 
@@ -193,7 +193,7 @@ export default function AdminUsersPage() {
 
   // HANDLE STATUS CHANGE
   const handleStatusChange: SelectProps<string | null>["onChange"] = (
-    value
+    value,
   ) => {
     setFilterStatus(value);
   };
@@ -238,7 +238,7 @@ export default function AdminUsersPage() {
         education: user?.education || "",
         address: user?.address || "",
         websiteLink: user?.websiteLink || "",
-        companyId: user?.companyId || "",
+        companyId: user?.company?.id || "",
         roleId: user?.role?.id || "",
       });
       setopenEditUser(true);
@@ -246,7 +246,7 @@ export default function AdminUsersPage() {
   };
 
   const handleChangeEditUserInfo = (
-    userInfo: (UserEditFormValues & { id: string }) | null
+    userInfo: (UserEditFormValues & { id: string }) | null,
   ) => {
     setEditUserInfo(userInfo);
   };

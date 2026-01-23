@@ -1,13 +1,16 @@
 "use client";
 
-import { Job } from "@/components/home/HomePage/FeaturedJobs/JobCard";
 import Container from "@/components/ui/Container";
+import CustomBadge from "@/components/ui/CustomBadge";
 import LoadingCustom from "@/components/ui/LoadingCustom";
+import { PATHS } from "@/constants/paths";
 import CompanyServices from "@/services/home/companies/CompanyServices";
+import JobServices from "@/services/home/job/JobServices";
+import { BadgeVariant } from "@/types/common/BadgeType";
 import { CompanyAddress, CompanyType } from "@/types/home/company/CompanyType";
+import { JobType } from "@/types/home/job/JobType";
 import {
   ArrowLeftOutlined,
-  CalendarOutlined,
   CheckCircleOutlined,
   DollarOutlined,
   EnvironmentOutlined,
@@ -21,16 +24,10 @@ import {
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Tabs } from "antd";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import JobServices from "@/services/home/job/JobServices";
-import { JobType } from "@/types/home/job/JobType";
-import CustomBadge from "@/components/ui/CustomBadge";
-import { BadgeVariant } from "@/types/common/BadgeType";
 import JobListCard from "../../jobs/components/JobListCard";
-import { PATHS } from "@/constants/paths";
-import Link from "next/link";
 
 // Demo data
 
@@ -117,7 +114,7 @@ export default function CompanyDetailClient({
 
   const headOfficeCompany =
     dataComapny?.companyAddress?.find(
-      (address: CompanyAddress) => address.headOffice === true
+      (address: CompanyAddress) => address.headOffice === true,
     ) || dataComapny?.companyAddress[0];
 
   return (

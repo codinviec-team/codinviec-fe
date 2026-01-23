@@ -3,8 +3,12 @@
 import CustomBadge from "@/components/ui/CustomBadge";
 import TagCustomer from "@/components/ui/TagCustomer";
 import { PATHS } from "@/constants/paths";
+import { useAppSelector } from "@/hooks/hooks";
+import JobServices from "@/services/home/job/JobServices";
+import { RootState } from "@/store";
 import { BadgeVariant } from "@/types/common/BadgeType";
-import { JobType } from "@/types/home/job/JobType";
+import { ApplyJobType, JobType } from "@/types/home/job/JobType";
+import { alert } from "@/utils/notification";
 
 import {
   ClockCircleOutlined,
@@ -13,9 +17,11 @@ import {
   HeartFilled,
   HeartOutlined,
 } from "@ant-design/icons";
+import { Button } from "antd";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type JobListCardProps = {
@@ -30,7 +36,27 @@ export default function JobListCard({
   index = 0,
 }: JobListCardProps) {
   const [isSaved, setIsSaved] = useState(false);
-  console.log("job", job);
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  const router = useRouter();
+
+  const onClickApplyJob = async () => {
+    if (user && job && job?.id && user?.id) {
+      const payload: ApplyJobType = {
+        userId: user?.id,
+        idJob: job?.id,
+      };
+      const jobApply = await JobServices.applyJobForUser(payload);
+      if (jobApply?.id) {
+        alert.success(
+          "Ứng tuyển thành công!",
+          `Bạn đã ứng tuyển công việc thành công!`,
+        );
+        router.push(PATHS.JOBS);
+      } else {
+        alert.error("Ứng tuyển thất bại!", `Hãy thực hiện lại!`);
+      }
+    }
+  };
 
   return (
     <motion.div
@@ -39,7 +65,7 @@ export default function JobListCard({
         "group bg-white rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg",
         isSelected
           ? "border-primary-600 shadow-lg ring-2 ring-primary-100"
-          : "border-primary-100 hover:border-accent-300"
+          : "border-primary-100 hover:border-accent-300",
       )}
     >
       <div className="flex flex-col md:flex-row gap-4">
@@ -142,12 +168,17 @@ export default function JobListCard({
             >
               Xem chi tiết
             </Link>
-            <Link
-              href={`${PATHS.JOBS}/${job.id}/apply`}
-              className="flex-1 text-center py-2.5 bg-accent-500 hover:bg-accent-600 text-white font-semibold rounded-xl transition-all duration-300"
+            <Button
+              type="primary"
+              block
+              size="large"
+              onClick={() => {
+                onClickApplyJob();
+              }}
+              className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
             >
               Ứng tuyển ngay
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

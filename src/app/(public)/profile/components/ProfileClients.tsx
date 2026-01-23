@@ -26,6 +26,7 @@ import GeneralInfo from "./GeneralInfo";
 import SkillProfile from "./SkillProfile";
 import TabProfile from "./TabProfile";
 import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
+import CvClients from "./CvClients";
 
 export type FormPropsProfiles = {
   firstName: string;
@@ -42,13 +43,14 @@ export type FormPropsProfiles = {
 const TabsInforConst = {
   general: "general",
   skills: "skills",
+  cv: "cv",
 };
 
 export default function ProfileClients() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, loading, isAuthenticated } = useAppSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const [form] = Form.useForm();
   const [editing, setEditing] = useState(false);
@@ -68,7 +70,7 @@ export default function ProfileClients() {
     queryKey: ["getSkillUser", user?.id],
     queryFn: () =>
       AvailableSkillExperienceService.getAllAvailableSkillExperienceById(
-        user?.id || ""
+        user?.id || "",
       ),
     enabled: !!user?.id,
   });
@@ -121,7 +123,6 @@ export default function ProfileClients() {
 
   const handleSubmit = async (values: FormPropsProfiles) => {
     try {
-      console.log("values", values);
       let isChange = false;
 
       for (const key in values) {
@@ -133,9 +134,12 @@ export default function ProfileClients() {
             }
             break;
           }
+
           if (values[k]?.toLowerCase() !== user[k].toLowerCase()) {
             isChange = true;
           }
+        } else {
+          isChange = true;
         }
       }
 
@@ -203,6 +207,8 @@ export default function ProfileClients() {
   };
   const handleChange: UploadProps["onChange"] = (info) => {
     const file = info.file as unknown as File;
+    console.log("123", 123);
+    console.log("file", file);
     if (file) {
       setAvatarFile(file);
       setPreviewUrl(URL.createObjectURL(file));
@@ -212,7 +218,7 @@ export default function ProfileClients() {
   const handleDeleteSkillByGroupCoreId = async (groupCoreId: number) => {
     if (!user || !groupCoreId) return;
     const oke = await alert.warning(
-      "Bạn có chắc chắn muốn xóa nhóm kỹ năng này không?"
+      "Bạn có chắc chắn muốn xóa nhóm kỹ năng này không?",
     );
     if (!oke) return;
 
@@ -223,7 +229,7 @@ export default function ProfileClients() {
 
     const res =
       await AvailableSkillExperienceService.deleteAvailableSkillExperienceByGroupCoreId(
-        payload
+        payload,
       );
     console.log("res", res);
     if (res) {
@@ -255,6 +261,18 @@ export default function ProfileClients() {
       handleOpenSoftSkill(false);
     } else {
       alert.error("Cập nhật kỹ năng mềm thất bại!");
+    }
+  };
+
+  const handleChangeCv: UploadProps["onChange"] = async (info) => {
+    const file = info.fileList?.[0]?.originFileObj;
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("cvFile", file);
+    const uploadCv = await authService.uploadCv(formData);
+    if (uploadCv?.id) {
+      alert.success("Cập nhật CV thành công!");
+      dispatch(checkAuth()).unwrap();
     }
   };
 
@@ -297,6 +315,11 @@ export default function ProfileClients() {
     handleOpenSoftSkill,
     handleChangeSoftSkill,
     handleSubmitSoftSkill,
+  };
+
+  const propsCvClient = {
+    user: user || [],
+    handleChangeCv,
   };
 
   return (
@@ -357,7 +380,7 @@ export default function ProfileClients() {
                       beforeUpload={() => false}
                       onChange={handleChange}
                     >
-                      <button className="absolute bottom-0 right-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors shadow-lg border-2 border-white">
+                      <button className="cursor-pointer absolute bottom-0 right-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors shadow-lg border-2 border-white">
                         <CameraOutlined />
                       </button>
                     </Upload>
@@ -372,8 +395,8 @@ export default function ProfileClients() {
                     {user?.role?.roleName === "ROLE_ADMIN"
                       ? "Admin"
                       : user?.role?.roleName === "ROLE_EMPLOYER"
-                      ? "Nhà tuyển dụng"
-                      : "Ứng viên"}
+                        ? "Nhà tuyển dụng"
+                        : "Ứng viên"}
                   </span>
                 )}
               </div>
@@ -392,6 +415,13 @@ export default function ProfileClients() {
             >
               Kỹ năng
             </TabProfile>
+            <TabProfile
+              onClick={() => {
+                onChangeTabs(TabsInforConst.cv);
+              }}
+            >
+              CV của bạn
+            </TabProfile>
           </motion.div>
 
           {/* Right Column - Form */}
@@ -404,6 +434,12 @@ export default function ProfileClients() {
 
           {tabsInfor === TabsInforConst.skills ? (
             <SkillProfile {...propsSkillsInfo} />
+          ) : (
+            ""
+          )}
+
+          {tabsInfor === TabsInforConst.cv ? (
+            <CvClients {...propsCvClient} />
           ) : (
             ""
           )}

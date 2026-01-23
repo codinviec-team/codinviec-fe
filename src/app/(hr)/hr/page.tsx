@@ -1,21 +1,26 @@
 "use client";
 
-import {motion} from "framer-motion";
-import {useAppSelector} from "@/hooks/hooks";
-import {RootState} from "@/store";
+import { motion } from "framer-motion";
+import { useAppSelector } from "@/hooks/hooks";
+import { RootState } from "@/store";
 import {
-    BarChartOutlined,
-    EyeOutlined,
-    FileTextOutlined,
-    PlusCircleOutlined,
-    RiseOutlined,
-    TeamOutlined,
-    UserOutlined,
+  BarChartOutlined,
+  EyeOutlined,
+  FileTextOutlined,
+  PlusCircleOutlined,
+  RiseOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import {Button, Card, Col, Row, Statistic, Table, Tag} from "antd";
-import type {ColumnsType} from "antd/es/table";
+import { Button, Card, Col, Row, Statistic, Table, Tag } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
-import {demoHRStats, demoJobs, type HRJob} from "@/data/hr/demoData";
+import { useHrContext } from "@/context/HrContext";
+import TagTable from "@/components/ui/TagTable";
+import { JobType } from "@/types/home/job/JobType";
+import { demoHRStats } from "@/data/hr/demoData";
+import { formatToDDMMYYYY } from "@/utils/DateHelper";
+import { PATHS } from "@/constants/paths";
 
 const statusConfig = {
   active: { label: "Đang tuyển", color: "success" },
@@ -26,6 +31,7 @@ const statusConfig = {
 
 export default function HRDashboardPage() {
   const { user } = useAppSelector((state: RootState) => state.auth);
+  const { jobsCompany, loadingContextHr } = useHrContext();
 
   const displayName =
     user?.firstName && user?.lastName
@@ -33,21 +39,23 @@ export default function HRDashboardPage() {
       : user?.email?.split("@")[0] || "HR Manager";
 
   // Get recent jobs (last 4)
-  const recentJobs = demoJobs.slice(0, 4).map((job) => ({
-    key: job.id.toString(),
-    ...job,
-    date: job.postedAt,
-  }));
 
-  const columns: ColumnsType<HRJob & { key: string; date: string }> = [
+  const recentJobs =
+    jobsCompany?.slice(0, 4)?.map((job) => ({
+      key: job.id,
+      ...job,
+      date: job.createdDate,
+    })) || [];
+
+  const columns: ColumnsType<JobType> = [
     {
       title: "Vị trí tuyển dụng",
       dataIndex: "title",
       key: "title",
-      render: (text, record) => (
+      render: (value, record) => (
         <div>
-          <div className="font-medium text-gray-900">{text}</div>
-          <div className="text-sm text-gray-500">{record.department} • {record.location}</div>
+          <div className="font-medium text-gray-900">{record.jobPosition}</div>
+          <div className="text-sm text-gray-500">{record.detailAddress}</div>
         </div>
       ),
     },
@@ -55,43 +63,23 @@ export default function HRDashboardPage() {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (status: keyof typeof statusConfig) => (
-        <Tag color={statusConfig[status].color} className="!rounded-lg">
-          {statusConfig[status].label}
-        </Tag>
-      ),
-    },
-    {
-      title: "Lượt xem",
-      dataIndex: "views",
-      key: "views",
-      align: "center",
-      render: (views) => (
-        <span className="text-gray-600">{views.toLocaleString()}</span>
-      ),
-    },
-    {
-      title: "Ứng tuyển",
-      dataIndex: "applications",
-      key: "applications",
-      align: "center",
-      render: (apps) => (
-        <span className="font-semibold text-primary-600">{apps}</span>
-      ),
+      render: (value, record) => <TagTable>{record.jobStatusName}</TagTable>,
     },
     {
       title: "Ngày đăng",
       dataIndex: "date",
       key: "date",
-      render: (date) => (
-        <span className="text-gray-500 text-sm">{date}</span>
+      render: (value, record) => (
+        <span className="text-gray-500 text-sm">
+          {formatToDDMMYYYY(record.createdDate)}
+        </span>
       ),
     },
     {
       title: "Hành động",
       key: "action",
-      render: (_, record) => (
-        <Link href={`/hr/jobs/${record.id}`}>
+      render: (value, record) => (
+        <Link href={`${PATHS.JOBS}/${record.id}`}>
           <Button type="link" size="small">
             Xem chi tiết
           </Button>
@@ -133,9 +121,7 @@ export default function HRDashboardPage() {
       >
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} lg={6}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow">
               <Statistic
                 title={
                   <span className="text-gray-600 font-medium">
@@ -158,9 +144,7 @@ export default function HRDashboardPage() {
           </Col>
 
           <Col xs={24} sm={12} lg={6}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow">
               <Statistic
                 title={
                   <span className="text-gray-600 font-medium">
@@ -181,9 +165,7 @@ export default function HRDashboardPage() {
           </Col>
 
           <Col xs={24} sm={12} lg={6}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow">
               <Statistic
                 title={
                   <span className="text-gray-600 font-medium">
@@ -191,9 +173,7 @@ export default function HRDashboardPage() {
                   </span>
                 }
                 value={demoHRStats.newCandidates}
-                prefix={
-                  <TeamOutlined className="text-accent-400 text-2xl" />
-                }
+                prefix={<TeamOutlined className="text-accent-400 text-2xl" />}
                 suffix={
                   <div className="flex items-center gap-1 text-xs text-green-600">
                     <RiseOutlined />
@@ -206,9 +186,7 @@ export default function HRDashboardPage() {
           </Col>
 
           <Col xs={24} sm={12} lg={6}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-shadow">
               <Statistic
                 title={
                   <span className="text-gray-600 font-medium">
@@ -268,9 +246,7 @@ export default function HRDashboardPage() {
       >
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} lg={8}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-primary-50 to-accent-50"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-primary-50 to-accent-50">
               <Link href="/hr/jobs/post">
                 <div className="text-center">
                   <PlusCircleOutlined className="text-4xl text-accent-600 mb-3" />
@@ -286,15 +262,11 @@ export default function HRDashboardPage() {
           </Col>
 
           <Col xs={24} sm={12} lg={8}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-accent-50 to-primary-50"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-accent-50 to-primary-50">
               <Link href="/hr/candidates">
                 <div className="text-center">
                   <UserOutlined className="text-4xl text-primary-600 mb-3" />
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Xem ứng viên
-                  </h3>
+                  <h3 className="font-bold text-gray-900 mb-2">Xem ứng viên</h3>
                   <p className="text-sm text-gray-600">
                     Quản lý và xem hồ sơ ứng viên
                   </p>
@@ -304,15 +276,11 @@ export default function HRDashboardPage() {
           </Col>
 
           <Col xs={24} sm={12} lg={8}>
-            <Card
-              className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-secondary-50 to-primary-50"
-            >
+            <Card className="border border-primary-100 rounded-2xl hover:shadow-lg transition-all cursor-pointer bg-gradient-to-br from-secondary-50 to-primary-50">
               <Link href="/hr/analytics">
                 <div className="text-center">
                   <BarChartOutlined className="text-4xl text-secondary-600 mb-3" />
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Xem thống kê
-                  </h3>
+                  <h3 className="font-bold text-gray-900 mb-2">Xem thống kê</h3>
                   <p className="text-sm text-gray-600">
                     Phân tích hiệu quả tuyển dụng
                   </p>
@@ -325,4 +293,3 @@ export default function HRDashboardPage() {
     </div>
   );
 }
-

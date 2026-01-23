@@ -44,34 +44,31 @@ const menuItems = [
     icon: <UserOutlined />,
     path: "/hr/candidates",
   },
-  {
-    key: "analytics",
-    label: "Thống kê",
-    icon: <BarChartOutlined />,
-    path: "/hr/analytics",
-  },
+  // {
+  //   key: "analytics",
+  //   label: "Thống kê",
+  //   icon: <BarChartOutlined />,
+  //   path: "/hr/analytics",
+  // },
   {
     key: "company",
     label: "Công ty",
     icon: <TeamOutlined />,
     path: "/hr/company",
   },
-  {
-    key: "settings",
-    label: "Cài đặt",
-    icon: <SettingOutlined />,
-    path: "/hr/settings",
-  },
+  // {
+  //   key: "settings",
+  //   label: "Cài đặt",
+  //   icon: <SettingOutlined />,
+  //   path: "/hr/settings",
+  // },
 ];
 
 export default function Sidebar({ isOpen, onClose }: HRSidebarProps) {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    if (path === "/hr") {
-      return pathname === path;
-    }
-    return pathname.startsWith(path);
+    return pathname === path;
   };
 
   return (
@@ -163,4 +160,3 @@ export default function Sidebar({ isOpen, onClose }: HRSidebarProps) {
     </>
   );
 }
-

@@ -1,27 +1,26 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { PATHS } from "@/constants/paths";
 import ListCategory from "@/components/home/HomePage/Category/ListCategory";
+import MobileCategoryList from "@/components/home/HomePage/Category/MobileCategoryList";
+import { PATHS } from "@/constants/paths";
+import { useLogout } from "@/hooks/auth/useLogout";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
-import { useLogout } from "@/hooks/auth/useLogout";
+import { changeIsFindJob } from "@/store/slice/auth/authSlice";
 import { IUser } from "@/types/auth/User";
-import { useEffect, useState } from "react";
 import {
-  MenuOutlined,
   CloseOutlined,
-  UserOutlined,
   LogoutOutlined,
+  MenuOutlined,
   SettingOutlined,
-  CheckOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import MobileCategoryList from "@/components/home/HomePage/Category/MobileCategoryList";
-import { motion, AnimatePresence } from "framer-motion";
 import { Switch } from "antd";
 import clsx from "clsx";
-import { changeIsFindJob } from "@/store/slice/auth/authSlice";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const getUserDisplayName = (user: IUser | null): string => {
   if (!user) return "User";
@@ -35,13 +34,13 @@ const getUserDisplayName = (user: IUser | null): string => {
 
 export default function HeaderClient() {
   const { isAuthenticated, user, loading } = useAppSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const { handleLogout } = useLogout();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileUserMenuOpen, setMobileUserMenuOpen] = useState(false);
   const [statusIsFindJob, setStatusIsFindJob] = useState<boolean | undefined>(
-    user?.findJob || false
+    user?.findJob || false,
   );
 
   const displayName = getUserDisplayName(user);
@@ -97,12 +96,12 @@ export default function HeaderClient() {
               <button className="flex items-center justify-center hover:opacity-90 transition-all cursor-pointer p-1.5 rounded-xl hover:bg-primary-800/40 active:scale-95">
                 <div className="w-11 h-11 rounded-full bg-gradient-to-br from-accent-200 to-accent-300 flex items-center justify-center overflow-hidden border-2 border-accent-400/50 shadow-lg ring-2 ring-accent-500/20">
                   {user?.avatar ? (
-                    <Image
-                      src={user?.avatar}
+                    <img
+                      src={user?.avatar || ""}
                       alt="User avatar"
                       width={44}
                       height={44}
-                      className="object-"
+                      className="object-cover"
                     />
                   ) : (
                     <span className="text-accent-700 font-bold text-xl">
@@ -161,7 +160,7 @@ export default function HeaderClient() {
                       onChange={onChangeIsFindJob} // optional nhưng nên giữ
                       className={clsx(
                         "px-4 py-2 rounded",
-                        statusIsFindJob ? "" : "!bg-gray-400"
+                        statusIsFindJob ? "" : "!bg-gray-400",
                       )}
                     />
                     <p className="text-[14px]">Đang tìm việc</p>
@@ -214,24 +213,24 @@ export default function HeaderClient() {
                     </motion.div>
                   )}
 
-                  {user?.role?.roleName === "HR" ||
-                    (user?.role?.roleName === "ADMIN" && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.15 }}
+                  {(user?.role?.roleName?.toLocaleLowerCase() === "hr" ||
+                    user?.role?.roleName?.toLocaleLowerCase() === "admin") && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -5 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 }}
+                    >
+                      <Link
+                        href={PATHS.HR}
+                        className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-accent-100 hover:bg-primary-800/60 hover:text-accent transition-all duration-150 rounded-lg mx-1 group/item"
                       >
-                        <Link
-                          href={PATHS.HR}
-                          className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-accent-100 hover:bg-primary-800/60 hover:text-accent transition-all duration-150 rounded-lg mx-1 group/item"
-                        >
-                          <div className="w-7 h-7 rounded-md bg-red-500/15 flex items-center justify-center group-hover/item:bg-red-500/25 transition-colors">
-                            <SettingOutlined className="w-4 h-4 text-red-400 group-hover/item:text-red-300 transition-colors" />
-                          </div>
-                          <span>Quản lý</span>
-                        </Link>
-                      </motion.div>
-                    ))}
+                        <div className="w-7 h-7 rounded-md bg-red-500/15 flex items-center justify-center group-hover/item:bg-red-500/25 transition-colors">
+                          <SettingOutlined className="w-4 h-4 text-red-400 group-hover/item:text-red-300 transition-colors" />
+                        </div>
+                        <span>Quản lý</span>
+                      </Link>
+                    </motion.div>
+                  )}
 
                   <div className="border-t border-primary-700/40 my-1 mx-1"></div>
 

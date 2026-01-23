@@ -3,6 +3,7 @@ import apiServer from "@/interceptor/api-server";
 import { BasePageResponse } from "@/types/common/BasePageResponse";
 import { IBaseResponse } from "@/types/common/BaseResponse";
 import {
+  ApplyJobType,
   JobFilterType,
   JobType,
   SearchJobType,
@@ -18,13 +19,13 @@ const JobServices = {
   },
 
   async getAllJobHavePage(
-    searchs: SearchJobType = {}
+    searchs: SearchJobType = {},
   ): Promise<BasePageResponse<JobType>> {
     const res = await api.get<IBaseResponse<BasePageResponse<JobType>>>(
       "/job",
       {
         params: searchs,
-      }
+      },
     );
     if (!res.data.data) {
       throw new Error("Không lấy được công việc");
@@ -33,13 +34,13 @@ const JobServices = {
   },
 
   async getAllJobFilter(
-    searchs: JobFilterType = {}
+    searchs: JobFilterType = {},
   ): Promise<BasePageResponse<JobType>> {
     const res = await api.get<IBaseResponse<BasePageResponse<JobType>>>(
       "/job/filter",
       {
         params: searchs,
-      }
+      },
     );
     if (!res.data.data) {
       throw new Error("Không lấy được công việc");
@@ -67,6 +68,14 @@ const JobServices = {
     const res = await api.get<IBaseResponse<JobType[]>>(`/job/company/${id}`);
     if (!res.data.data) {
       throw new Error("Không lấy được công việc");
+    }
+    return res?.data?.data;
+  },
+
+  async applyJobForUser(payload: ApplyJobType): Promise<JobType> {
+    const res = await api.post<IBaseResponse<JobType>>(`/job/apply`, payload);
+    if (!res.data.data) {
+      throw new Error("Ứng tuyển công việc thất bại!");
     }
     return res?.data?.data;
   },

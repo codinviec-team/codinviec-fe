@@ -26,6 +26,8 @@ export interface JobType {
   skills: AvailableSkillType[];
   isAgreedSalary: boolean;
   responsibility: string;
+  idJobStatus: number;
+  jobStatusName: string;
   salary: number;
   createdDate: string;
   updatedDate: string;
@@ -47,4 +49,9 @@ export interface JobFilterType {
   employmentTypeNames?: string[];
   salaryMin?: number;
   salaryMax?: number;
+}
+
+export interface ApplyJobType {
+  userId: string;
+  idJob: number;
 }

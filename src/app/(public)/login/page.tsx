@@ -26,7 +26,7 @@ const LoginPage = () => {
   const dispatch = useAppDispatch();
   const hasProcessedToken = useRef(false);
   const { isAuthenticated, loading } = useAppSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const [submitting, setSubmitting] = useState(false);
 
@@ -36,7 +36,7 @@ const LoginPage = () => {
     if (!apiBaseUrl) {
       alert.error(
         "Lỗi cấu hình",
-        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên."
+        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên.",
       );
       return;
     }
@@ -86,8 +86,8 @@ const LoginPage = () => {
           typeof error === "string"
             ? error
             : error instanceof Error
-            ? error.message
-            : "Token không hợp lệ. Vui lòng thử lại.";
+              ? error.message
+              : "Token không hợp lệ. Vui lòng thử lại.";
 
         alert.error("Đăng nhập thất bại", errorMessage);
 

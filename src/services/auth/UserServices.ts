@@ -3,6 +3,7 @@ import {
   BlockUserType,
   DeleteUserType,
   IUser,
+  JobApplyUserType,
   SaveUserType,
   SearchUserType,
   UpdateUserType,
@@ -12,7 +13,7 @@ import { IBaseResponse } from "@/types/common/BaseResponse";
 
 const UserService = {
   async getAllUserHavePage(
-    searchs: SearchUserType = {}
+    searchs: SearchUserType = {},
   ): Promise<BasePageResponse<IUser>> {
     const res = await api.get<IBaseResponse<BasePageResponse<IUser>>>("/user", {
       params: searchs,
@@ -23,9 +24,20 @@ const UserService = {
     return res?.data?.data;
   },
 
+  async getUserApplyByCompanyId(idCompany: string): Promise<JobApplyUserType> {
+    const res = await api.get<IBaseResponse<JobApplyUserType>>(
+      `/user/company/${idCompany}`,
+    );
+
+    if (!res.data.data) {
+      throw new Error("Không lấy được user apply của company này");
+    }
+    return res?.data?.data;
+  },
+
   async blockUser(params: BlockUserType): Promise<BasePageResponse<IUser>> {
     const res = await api.put<IBaseResponse<BasePageResponse<IUser>>>(
-      `/user/block/${params?.userId}`
+      `/user/block/${params?.userId}`,
     );
     if (!res.data.data) {
       throw new Error("Không lấy được user");
@@ -34,7 +46,7 @@ const UserService = {
   },
   async unblockUser(params: BlockUserType): Promise<BasePageResponse<IUser>> {
     const res = await api.put<IBaseResponse<BasePageResponse<IUser>>>(
-      `/user/unblock/${params?.userId}`
+      `/user/unblock/${params?.userId}`,
     );
     if (!res.data.data) {
       throw new Error("Không lấy được user");
@@ -53,7 +65,7 @@ const UserService = {
   async updateUser(payload: UpdateUserType): Promise<IUser> {
     const res = await api.put<IBaseResponse<IUser>>(
       `/user/${payload?.id}`,
-      payload
+      payload,
     );
     if (!res.data.data) {
       throw new Error("Không lấy được user");
@@ -63,7 +75,7 @@ const UserService = {
 
   async deleteUser(payload: DeleteUserType): Promise<IUser> {
     const res = await api.delete<IBaseResponse<IUser>>(
-      `/user/${payload.userId}`
+      `/user/${payload.userId}`,
     );
     if (!res.data.data) {
       throw new Error("Không lấy được user");
