@@ -26,7 +26,7 @@ export const authService = {
   async register(registerData: IRegister): Promise<RegisterType> {
     const res = await api.post<IBaseResponse<RegisterType>>(
       "/auth/register",
-      registerData
+      registerData,
     );
     if (!res.data.data) {
       throw new Error("Không lấy được user từ server");
@@ -58,10 +58,26 @@ export const authService = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     if (!res.data.data) {
-      throw new Error("Không nhận được token mới từ server");
+      throw new Error("Không nhận được cập nhật avatar!");
+    }
+    return res.data.data;
+  },
+
+  async uploadCv(payload: FormData): Promise<IUser> {
+    const res = await api.put<IBaseResponse<IUser>>(
+      "/auth/profile/uploadCv",
+      payload,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    if (!res.data.data) {
+      throw new Error("Không nhận được  cập nhật cv!");
     }
     return res.data.data;
   },
@@ -91,7 +107,7 @@ export const authService = {
       "/auth/profile/soft-skill",
       {
         softSkill: payload.softSkill,
-      }
+      },
     );
     if (!res.data.data) {
       throw new Error("Không thay đổi được soft skill");

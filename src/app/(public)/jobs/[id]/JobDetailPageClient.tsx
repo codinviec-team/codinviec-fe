@@ -5,10 +5,13 @@ import CustomBadge from "@/components/ui/CustomBadge";
 import LoadingCustom from "@/components/ui/LoadingCustom";
 import TagCustomer from "@/components/ui/TagCustomer";
 import { PATHS } from "@/constants/paths";
+import { useAppSelector } from "@/hooks/hooks";
 import JobServices from "@/services/home/job/JobServices";
+import { RootState } from "@/store";
 import { BadgeVariant } from "@/types/common/BadgeType";
-import { JobType } from "@/types/home/job/JobType";
+import { ApplyJobType, JobType } from "@/types/home/job/JobType";
 import { timeAgo } from "@/utils/DateHelper";
+import { alert } from "@/utils/notification";
 import {
   ArrowLeftOutlined,
   BookOutlined,
@@ -36,6 +39,7 @@ export default function JobDetailPageClient({
 }: JobDetailPageClientProps) {
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
+  const { user } = useAppSelector((state: RootState) => state.auth);
 
   // job
   const { data: dataJob, isLoading: isLoadingJob } = useQuery<JobType, Error>({
@@ -45,8 +49,6 @@ export default function JobDetailPageClient({
     },
   });
 
-  console.log("dataJob", dataJob);
-
   const loadingPage = isLoadingJob;
   if (loadingPage) {
     return (
@@ -55,7 +57,6 @@ export default function JobDetailPageClient({
       </Container>
     );
   }
-
   if (!dataJob && !loadingPage) {
     return (
       <Container className="!py-16">
@@ -79,6 +80,25 @@ export default function JobDetailPageClient({
       </Container>
     );
   }
+
+  const onClickApplyJob = async () => {
+    if (user && dataJob && dataJob?.id && user?.id) {
+      const payload: ApplyJobType = {
+        userId: user?.id,
+        idJob: dataJob?.id,
+      };
+      const jobApply = await JobServices.applyJobForUser(payload);
+      if (jobApply?.id) {
+        alert.success(
+          "Ứng tuyển thành công!",
+          `Bạn đã ứng tuyển công việc thành công!`,
+        );
+        router.push(PATHS.JOBS);
+      } else {
+        alert.error("Ứng tuyển thất bại!", `Hãy thực hiện lại!`);
+      }
+    }
+  };
 
   return (
     <Container className="!py-8">
@@ -286,7 +306,9 @@ export default function JobDetailPageClient({
               type="primary"
               block
               size="large"
-              href={`/job/${dataJob?.id}/apply`}
+              onClick={() => {
+                onClickApplyJob();
+              }}
               className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
             >
               Ứng tuyển ngay

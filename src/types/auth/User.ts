@@ -1,24 +1,28 @@
+import { GroupCoreSkillType } from "../common/GroupCoreSkillType";
+import { CompanyType } from "../home/company/CompanyType";
+import { JobType } from "../home/job/JobType";
 import { RoleType } from "./Role";
 
 export interface IUser {
   id: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
-  phone?: string;
-  gender?: string;
-  education?: string;
-  address?: string;
-  websiteLink?: string;
-  birthDate?: string; // ISO date string từ BE
-  findJob?: boolean;
-  groupSoftSkill?: string;
-  companyId?: string;
-  role?: RoleType; // Role name (nếu BE trả về)
-  block?: boolean;
-  createdDate?: string;
-  updatedDate?: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  phone: string;
+  gender: string;
+  education: string;
+  address: string;
+  websiteLink: string;
+  birthDate: string;
+  groupSoftSkill: string | null;
+  company: CompanyType | null;
+  role: RoleType;
+  cv: string | null;
+  block: boolean;
+  createdDate: string;
+  updatedDate: string;
+  findJob: boolean;
 }
 
 export interface SearchUserType {
@@ -68,4 +72,9 @@ export interface DeleteUserType {
 
 export interface changeSoftSkillType {
   softSkill: string | null;
+}
+
+export interface JobApplyUserType {
+  listUsers: IUser[];
+  listJobs: JobType[];
 }

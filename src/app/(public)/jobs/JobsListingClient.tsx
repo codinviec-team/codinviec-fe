@@ -66,7 +66,7 @@ export default function JobsListingClient() {
   useEffect(() => {
     if (dataLocation.length > 0 && locationParams) {
       const location = dataLocation.find(
-        (item) => item.label === locationParams
+        (item) => item.label === locationParams,
       );
       setLocation(location || null);
       handleProvinceChange?.(location);
@@ -177,6 +177,8 @@ export default function JobsListingClient() {
   useEffect(() => {
     if (dataJob?.content && dataJob.content.length > 0) {
       setSelectedJob(dataJob.content[0]);
+    } else {
+      setSelectedJob(null);
     }
   }, [dataJob]);
 

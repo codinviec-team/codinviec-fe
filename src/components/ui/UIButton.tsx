@@ -36,11 +36,11 @@ export function UIButton({
 
   return (
     <AntdButton
-      type="text" // hoặc "default" nếu muốn có border nhẹ
+      type="text"
       className={clsx(
         " !rounded-lg !transition-all !duration-200 !flex !items-center !justify-center gap-2",
         variantCustoms[variantCustom],
-        className
+        className,
       )}
       {...props}
     >

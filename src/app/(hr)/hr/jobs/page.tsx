@@ -3,10 +3,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button, Table, Tag, Input, Select, Space } from "antd";
-import { SearchOutlined, PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { demoJobs, type HRJob, type JobStatus } from "@/data/hr/demoData";
+import { useHrContext } from "@/context/HrContext";
 
 const statusConfig = {
   active: { label: "Đang tuyển", color: "success" },
@@ -17,13 +24,13 @@ const statusConfig = {
 
 export default function HRJobsPage() {
   const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState<JobStatus | "all">("all");
+  const { dataUserApply, loadingContextHr } = useHrContext();
 
   const filteredJobs = demoJobs.filter((job) => {
-    const matchesSearch = job.title.toLowerCase().includes(searchText.toLowerCase()) ||
-                         job.department.toLowerCase().includes(searchText.toLowerCase());
-    const matchesStatus = statusFilter === "all" || job.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesSearch =
+      job.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      job.department.toLowerCase().includes(searchText.toLowerCase());
+    return matchesSearch;
   });
 
   const columns: ColumnsType<HRJob> = [
@@ -34,7 +41,9 @@ export default function HRJobsPage() {
       render: (text, record) => (
         <div>
           <div className="font-medium text-gray-900">{text}</div>
-          <div className="text-sm text-gray-500">{record.department} • {record.location}</div>
+          <div className="text-sm text-gray-500">
+            {record.department} • {record.location}
+          </div>
         </div>
       ),
     },
@@ -110,7 +119,12 @@ export default function HRJobsPage() {
           </p>
         </div>
         <Link href="/hr/jobs/post">
-          <Button type="primary" size="large" icon={<PlusOutlined />} className="!rounded-xl">
+          <Button
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            className="!rounded-xl"
+          >
             Đăng việc làm mới
           </Button>
         </Link>
@@ -131,20 +145,6 @@ export default function HRJobsPage() {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               className="flex-1 !rounded-xl"
-              size="large"
-            />
-            <Select
-              placeholder="Lọc theo trạng thái"
-              value={statusFilter}
-              onChange={setStatusFilter}
-              options={[
-                { value: "all", label: "Tất cả" },
-                { value: "active", label: "Đang tuyển" },
-                { value: "draft", label: "Bản nháp" },
-                { value: "closed", label: "Đã đóng" },
-                { value: "expired", label: "Hết hạn" },
-              ]}
-              className="md:w-[200px] !rounded-xl"
               size="large"
             />
           </div>
@@ -175,4 +175,3 @@ export default function HRJobsPage() {
     </div>
   );
 }
-

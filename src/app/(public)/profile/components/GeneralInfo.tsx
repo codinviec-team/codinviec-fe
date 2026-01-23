@@ -110,7 +110,13 @@ const GeneralInfo = ({
             </Form.Item>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Form.Item name="phone" label="Số điện thoại">
+              <Form.Item
+                name="phone"
+                label="Số điện thoại"
+                rules={[
+                  { required: true, message: "Vui lòng nhập số điện thoại!" },
+                ]}
+              >
                 <Input
                   prefix={<PhoneOutlined className="text-gray-400" />}
                   placeholder="Số điện thoại"
@@ -119,7 +125,13 @@ const GeneralInfo = ({
                 />
               </Form.Item>
 
-              <Form.Item name="gender" label="Giới tính">
+              <Form.Item
+                name="gender"
+                label="Giới tính"
+                rules={[
+                  { required: true, message: "Vui lòng nhập Giới tính!" },
+                ]}
+              >
                 <Select
                   placeholder="Chọn giới tính"
                   className="!rounded-xl"
@@ -129,7 +141,11 @@ const GeneralInfo = ({
               </Form.Item>
             </div>
 
-            <Form.Item name="birthDate" label="Ngày sinh">
+            <Form.Item
+              name="birthDate"
+              label="Ngày sinh"
+              rules={[{ required: true, message: "Vui lòng nhập Ngày sinh!" }]}
+            >
               <DatePicker
                 className="w-full !rounded-xl"
                 size="large"
