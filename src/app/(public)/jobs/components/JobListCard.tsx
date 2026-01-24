@@ -21,7 +21,7 @@ import { Button } from "antd";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type JobListCardProps = {
