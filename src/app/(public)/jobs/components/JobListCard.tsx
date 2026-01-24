@@ -175,7 +175,7 @@ export default function JobListCard({
               onClick={() => {
                 onClickApplyJob();
               }}
-              className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !mb-4"
+              className="!h-12 !rounded-xl !bg-accent-500 hover:!bg-accent-600 !w-1/2"
             >
               Ứng tuyển ngay
             </Button>
