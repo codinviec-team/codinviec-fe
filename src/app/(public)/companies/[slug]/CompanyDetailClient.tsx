@@ -1,13 +1,13 @@
 "use client";
 
-import Container from "@/components/ui/Container";
-import CustomBadge from "@/components/ui/CustomBadge";
-import LoadingCustom from "@/components/ui/LoadingCustom";
+import Container from "@/components/Container";
+import CustomBadge from "@/components/CustomBadge";
+import LoadingCustom from "@/components/LoadingCustom";
 import { PATHS } from "@/constants/paths";
-import CompanyServices from "@/services/home/companies/CompanyServices";
-import JobServices from "@/services/home/job/JobServices";
-import { BadgeVariant } from "@/types/common/BadgeType";
-import { CompanyAddress, CompanyType } from "@/types/home/company/CompanyType";
+import CompanyServices from "@/services/CompanyServices";
+import JobServices from "@/services/JobServices";
+import { BadgeVariant } from "@/types/BadgeType";
+import { CompanyAddress, CompanyType } from "@/types/CompanyType";
 import { JobType } from "@/types/home/job/JobType";
 import {
   ArrowLeftOutlined,

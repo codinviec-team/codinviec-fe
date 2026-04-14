@@ -1,8 +1,8 @@
 "use client";
-import { UIButton } from "@/components/ui/UIButton";
-import Container from "@/components/ui/Container";
+import { UIButton } from "@/components/UIButton";
+import Container from "@/components/Container";
 import { PATHS } from "@/constants/paths";
-import { ILogin } from "@/types/auth/Login";
+import { ILogin } from "@/types/Login";
 import { Form, FormProps, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";

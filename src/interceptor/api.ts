@@ -2,7 +2,7 @@
 
 import axios, { AxiosError } from "axios";
 import { cookieHelper } from "@/utils/cookieHelper";
-import { authService } from "@/services/auth/authService";
+import { authService } from "@/services/authService";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -22,7 +22,7 @@ let failedQueue: QueueItem[] = [];
 // Xử lý queue khi refresh xong
 const processQueue = (
   error: AxiosError | null,
-  token: string | null = null
+  token: string | null = null,
 ) => {
   failedQueue.forEach((prom) => {
     if (error) {
@@ -42,7 +42,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
@@ -135,7 +135,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

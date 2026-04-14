@@ -1,10 +1,10 @@
 "use client";
-import Container from "@/components/ui/Container";
-import SearchBar, { SearchFormFields } from "@/components/ui/SearchBar";
-import { UIButton } from "@/components/ui/UIButton";
+import Container from "@/components/Container";
+import SearchBar, { SearchFormFields } from "@/components/SearchBar";
+import { UIButton } from "@/components/UIButton";
 import { PATHS } from "@/constants/paths";
-import { BlogService } from "@/services/home/blog/BlogServices";
-import { BlogType } from "@/types/home/blog/BlogType";
+import { BlogService } from "@/services/BlogServices";
+import { BlogType } from "@/types/BlogType";
 import { HomeOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb } from "antd";
@@ -12,10 +12,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
+import { BasePageResponse } from "@/types/BasePageResponse";
 import ScFeature from "./ScFeature";
 import ScNew from "./ScNew";
-import LoadingCustom from "@/components/ui/LoadingCustom";
+import LoadingCustom from "@/components/LoadingCustom";
 
 const BlogPageClients = () => {
   const router = useRouter();
@@ -51,7 +51,7 @@ const BlogPageClients = () => {
 
     // chấp nhận cả ký tự đặc biệt trong từ khóa tìm kiếm
     router.push(
-      `${PATHS.BLOG_ALL}?keyword=${encodeURIComponent(keyword || "")}`
+      `${PATHS.BLOG_ALL}?keyword=${encodeURIComponent(keyword || "")}`,
     );
   };
 

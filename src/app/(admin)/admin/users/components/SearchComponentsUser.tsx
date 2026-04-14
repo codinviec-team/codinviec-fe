@@ -1,5 +1,5 @@
-import { UIButton } from "@/components/ui/UIButton";
-import { RoleType } from "@/types/auth/Role";
+import { UIButton } from "@/components/UIButton";
+import { RoleType } from "@/types/Role";
 import {
   DeleteOutlined,
   LockOutlined,
@@ -19,12 +19,12 @@ type SearchComponentUserType = {
   filterRole: string | null;
   handleRoleChange: (
     value: string | null,
-    option?: DefaultOptionType | DefaultOptionType[]
+    option?: DefaultOptionType | DefaultOptionType[],
   ) => void;
   filterStatus: string | null;
   handleStatusChange: (
     value: string | null,
-    option?: DefaultOptionType | DefaultOptionType[]
+    option?: DefaultOptionType | DefaultOptionType[],
   ) => void;
   handleResetFilter: () => void;
   selectedRowKeys: React.Key[];

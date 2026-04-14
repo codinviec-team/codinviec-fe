@@ -1,5 +1,5 @@
-import { UIButton } from "@/components/ui/UIButton";
-import { IUser } from "@/types/auth/User";
+import { UIButton } from "@/components/UIButton";
+import { IUser } from "@/types/User";
 import {
   GlobalOutlined,
   MailOutlined,

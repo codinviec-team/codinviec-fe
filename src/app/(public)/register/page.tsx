@@ -1,8 +1,8 @@
 "use client";
-import { UIButton } from "@/components/ui/UIButton";
-import Container from "@/components/ui/Container";
+import { UIButton } from "@/components/UIButton";
+import Container from "@/components/Container";
 import { PATHS } from "@/constants/paths";
-import { IRegister } from "@/types/auth/Register";
+import { IRegister } from "@/types/Register";
 import { Checkbox, Form, FormProps, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +27,7 @@ const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isAuthenticated, loading } = useAppSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const [submitting, setSubmitting] = useState(false);
 
@@ -44,7 +44,7 @@ const RegisterPage = () => {
     if (!apiBaseUrl) {
       alert.error(
         "Lỗi cấu hình",
-        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên."
+        "Không tìm thấy cấu hình API. Vui lòng liên hệ quản trị viên.",
       );
       return;
     }
@@ -67,7 +67,7 @@ const RegisterPage = () => {
       if (res?.id) {
         toast.success(
           "Đăng ký thành công!",
-          "Chào mừng bạn tới với Codinviec!"
+          "Chào mừng bạn tới với Codinviec!",
         );
         router.push(PATHS.HOME);
       }
@@ -243,7 +243,7 @@ const RegisterPage = () => {
                   value
                     ? Promise.resolve()
                     : Promise.reject(
-                        "Bạn phải đồng ý điều khoản trước khi tiếp tục!"
+                        "Bạn phải đồng ý điều khoản trước khi tiếp tục!",
                       ),
               },
             ]}

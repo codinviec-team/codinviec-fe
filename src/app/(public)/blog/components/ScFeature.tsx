@@ -1,10 +1,10 @@
 "use client";
-import BlogCard from "@/components/ui/BlogCard";
-import BlogList from "@/components/ui/BlogList";
-import NoneBlog from "@/components/ui/NoneBlog";
+import BlogCard from "@/components/BlogCard";
+import BlogList from "@/components/BlogList";
+import NoneBlog from "@/components/NoneBlog";
 
 import { PATHS } from "@/constants/paths";
-import { BlogType } from "@/types/home/blog/BlogType";
+import { BlogType } from "@/types/BlogType";
 import { FireOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import Link from "next/link";

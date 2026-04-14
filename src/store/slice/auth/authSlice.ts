@@ -2,10 +2,10 @@
 
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { ILogin } from "@/types/auth/Login";
-import { IRegister } from "@/types/auth/Register";
-import { IUser } from "@/types/auth/User";
-import { authService } from "@/services/auth/authService";
+import { ILogin } from "@/types/Login";
+import { IRegister } from "@/types/Register";
+import { IUser } from "@/types/User";
+import { authService } from "@/services/authService";
 import { cookieHelper } from "@/utils/cookieHelper";
 
 interface IAuthState {
@@ -40,7 +40,7 @@ export const login = createAsyncThunk(
       const axiosError = error as AxiosError;
       return rejectWithValue(axiosError);
     }
-  }
+  },
 );
 
 export const register = createAsyncThunk(
@@ -63,7 +63,7 @@ export const register = createAsyncThunk(
       const axiosError = error as AxiosError;
       return rejectWithValue(axiosError);
     }
-  }
+  },
 );
 
 export const checkAuth = createAsyncThunk(
@@ -88,7 +88,7 @@ export const checkAuth = createAsyncThunk(
 
       return rejectWithValue(axiosError);
     }
-  }
+  },
 );
 
 export const changeIsFindJob = createAsyncThunk(
@@ -110,7 +110,7 @@ export const changeIsFindJob = createAsyncThunk(
 
       return rejectWithValue(axiosError);
     }
-  }
+  },
 );
 
 const authSlice = createSlice({

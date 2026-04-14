@@ -1,4 +1,4 @@
-import { IUser } from "@/types/auth/User";
+import { IUser } from "@/types/User";
 import { formatToDDMMYYYY } from "@/utils/DateHelper";
 import {
   DeleteOutlined,
@@ -73,19 +73,19 @@ const TableUser = ({
           role === "ADMIN"
             ? "red"
             : role === "USER"
-            ? "green"
-            : role === "HR"
-            ? "blue"
-            : "default";
+              ? "green"
+              : role === "HR"
+                ? "blue"
+                : "default";
 
         const roleNameText =
           record?.role?.roleName === "ADMIN"
             ? "Quản trị viên"
             : role === "USER"
-            ? "Người dùng"
-            : role === "HR"
-            ? "Người tuyển dụng"
-            : "default";
+              ? "Người dùng"
+              : role === "HR"
+                ? "Người tuyển dụng"
+                : "default";
 
         return (
           <Tag className="!rounded-lg" color={color}>

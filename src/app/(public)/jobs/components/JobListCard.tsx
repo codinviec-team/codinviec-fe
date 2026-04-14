@@ -1,12 +1,12 @@
 "use client";
 
-import CustomBadge from "@/components/ui/CustomBadge";
-import TagCustomer from "@/components/ui/TagCustomer";
+import CustomBadge from "@/components/CustomBadge";
+import TagCustomer from "@/components/TagCustomer";
 import { PATHS } from "@/constants/paths";
 import { useAppSelector } from "@/hooks/hooks";
-import JobServices from "@/services/home/job/JobServices";
+import JobServices from "@/services/JobServices";
 import { RootState } from "@/store";
-import { BadgeVariant } from "@/types/common/BadgeType";
+import { BadgeVariant } from "@/types/BadgeType";
 import { ApplyJobType, JobType } from "@/types/home/job/JobType";
 import { alert } from "@/utils/notification";
 

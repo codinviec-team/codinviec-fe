@@ -1,10 +1,10 @@
 "use client";
 
 import { useAppSelector } from "@/hooks/hooks";
-import UserService from "@/services/auth/UserServices";
-import JobServices from "@/services/home/job/JobServices";
+import UserService from "@/services/UserServices";
+import JobServices from "@/services/JobServices";
 import { RootState } from "@/store";
-import { IUser, JobApplyUserType } from "@/types/auth/User";
+import { IUser, JobApplyUserType } from "@/types/User";
 import { JobType } from "@/types/home/job/JobType";
 import { useQuery } from "@tanstack/react-query";
 import React, { createContext, useContext } from "react";

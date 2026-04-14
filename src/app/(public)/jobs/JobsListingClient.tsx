@@ -1,24 +1,22 @@
 "use client";
 
-import CheckboxDropdown from "@/components/ui/CheckboxDropdown";
-import Container from "@/components/ui/Container";
-import PaginationComponent from "@/components/ui/Pagination";
-import SalarySliderDropdown from "@/components/ui/SalarySliderDropdown ";
-import SearchBar from "@/components/ui/SearchBar";
-import { UIButton } from "@/components/ui/UIButton";
+import CheckboxDropdown from "@/components/CheckboxDropdown";
+import Container from "@/components/Container";
+import PaginationComponent from "@/components/Pagination";
+import SalarySliderDropdown from "@/components/SalarySliderDropdown ";
+import SearchBar from "@/components/SearchBar";
+import { UIButton } from "@/components/UIButton";
 import { PATHS } from "@/constants/paths";
-import useLocation, {
-  ProvinceOption,
-} from "@/hooks/Common/location/useLocation";
-import EmploymentTypeService from "@/services/common/EmploymentTypeService";
-import IndustryService from "@/services/common/IndustryService";
-import LevelJobService from "@/services/common/LevelJobService";
-import JobServices from "@/services/home/job/JobServices";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
-import { EmploymentTypeType } from "@/types/common/EmploymentType";
-import { IndustryType } from "@/types/common/IndustryType";
-import { JobLevelType } from "@/types/common/JobLevelType";
-import { ProvinceType } from "@/types/common/ProvinceType";
+import useLocation, { ProvinceOption } from "@/hooks/useLocation";
+import EmploymentTypeService from "@/services/EmploymentTypeService";
+import IndustryService from "@/services/IndustryService";
+import LevelJobService from "@/services/LevelJobService";
+import JobServices from "@/services/JobServices";
+import { BasePageResponse } from "@/types/BasePageResponse";
+import { EmploymentTypeType } from "@/types/EmploymentType";
+import { IndustryType } from "@/types/IndustryType";
+import { JobLevelType } from "@/types/JobLevelType";
+import { ProvinceType } from "@/types/ProvinceType";
 import { JobType } from "@/types/home/job/JobType";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";

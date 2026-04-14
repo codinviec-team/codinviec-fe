@@ -1,7 +1,7 @@
-import Footer from "@/components/home/Layout/Footer";
+import Footer from "@/components/Footer";
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import Header from "@/components/home/Layout/Header";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: {

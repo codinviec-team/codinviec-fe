@@ -1,23 +1,35 @@
 "use client";
 
-import {useState} from "react";
-import {motion} from "framer-motion";
-import {Button, Dropdown, Form, Input, message, Modal, Switch, Table, Tag, Tooltip, Tree,} from "antd";
-import type {ColumnsType} from "antd/es/table";
-import type {DataNode} from "antd/es/tree";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
-    AppstoreOutlined,
-    DeleteOutlined,
-    EditOutlined,
-    ExclamationCircleOutlined,
-    FolderOutlined,
-    MoreOutlined,
-    PlusOutlined,
-    ReloadOutlined,
-    SearchOutlined,
-    UnorderedListOutlined,
+  Button,
+  Dropdown,
+  Form,
+  Input,
+  message,
+  Modal,
+  Switch,
+  Table,
+  Tag,
+  Tooltip,
+  Tree,
+} from "antd";
+import type { ColumnsType } from "antd/es/table";
+import type { DataNode } from "antd/es/tree";
+import {
+  AppstoreOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  FolderOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  SearchOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
-import {UIButton} from "@/components/ui/UIButton";
+import { UIButton } from "@/components/UIButton";
 
 interface ICategory {
   id: string;
@@ -233,7 +245,7 @@ export default function AdminCategoriesPage() {
   const [viewMode, setViewMode] = useState<"table" | "tree">("table");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<ICategory | null>(
-    null
+    null,
   );
   const [form] = Form.useForm();
 
@@ -263,12 +275,12 @@ export default function AdminCategoriesPage() {
           return {
             ...cat,
             children: cat.children.map((child) =>
-              child.id === id ? { ...child, isActive: !child.isActive } : child
+              child.id === id ? { ...child, isActive: !child.isActive } : child,
             ),
           };
         }
         return cat;
-      })
+      }),
     );
     message.success("Đã cập nhật trạng thái!");
   };
@@ -401,7 +413,7 @@ export default function AdminCategoriesPage() {
   const filteredCategories = flattenedCategories.filter(
     (cat) =>
       !searchKeyword ||
-      cat.name.toLowerCase().includes(searchKeyword.toLowerCase())
+      cat.name.toLowerCase().includes(searchKeyword.toLowerCase()),
   );
 
   return (
@@ -419,10 +431,7 @@ export default function AdminCategoriesPage() {
             Tổng cộng {categories.length} danh mục chính
           </p>
         </div>
-        <Button
-          className="!h-10"
-          onClick={() => handleOpenModal()}
-        >
+        <Button className="!h-10" onClick={() => handleOpenModal()}>
           <PlusOutlined className="mr-1" />
           Thêm danh mục
         </Button>
@@ -444,7 +453,10 @@ export default function AdminCategoriesPage() {
         <div className="bg-white rounded-xl p-4 border border-primary-100">
           <p className="text-sm text-gray-500">Danh mục con</p>
           <p className="text-2xl font-bold text-primary-600 mt-1">
-            {categories.reduce((acc, cat) => acc + (cat.children?.length || 0), 0)}
+            {categories.reduce(
+              (acc, cat) => acc + (cat.children?.length || 0),
+              0,
+            )}
           </p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-primary-100">
@@ -599,7 +611,11 @@ export default function AdminCategoriesPage() {
             <Button onClick={() => setModalOpen(false)} className="!rounded-xl">
               Hủy
             </Button>
-            <UIButton htmlType="submit" variantCustom="primary" className="!h-10">
+            <UIButton
+              htmlType="submit"
+              variantCustom="primary"
+              className="!h-10"
+            >
               {editingCategory ? "Cập nhật" : "Thêm mới"}
             </UIButton>
           </div>
@@ -608,4 +624,3 @@ export default function AdminCategoriesPage() {
     </div>
   );
 }
-

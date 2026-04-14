@@ -1,0 +1,51 @@
+import api from "@/interceptor/api";
+import { BasePageResponse } from "@/types/BasePageResponse";
+import { IBaseResponse } from "@/types/BaseResponse";
+import { CompanyType } from "@/types/CompanyType";
+import apiServer from "@/interceptor/api-server";
+import { SearchCompanyType } from "./SearchCompanyType";
+
+const CompanyServices = {
+  async getAllCompany(): Promise<CompanyType[]> {
+    const res = await api.get<IBaseResponse<CompanyType[]>>("/company");
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
+
+  async getAllCompanyHavePage(
+    searchs: SearchCompanyType = {},
+  ): Promise<BasePageResponse<CompanyType>> {
+    const res = await api.get<IBaseResponse<BasePageResponse<CompanyType>>>(
+      "/company",
+      {
+        params: searchs,
+      },
+    );
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
+
+  async getCompanyById(id: string) {
+    const res = await api.get<IBaseResponse<CompanyType>>(`/company/${id}`);
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
+
+  async getCompanyByInServer(id: string) {
+    const res = await apiServer.get<IBaseResponse<CompanyType>>(
+      `/company/${id}`,
+    );
+    if (!res.data.data) {
+      throw new Error("Không lấy được company");
+    }
+    return res?.data?.data;
+  },
+};
+
+export default CompanyServices;

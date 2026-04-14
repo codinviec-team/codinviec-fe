@@ -1,22 +1,22 @@
 "use client";
-import Container from "@/components/ui/Container";
+import Container from "@/components/Container";
 import { PATHS } from "@/constants/paths";
 import { HomeOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Breadcrumb, Form, Select } from "antd";
 import Link from "next/link";
 
-import BlogCard from "@/components/ui/BlogCard";
-import BlogList from "@/components/ui/BlogList";
-import PaginationComponent from "@/components/ui/Pagination";
-import SearchBar, { SearchFormFields } from "@/components/ui/SearchBar";
-import { BlogService } from "@/services/home/blog/BlogServices";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
-import { BlogType } from "@/types/home/blog/BlogType";
+import BlogCard from "@/components/BlogCard";
+import BlogList from "@/components/BlogList";
+import PaginationComponent from "@/components/Pagination";
+import SearchBar, { SearchFormFields } from "@/components/SearchBar";
+import { BlogService } from "@/services/BlogServices";
+import { BasePageResponse } from "@/types/BasePageResponse";
+import { BlogType } from "@/types/BlogType";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoadingCustom from "@/components/ui/LoadingCustom";
+import LoadingCustom from "@/components/LoadingCustom";
 
 const pageSizeBlogDefault = 9;
 
@@ -56,7 +56,7 @@ const BlogAllClientsPage = () => {
   const onChangeKeyword = (values: SearchFormFields) => {
     const { keyword } = values;
     router.push(
-      `${PATHS.BLOG_ALL}?keyword=${encodeURIComponent(keyword || "")}`
+      `${PATHS.BLOG_ALL}?keyword=${encodeURIComponent(keyword || "")}`,
     );
   };
 

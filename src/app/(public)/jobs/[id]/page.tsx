@@ -1,4 +1,4 @@
-import JobServices from "@/services/home/job/JobServices";
+import JobServices from "@/services/JobServices";
 import type { Metadata } from "next";
 import JobDetailPageClient from "./JobDetailPageClient";
 import { notFound } from "next/navigation";

@@ -19,18 +19,18 @@ import {
 
 const { Text } = Typography;
 
-import TagSkill from "@/components/ui/TagSkill";
-import { UIButton } from "@/components/ui/UIButton";
-import AvailableSkillExperienceService from "@/services/common/AvailableSkillExperience";
-import GroupCoreSkillService from "@/services/common/GroupCoreSkillService";
-import { IUser } from "@/types/auth/User";
-import { AvailableSkillType } from "@/types/common/AvailableSkill";
+import TagSkill from "@/components/TagSkill";
+import { UIButton } from "@/components/UIButton";
+import AvailableSkillExperienceService from "@/services/AvailableSkillExperience";
+import GroupCoreSkillService from "@/services/GroupCoreSkillService";
+import { IUser } from "@/types/User";
+import { AvailableSkillType } from "@/types/AvailableSkill";
 import {
   AvailableSkillExperienceType,
   SaveAvailableSkillExperienceType,
   UpdateAvailableSkillExperienceType,
-} from "@/types/common/AvailableSkillExperienceType";
-import { ExperienceType } from "@/types/common/Experience";
+} from "@/types/AvailableSkillExperienceType";
+import { ExperienceType } from "@/types/Experience";
 import { UseQueryResult } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";

@@ -1,0 +1,30 @@
+import api from "@/interceptor/api";
+import { BlogType } from "@/types/BlogType";
+import { SearchBlogType } from "@/types/SearchBlogType";
+import { BasePageResponse } from "@/types/BasePageResponse";
+import { IBaseResponse } from "@/types/BaseResponse";
+
+export const BlogService = {
+  async getAllBlog(): Promise<BlogType[]> {
+    const res = await api.get<IBaseResponse<BlogType[]>>("/blog");
+    if (!res.data.data) {
+      throw new Error("Không lấy được blog");
+    }
+    return res?.data?.data;
+  },
+
+  async getAllBlogHavePage(
+    searchs: SearchBlogType = {},
+  ): Promise<BasePageResponse<BlogType>> {
+    const res = await api.get<IBaseResponse<BasePageResponse<BlogType>>>(
+      "/blog",
+      {
+        params: searchs,
+      },
+    );
+    if (!res.data.data) {
+      throw new Error("Không lấy được blog");
+    }
+    return res?.data?.data;
+  },
+};
