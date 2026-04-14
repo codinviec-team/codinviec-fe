@@ -16,7 +16,7 @@ import { Button, Card, Col, Row, Statistic, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import { useHrContext } from "@/context/HrContext";
-import TagTable from "@/components/ui/TagTable";
+import TagTable from "@/components/TagTable";
 import { JobType } from "@/types/home/job/JobType";
 import { demoHRStats } from "@/data/hr/demoData";
 import { formatToDDMMYYYY } from "@/utils/DateHelper";

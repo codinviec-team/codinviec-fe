@@ -1,25 +1,35 @@
 "use client";
 
-import {useState} from "react";
-import {motion} from "framer-motion";
-import {Button, Dropdown, Input, message, Modal, Select, Table, Tag, Tooltip,} from "antd";
-import type {ColumnsType} from "antd/es/table";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    CloseCircleOutlined,
-    DeleteOutlined,
-    EditOutlined,
-    ExclamationCircleOutlined,
-    EyeOutlined,
-    FilterOutlined,
-    MoreOutlined,
-    PlusOutlined,
-    ReloadOutlined,
-    SearchOutlined,
+  Button,
+  Dropdown,
+  Input,
+  message,
+  Modal,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
+import type { ColumnsType } from "antd/es/table";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  EyeOutlined,
+  FilterOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
-import {IJob} from "@/types/admin/Job";
-import {UIButton} from "@/components/ui/UIButton";
+import { IJob } from "@/types/Job";
+import { UIButton } from "@/components/UIButton";
 
 // Sample data với nhiều việc làm
 const sampleJobs: IJob[] = [
@@ -261,8 +271,8 @@ export default function AdminJobsPage() {
   const handleApprove = (id: string) => {
     setJobs(
       jobs.map((job) =>
-        job.id === id ? { ...job, status: "approved" as const } : job
-      )
+        job.id === id ? { ...job, status: "approved" as const } : job,
+      ),
     );
     message.success("Đã duyệt việc làm!");
   };
@@ -270,8 +280,8 @@ export default function AdminJobsPage() {
   const handleReject = (id: string) => {
     setJobs(
       jobs.map((job) =>
-        job.id === id ? { ...job, status: "rejected" as const } : job
-      )
+        job.id === id ? { ...job, status: "rejected" as const } : job,
+      ),
     );
     message.success("Đã từ chối việc làm!");
   };
@@ -455,7 +465,9 @@ export default function AdminJobsPage() {
         <UIButton
           variantCustom="primary"
           className="!h-10"
-          onClick={() => message.info("Chức năng thêm việc làm đang phát triển")}
+          onClick={() =>
+            message.info("Chức năng thêm việc làm đang phát triển")
+          }
         >
           <PlusOutlined className="mr-1" />
           Thêm việc làm
@@ -589,4 +601,3 @@ export default function AdminJobsPage() {
     </div>
   );
 }
-

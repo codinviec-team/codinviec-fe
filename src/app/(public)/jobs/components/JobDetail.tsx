@@ -1,9 +1,9 @@
 "use client";
 
-import CustomBadge from "@/components/ui/CustomBadge";
-import TagCustomer from "@/components/ui/TagCustomer";
+import CustomBadge from "@/components/CustomBadge";
+import TagCustomer from "@/components/TagCustomer";
 import { PATHS } from "@/constants/paths";
-import { BadgeVariant } from "@/types/common/BadgeType";
+import { BadgeVariant } from "@/types/BadgeType";
 import { JobType } from "@/types/home/job/JobType";
 import { timeAgo } from "@/utils/DateHelper";
 import {

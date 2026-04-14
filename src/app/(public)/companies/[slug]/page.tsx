@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { generatePublicMetadata } from "@/utils/metadata";
 import CompanyDetailClient from "./CompanyDetailClient";
-import CompanyServices from "@/services/home/companies/CompanyServices";
+import CompanyServices from "@/services/CompanyServices";
 import { notFound } from "next/navigation";
 
 type Props = {

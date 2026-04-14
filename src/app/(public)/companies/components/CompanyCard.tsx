@@ -1,7 +1,7 @@
-import CustomBadge from "@/components/ui/CustomBadge";
+import CustomBadge from "@/components/CustomBadge";
 import { IMAGES_PATH } from "@/constants/paths";
-import { BadgeVariant } from "@/types/common/BadgeType";
-import { CompanyType } from "@/types/home/company/CompanyType";
+import { BadgeVariant } from "@/types/BadgeType";
+import { CompanyType } from "@/types/CompanyType";
 import { EnvironmentOutlined, TeamOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import Link from "next/link";

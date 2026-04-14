@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import AdminHeader from "@/components/admin/Layout/Header";
+import AdminHeader from "@/components/HeaderAdminComponent";
 
 interface HRLayoutClientProps {
   children: React.ReactNode;

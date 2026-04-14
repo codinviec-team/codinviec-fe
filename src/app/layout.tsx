@@ -1,8 +1,8 @@
 import ReduxProvider from "@/providers/ReduxProvider";
 import AuthProvider from "@/providers/AuthProvider";
-import Handler from "@/components/ui/Handler";
-import Toast from "@/components/ui/Toast";
-import LoadingScreen from "@/components/ui/LoadingScreen";
+import Handler from "@/components/Handler";
+import Toast from "@/components/Toast";
+import LoadingScreen from "@/components/LoadingScreen";
 import { Suspense } from "react";
 import "./globals.css";
 import { ConfigProvider } from "antd";
@@ -46,7 +46,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+  ),
   alternates: {
     canonical: "/",
   },

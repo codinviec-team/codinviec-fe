@@ -1,10 +1,10 @@
 "use client";
 
-import RoleService from "@/services/auth/RoleService";
-import UserService from "@/services/auth/UserServices";
-import { RoleType } from "@/types/auth/Role";
-import { IUser } from "@/types/auth/User";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
+import RoleService from "@/services/RoleService";
+import UserService from "@/services/UserServices";
+import { RoleType } from "@/types/Role";
+import { IUser } from "@/types/User";
+import { BasePageResponse } from "@/types/BasePageResponse";
 import { useQuery } from "@tanstack/react-query";
 import { SelectProps } from "antd";
 import React, { useEffect, useState } from "react";
@@ -15,8 +15,8 @@ import HeaderUserAdmin, {
 import SearchComponentUser from "./components/SearchComponentsUser";
 import TableUser from "./components/TablesUser";
 import { alert } from "@/utils/notification";
-import CompanyServices from "@/services/home/companies/CompanyServices";
-import { CompanyType } from "@/types/home/company/CompanyType";
+import CompanyServices from "@/services/CompanyServices";
+import { CompanyType } from "@/types/CompanyType";
 import dayjs from "dayjs";
 
 const PageSizeDefault = 9;

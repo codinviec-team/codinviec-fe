@@ -1,18 +1,14 @@
 "use client";
 
-import Container from "@/components/ui/Container";
-import PaginationComponent from "@/components/ui/Pagination";
-import SearchBar from "@/components/ui/SearchBar";
-import { UIButton } from "@/components/ui/UIButton";
-import useCompanySize, {
-  CompanySizeOption,
-} from "@/hooks/Common/CompanySize/useCompanySize";
-import useLocation, {
-  ProvinceOption,
-} from "@/hooks/Common/location/useLocation";
-import CompanyServices from "@/services/home/companies/CompanyServices";
-import { BasePageResponse } from "@/types/common/BasePageResponse";
-import { CompanyType } from "@/types/home/company/CompanyType";
+import Container from "@/components/Container";
+import PaginationComponent from "@/components/Pagination";
+import SearchBar from "@/components/SearchBar";
+import { UIButton } from "@/components/UIButton";
+import useCompanySize, { CompanySizeOption } from "@/hooks/useCompanySize";
+import useLocation, { ProvinceOption } from "@/hooks/useLocation";
+import CompanyServices from "@/services/CompanyServices";
+import { BasePageResponse } from "@/types/BasePageResponse";
+import { CompanyType } from "@/types/CompanyType";
 import { removeVietnameseTones } from "@/utils/removeVietnameseTones ";
 import {
   BuildOutlined,
@@ -57,16 +53,16 @@ const CompaniesListingClient = () => {
       searchParams.get("minEmployees")
     ) {
       const minEmployeesParam = parseInt(
-        searchParams.get("minEmployees") || "0"
+        searchParams.get("minEmployees") || "0",
       );
       const maxEmployeesParam = parseInt(
-        searchParams.get("maxEmployees") || "0"
+        searchParams.get("maxEmployees") || "0",
       );
       const selectedCompanySize =
         dataCompanySize.find(
           (size) =>
             size.minEmployees === minEmployeesParam &&
-            size.maxEmployees === maxEmployeesParam
+            size.maxEmployees === maxEmployeesParam,
         ) || undefined;
       handleCompanySizeChange(selectedCompanySize);
     }
@@ -131,7 +127,7 @@ const CompaniesListingClient = () => {
 
   const handleChangeLocatation = (
     value: number,
-    option?: ProvinceOption | ProvinceOption[]
+    option?: ProvinceOption | ProvinceOption[],
   ) => {
     if (!option || Array.isArray(option)) {
       handleProvinceChange(undefined);
@@ -146,7 +142,7 @@ const CompaniesListingClient = () => {
 
   const handleChangeCompanySize = (
     value: number,
-    option?: CompanySizeOption | CompanySizeOption[]
+    option?: CompanySizeOption | CompanySizeOption[],
   ) => {
     if (!option || Array.isArray(option)) {
       handleCompanySizeChange(undefined);
@@ -234,7 +230,7 @@ const CompaniesListingClient = () => {
                 onChange={handleChangeCompanySize}
                 filterOption={(input, option) =>
                   removeVietnameseTones(option?.label ?? "").includes(
-                    removeVietnameseTones(input)
+                    removeVietnameseTones(input),
                   )
                 }
                 value={companySizeState?.value}
@@ -248,7 +244,7 @@ const CompaniesListingClient = () => {
                 showSearch
                 filterOption={(input, option) =>
                   removeVietnameseTones(option?.label ?? "").includes(
-                    removeVietnameseTones(input)
+                    removeVietnameseTones(input),
                   )
                 }
                 onChange={handleChangeLocatation}

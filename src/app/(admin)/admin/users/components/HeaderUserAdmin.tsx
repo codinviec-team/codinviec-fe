@@ -1,9 +1,9 @@
 "use client";
-import { UIButton } from "@/components/ui/UIButton";
-import UserService from "@/services/auth/UserServices";
-import { RoleType } from "@/types/auth/Role";
-import { SaveUserType } from "@/types/auth/User";
-import { CompanyType } from "@/types/home/company/CompanyType";
+import { UIButton } from "@/components/UIButton";
+import UserService from "@/services/UserServices";
+import { RoleType } from "@/types/Role";
+import { SaveUserType } from "@/types/User";
+import { CompanyType } from "@/types/CompanyType";
 import { formatToLocalDateTime } from "@/utils/DateHelper";
 import { alert } from "@/utils/notification";
 import { PlusOutlined } from "@ant-design/icons";
@@ -23,7 +23,7 @@ type HeaderUserAdminType = {
   openEditUser: boolean;
   editUserInfo: (UserEditFormValues & { id: string }) | null;
   handleChangeEditUserInfo: (
-    userInfo: (UserEditFormValues & { id: string }) | null
+    userInfo: (UserEditFormValues & { id: string }) | null,
   ) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
@@ -55,7 +55,7 @@ const HeaderUserAdmin = ({
   const [form] = Form.useForm();
 
   const onFinishUserEdit: FormProps<UserEditFormValues>["onFinish"] = async (
-    values
+    values,
   ) => {
     const {
       email,

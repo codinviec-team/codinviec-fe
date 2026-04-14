@@ -1,14 +1,14 @@
 "use client";
 
-import Container from "@/components/ui/Container";
-import CustomBadge from "@/components/ui/CustomBadge";
-import LoadingCustom from "@/components/ui/LoadingCustom";
-import TagCustomer from "@/components/ui/TagCustomer";
+import Container from "@/components/Container";
+import CustomBadge from "@/components/CustomBadge";
+import LoadingCustom from "@/components/LoadingCustom";
+import TagCustomer from "@/components/TagCustomer";
 import { PATHS } from "@/constants/paths";
 import { useAppSelector } from "@/hooks/hooks";
-import JobServices from "@/services/home/job/JobServices";
+import JobServices from "@/services/JobServices";
 import { RootState } from "@/store";
-import { BadgeVariant } from "@/types/common/BadgeType";
+import { BadgeVariant } from "@/types/BadgeType";
 import { ApplyJobType, JobType } from "@/types/home/job/JobType";
 import { timeAgo } from "@/utils/DateHelper";
 import { alert } from "@/utils/notification";

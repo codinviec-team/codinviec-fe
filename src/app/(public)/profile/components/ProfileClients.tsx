@@ -1,17 +1,17 @@
 "use client";
 
-import Container from "@/components/ui/Container";
-import { UIButton } from "@/components/ui/UIButton";
+import Container from "@/components/Container";
+import { UIButton } from "@/components/UIButton";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { authService } from "@/services/auth/authService";
-import AvailableSkillExperienceService from "@/services/common/AvailableSkillExperience";
-import AvailableSkillService from "@/services/common/AvailableSkillService";
-import ExperienceService from "@/services/common/ExperienceService";
+import { authService } from "@/services/authService";
+import AvailableSkillExperienceService from "@/services/AvailableSkillExperience";
+import AvailableSkillService from "@/services/AvailableSkillService";
+import ExperienceService from "@/services/ExperienceService";
 import { RootState } from "@/store";
 import { checkAuth } from "@/store/slice/auth/authSlice";
-import { AvailableSkillType } from "@/types/common/AvailableSkill";
-import { AvailableSkillExperienceType } from "@/types/common/AvailableSkillExperienceType";
-import { ExperienceType } from "@/types/common/Experience";
+import { AvailableSkillType } from "@/types/AvailableSkill";
+import { AvailableSkillExperienceType } from "@/types/AvailableSkillExperienceType";
+import { ExperienceType } from "@/types/Experience";
 import { formatToLocalDateTime } from "@/utils/DateHelper";
 import { alert } from "@/utils/notification";
 import { CameraOutlined, EditOutlined } from "@ant-design/icons";
@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import GeneralInfo from "./GeneralInfo";
 import SkillProfile from "./SkillProfile";
 import TabProfile from "./TabProfile";
-import { UpdateProfileServiceType } from "@/types/auth/UpdateProfileServiceType";
+import { UpdateProfileServiceType } from "@/types/UpdateProfileServiceType";
 import CvClients from "./CvClients";
 
 export type FormPropsProfiles = {
