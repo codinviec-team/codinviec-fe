@@ -19,7 +19,7 @@ import {
 
 const { Text } = Typography;
 
-import TagSkill from "@/components/TagSkill";
+import TagSkillProfileComponent from "@/components/TagSkillProfileComponent";
 import { UIButton } from "@/components/UIButton";
 import AvailableSkillExperienceService from "@/services/AvailableSkillExperience";
 import GroupCoreSkillService from "@/services/GroupCoreSkillService";
@@ -344,7 +344,7 @@ const SkillProfile = ({
               </Text>
               <Divider className="!my-[6px]" />
               {g.skills?.map((s) => (
-                <TagSkill
+                <TagSkillProfileComponent
                   key={s?.skillId}
                   skillName={s.skillName}
                   experienceName={s.experienceName}

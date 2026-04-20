@@ -37,7 +37,7 @@ const features = [
   },
 ];
 
-export default function StatsSection() {
+export default function StatsSectionComponent() {
   return (
     <section className="relative overflow-hidden">
       {/* Main CTA Section */}
@@ -79,7 +79,7 @@ export default function StatsSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Link href={PATHS.SIGNUP}>
+              <Link href={PATHS.PROFILE}>
                 <UIButton
                   variantCustom="accent"
                   className="!h-[56px] !px-10 !text-lg !font-bold"
@@ -87,7 +87,7 @@ export default function StatsSection() {
                   Tạo hồ sơ miễn phí
                 </UIButton>
               </Link>
-              <Link href="/jobs">
+              <Link href={PATHS.JOBS}>
                 <UIButton
                   variantCustom="outline"
                   className="!h-[56px] !px-10 !text-lg !font-bold !border-white !text-white hover:!bg-white/10"
@@ -137,36 +137,6 @@ export default function StatsSection() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Newsletter Section */}
-      <div className="bg-accent-50 py-12">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
-              Đăng ký nhận thông tin việc làm mới nhất
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Nhận thông báo về các việc làm phù hợp với bạn qua email
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <input
-                type="email"
-                placeholder="Nhập email của bạn..."
-                className="flex-1 max-w-md px-5 py-3 rounded-xl border border-primary-200 focus:border-accent-400 focus:outline-none focus:ring-2 focus:ring-accent-200 transition-all"
-              />
-              <UIButton variantCustom="primary" className="!h-[50px] !px-8">
-                Đăng ký
-              </UIButton>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>

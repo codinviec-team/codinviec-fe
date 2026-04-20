@@ -17,7 +17,6 @@ import { EmploymentTypeType } from "@/types/EmploymentType";
 import { IndustryType } from "@/types/IndustryType";
 import { JobLevelType } from "@/types/JobLevelType";
 import { ProvinceType } from "@/types/ProvinceType";
-import { JobType } from "@/types/home/job/JobType";
 import { ReloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Form } from "antd";
@@ -28,6 +27,7 @@ import { useDebounce } from "use-debounce";
 import CompanyHighlight from "./components/CompanyHighlight";
 import JobDetail from "./components/JobDetail";
 import JobListCard from "./components/JobListCard";
+import { JobType } from "@/types/JobType";
 
 // Demo data - tương tự itviec
 const SALARY_MIN = 0;

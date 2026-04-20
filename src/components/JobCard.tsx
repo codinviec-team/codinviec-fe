@@ -100,9 +100,9 @@ export default function JobCard({ job, index = 0, className }: JobCardProps) {
               aria-label={isSaved ? "Bỏ lưu" : "Lưu việc làm"}
             >
               {isSaved ? (
-                <HeartFilled className="text-lg text-red-500" />
+                <HeartFilled className="text-lg !text-red-500" />
               ) : (
-                <HeartOutlined className="text-lg text-gray-400 hover:text-red-500" />
+                <HeartOutlined className="text-lg text-gray-400 hover:!text-red-500" />
               )}
             </button>
           </div>

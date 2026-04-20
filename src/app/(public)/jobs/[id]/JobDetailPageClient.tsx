@@ -3,7 +3,7 @@
 import Container from "@/components/Container";
 import CustomBadge from "@/components/CustomBadge";
 import LoadingCustom from "@/components/LoadingCustom";
-import TagCustomer from "@/components/TagCustomer";
+import TagKeyWordComponent from "@/components/TagKeyWordComponent";
 import { PATHS } from "@/constants/paths";
 import { useAppSelector } from "@/hooks/hooks";
 import JobServices from "@/services/JobServices";
@@ -226,7 +226,9 @@ export default function JobDetailPageClient({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {dataJob?.skills.map((item) => (
-                  <TagCustomer key={item?.id}>{item?.name}</TagCustomer>
+                  <TagKeyWordComponent key={item?.id}>
+                    {item?.name}
+                  </TagKeyWordComponent>
                 ))}
               </div>
             </div>

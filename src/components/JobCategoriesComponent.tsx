@@ -13,61 +13,54 @@ import {
   ApiOutlined,
 } from "@ant-design/icons";
 import Container from "@/components/Container";
+import { PATHS } from "@/constants/paths";
 
 const categories = [
   {
     icon: <CodeOutlined className="text-3xl" />,
     name: "Frontend Developer",
-    jobCount: 850,
     color: "bg-gradient-to-br from-blue-500 to-blue-600",
     hoverColor: "hover:from-blue-600 hover:to-blue-700",
   },
   {
     icon: <DatabaseOutlined className="text-3xl" />,
     name: "Backend Developer",
-    jobCount: 720,
     color: "bg-gradient-to-br from-green-500 to-green-600",
     hoverColor: "hover:from-green-600 hover:to-green-700",
   },
   {
     icon: <DesktopOutlined className="text-3xl" />,
     name: "Fullstack Developer",
-    jobCount: 540,
     color: "bg-gradient-to-br from-purple-500 to-purple-600",
     hoverColor: "hover:from-purple-600 hover:to-purple-700",
   },
   {
     icon: <MobileOutlined className="text-3xl" />,
     name: "Mobile Developer",
-    jobCount: 380,
     color: "bg-gradient-to-br from-orange-500 to-orange-600",
     hoverColor: "hover:from-orange-600 hover:to-orange-700",
   },
   {
     icon: <CloudOutlined className="text-3xl" />,
     name: "DevOps/Cloud",
-    jobCount: 290,
     color: "bg-gradient-to-br from-cyan-500 to-cyan-600",
     hoverColor: "hover:from-cyan-600 hover:to-cyan-700",
   },
   {
     icon: <RobotOutlined className="text-3xl" />,
     name: "AI/ML Engineer",
-    jobCount: 180,
     color: "bg-gradient-to-br from-pink-500 to-pink-600",
     hoverColor: "hover:from-pink-600 hover:to-pink-700",
   },
   {
     icon: <SafetyOutlined className="text-3xl" />,
     name: "Security Engineer",
-    jobCount: 120,
     color: "bg-gradient-to-br from-red-500 to-red-600",
     hoverColor: "hover:from-red-600 hover:to-red-700",
   },
   {
     icon: <ApiOutlined className="text-3xl" />,
     name: "QA/Tester",
-    jobCount: 250,
     color: "bg-gradient-to-br from-yellow-500 to-yellow-600",
     hoverColor: "hover:from-yellow-600 hover:to-yellow-700",
   },
@@ -92,7 +85,8 @@ const itemVariants = {
   },
 };
 
-export default function JobCategories() {
+export default function JobCategoriesComponent() {
+  const domain = process.env.DOMAIN_FE || "http://localhost:3000";
   return (
     <Container className="!py-16">
       <div className="text-center mb-12">
@@ -126,7 +120,7 @@ export default function JobCategories() {
         {categories.map((category, index) => (
           <motion.div key={index} variants={itemVariants}>
             <Link
-              href={`/jobs?category=${encodeURIComponent(category.name)}`}
+              href={`${domain}/${PATHS.JOBS}?keyword=${encodeURIComponent(category.name)}`}
               className={`block p-6 rounded-2xl ${category.color} ${category.hoverColor} text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
             >
               <div className="flex flex-col items-center text-center">
@@ -134,9 +128,6 @@ export default function JobCategories() {
                   {category.icon}
                 </div>
                 <h3 className="font-semibold text-lg mb-2">{category.name}</h3>
-                <span className="text-sm opacity-90">
-                  {category.jobCount} việc làm
-                </span>
               </div>
             </Link>
           </motion.div>

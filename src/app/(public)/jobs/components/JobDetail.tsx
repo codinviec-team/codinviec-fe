@@ -1,7 +1,7 @@
 "use client";
 
 import CustomBadge from "@/components/CustomBadge";
-import TagCustomer from "@/components/TagCustomer";
+import TagKeyWordComponent from "@/components/TagKeyWordComponent";
 import { PATHS } from "@/constants/paths";
 import { BadgeVariant } from "@/types/BadgeType";
 import { JobType } from "@/types/home/job/JobType";
@@ -159,7 +159,9 @@ export default function JobDetail({ job, onClose }: JobDetailProps) {
         <div className="flex flex-wrap gap-2">
           {job?.skills &&
             job?.skills.map((skill) => (
-              <TagCustomer key={skill?.id}>{skill?.name}</TagCustomer>
+              <TagKeyWordComponent key={skill?.id}>
+                {skill?.name}
+              </TagKeyWordComponent>
             ))}
         </div>
       </div>

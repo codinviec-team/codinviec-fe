@@ -3,6 +3,9 @@
 import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
 import { useRouter } from "next/navigation";
+import TagKeyWordComponent from "./TagKeyWordComponent";
+import useLocation, { ProvinceOption } from "@/hooks/useLocation";
+import { PATHS } from "@/constants/paths";
 
 const popularKeywords = [
   "ReactJS",
@@ -15,8 +18,10 @@ const popularKeywords = [
   "AI/ML",
 ];
 
-export default function HeroSection() {
+export default function HeroHomeComponent() {
   const router = useRouter();
+  const domain = process.env.DOMAIN_FE || "http://localhost:3000";
+  const { dataLocation, provinceData, handleProvinceChange } = useLocation();
 
   const handleSearch = (values: { keyword?: string; location?: string }) => {
     const params = new URLSearchParams();
@@ -26,7 +31,12 @@ export default function HeroSection() {
     if (values.location && values.location !== "all") {
       params.set("location", values.location);
     }
-    router.push(`/jobs?${params.toString()}`);
+    router.push(`${domain}/${PATHS.JOBS}?${params.toString()}`);
+  };
+
+  // change location
+  const handleChangeLocation = (provinces: ProvinceOption | undefined) => {
+    handleProvinceChange?.(provinces);
   };
 
   return (
@@ -68,6 +78,8 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <SearchBar
+              locations={dataLocation || []}
+              onChangeLocation={handleChangeLocation}
               onFinish={handleSearch}
               withBackground={true}
               placeholder="Nhập từ khóa, vị trí, công ty..."
@@ -84,13 +96,12 @@ export default function HeroSection() {
           >
             <span className="text-primary-200 text-sm mr-2">Phổ biến:</span>
             {popularKeywords.map((keyword) => (
-              <button
+              <TagKeyWordComponent
                 key={keyword}
-                onClick={() => handleSearch({ keyword })}
-                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm rounded-full transition-all duration-200 hover:scale-105"
+                href={`${domain}/jobs?keyword=${keyword}&page=1`}
               >
                 {keyword}
-              </button>
+              </TagKeyWordComponent>
             ))}
           </motion.div>
 

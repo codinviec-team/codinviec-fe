@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { generatePublicMetadata } from "@/utils/metadata";
-import HeroSection from "@/components/HeroComponent";
-import JobCategories from "@/components/JobCategoriesComponent";
-import FeaturedJobs from "@/components/FeaturedJobComponent";
-import TopEmployers from "@/components/TopEmployers";
-import StatsSection from "@/components/StatsSection";
+import HeroHomeComponent from "@/components/HeroComponent";
+import JobCategoriesComponent from "@/components/JobCategoriesComponent";
+import FeaturedJobComponent from "@/components/FeaturedJobComponent";
+import TopEmployersComponent from "@/components/TopEmployersComponent";
+import StatsSectionComponent from "@/components/StatsSectionComponent";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Trang chủ - Tìm việc làm IT, Developer, Lập trình viên",
@@ -16,19 +16,19 @@ export default function HomePage() {
   return (
     <div className="w-full">
       {/* Hero Section with Search */}
-      <HeroSection />
+      <HeroHomeComponent />
 
       {/* Job Categories */}
-      <JobCategories />
+      <JobCategoriesComponent />
 
       {/* Featured Jobs */}
-      <FeaturedJobs />
+      <FeaturedJobComponent />
 
       {/* Top Employers */}
-      <TopEmployers />
+      <TopEmployersComponent />
 
       {/* Stats & CTA Section */}
-      <StatsSection />
+      <StatsSectionComponent />
     </div>
   );
 }
