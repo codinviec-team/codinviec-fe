@@ -1,6 +1,7 @@
 import { ProvinceType } from "@/types/ProvinceType";
 import { StatusSpecial } from "@/types/StatusSpecial";
 import { Wardtype } from "@/types/Ward";
+import { IndustryType } from "./IndustryType";
 
 export interface CompanyType {
   id: string;
@@ -11,6 +12,9 @@ export interface CompanyType {
   statusSpecials: StatusSpecial[];
   companySize: CompanySize;
   companyAddress: CompanyAddress[];
+  isFeatured: boolean;
+  JobActive: number;
+  industry: IndustryType;
   createdDate: string;
   updatedDate: string;
 }

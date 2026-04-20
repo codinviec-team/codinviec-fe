@@ -79,37 +79,7 @@ const sampleJobs: Job[] = [
   },
 ];
 
-const tabItems = [
-  {
-    key: "all",
-    label: (
-      <span className="flex items-center gap-2">
-        <StarOutlined />
-        Tất cả
-      </span>
-    ),
-  },
-  {
-    key: "hot",
-    label: (
-      <span className="flex items-center gap-2">
-        <FireOutlined />
-        Việc làm Hot
-      </span>
-    ),
-  },
-  {
-    key: "urgent",
-    label: (
-      <span className="flex items-center gap-2">
-        <ThunderboltOutlined />
-        Tuyển gấp
-      </span>
-    ),
-  },
-];
-
-export default function FeaturedJobs() {
+export default function FeaturedJobComponent() {
   return (
     <Container className="!py-16">
       <div className="text-center mb-10">
@@ -132,22 +102,6 @@ export default function FeaturedJobs() {
           Khám phá những cơ hội việc làm IT hấp dẫn nhất dành cho bạn
         </motion.p>
       </div>
-
-      {/* Tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-8"
-      >
-        <Tabs
-          defaultActiveKey="all"
-          items={tabItems}
-          centered
-          className="[&_.ant-tabs-tab]:!text-base [&_.ant-tabs-tab]:!font-medium [&_.ant-tabs-tab-active]:!text-primary-600 [&_.ant-tabs-ink-bar]:!bg-primary-600"
-        />
-      </motion.div>
 
       {/* Jobs Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -14,6 +14,15 @@ const CompanyServices = {
     return res?.data?.data;
   },
 
+  async getCompanyFeatured(): Promise<CompanyType[]> {
+    const res =
+      await api.get<IBaseResponse<CompanyType[]>>("/company/featured");
+    if (!res.data.data) {
+      throw new Error("Không lấy được company featured");
+    }
+    return res?.data?.data;
+  },
+
   async getAllCompanyHavePage(
     searchs: SearchCompanyType = {},
   ): Promise<BasePageResponse<CompanyType>> {

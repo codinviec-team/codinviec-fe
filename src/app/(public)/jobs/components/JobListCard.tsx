@@ -1,7 +1,7 @@
 "use client";
 
 import CustomBadge from "@/components/CustomBadge";
-import TagCustomer from "@/components/TagCustomer";
+import TagKeyWordComponent from "@/components/TagKeyWordComponent";
 import { PATHS } from "@/constants/paths";
 import { useAppSelector } from "@/hooks/hooks";
 import JobServices from "@/services/JobServices";
@@ -133,7 +133,9 @@ export default function JobListCard({
           <div className="flex flex-wrap gap-2 mb-4">
             {job?.skills &&
               job?.skills.map((skill) => (
-                <TagCustomer key={skill?.id}>{skill?.name}</TagCustomer>
+                <TagKeyWordComponent key={skill?.id}>
+                  {skill?.name}
+                </TagKeyWordComponent>
               ))}
           </div>
 

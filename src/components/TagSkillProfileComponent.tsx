@@ -5,7 +5,11 @@ type TagsSkillProps = {
   experienceName: string;
 } & React.ComponentProps<typeof Tag>;
 
-const TagSkill = ({ skillName, experienceName, ...props }: TagsSkillProps) => {
+const TagSkillProfileComponent = ({
+  skillName,
+  experienceName,
+  ...props
+}: TagsSkillProps) => {
   return (
     <Tag
       {...props}
@@ -15,4 +19,4 @@ const TagSkill = ({ skillName, experienceName, ...props }: TagsSkillProps) => {
     </Tag>
   );
 };
-export default TagSkill;
+export default TagSkillProfileComponent;

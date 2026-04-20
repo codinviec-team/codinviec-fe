@@ -20,6 +20,10 @@ const useLocation = () => {
   >({
     queryKey: ["location"],
     queryFn: () => ProvinceService.getAllProvince(),
+    staleTime: 1000 * 60 * 30, // Cache 30 phút
+    gcTime: 1000 * 60 * 60, // Giữ cache 1 giờ
+    refetchOnWindowFocus: false, // Không refetch khi focus window
+    refetchOnMount: false, // Không refetch khi mount lại nếu đã có cache
   });
 
   const handleProvinceChange = (province: ProvinceOption | undefined) => {
