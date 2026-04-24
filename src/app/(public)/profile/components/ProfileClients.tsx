@@ -73,6 +73,8 @@ export default function ProfileClients() {
         user?.id || "",
       ),
     enabled: !!user?.id,
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
 
   // CALL API SKILL AVAIABLE
@@ -80,6 +82,9 @@ export default function ProfileClients() {
     useQuery<AvailableSkillType[], Error>({
       queryKey: ["availableskill"],
       queryFn: () => AvailableSkillService.getAllAvailableSkill(),
+      staleTime: 1000 * 60 * 30,
+      gcTime: 1000 * 60 * 60,
+      refetchOnMount: false,
     });
 
   // CALL API EXPERIENCE
@@ -89,6 +94,9 @@ export default function ProfileClients() {
   >({
     queryKey: ["experience"],
     queryFn: () => ExperienceService.getAllExperience(),
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60,
+    refetchOnMount: false,
   });
 
   useEffect(() => {

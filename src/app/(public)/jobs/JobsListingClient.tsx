@@ -23,7 +23,7 @@ import { Button, Form } from "antd";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useDebounce, useDebouncedCallback } from "use-debounce";
 import CompanyHighlight from "./components/CompanyHighlight";
 import JobDetail from "./components/JobDetail";
 import JobListCard from "./components/JobListCard";
@@ -242,17 +242,23 @@ export default function JobsListingClient() {
     router.replace(`${PATHS.JOBS}?${params.toString()}`);
   };
 
+  // Debounce salary URL update — tránh spam router.replace và API khi kéo slider
+  const debounceSalaryUrl = useDebouncedCallback(
+    (salaryRange: [number, number]) => {
+      setCurrentPage(1);
+      const freshParams = new URLSearchParams(searchParams.toString());
+      freshParams.set("salaryMin", salaryRange[0].toString());
+      freshParams.set("salaryMax", salaryRange[1].toString());
+      freshParams.set("page", "1");
+      router.replace(`${PATHS.JOBS}?${freshParams.toString()}`);
+    },
+    500,
+  );
+
   // Salary Range Filter
   const handleChangeSalaryRangeFilter = (salaryRange: [number, number]) => {
-    setFilters((prev) => ({
-      ...prev,
-      salaryRange: salaryRange,
-    }));
-    setCurrentPage(1);
-    params.set("salaryMin", salaryRange[0].toString());
-    params.set("salaryMax", salaryRange[1].toString());
-    params.set("page", "1");
-    router.replace(`${PATHS.JOBS}?${params.toString()}`);
+    setFilters((prev) => ({ ...prev, salaryRange }));
+    debounceSalaryUrl(salaryRange);
   };
 
   // change location
@@ -322,7 +328,7 @@ export default function JobsListingClient() {
       </div>
 
       {/* Company Highlight */}
-      <CompanyHighlight />
+      {/* <CompanyHighlight /> */}
 
       <div className="!py-8">
         {/* Header Section */}

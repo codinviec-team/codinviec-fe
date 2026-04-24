@@ -2,23 +2,19 @@
 
 import { useEffect } from "react";
 import { useAppDispatch } from "@/hooks/hooks";
-import { checkAuth, setLoading } from "@/store/slice/auth/authSlice";
-import { cookieHelper } from "@/utils/cookieHelper";
+import { checkAuth } from "@/store/slice/auth/authSlice";
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
-    const dispatch = useAppDispatch();
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        // Kiểm tra nếu có token thì gọi checkAuth để khôi phục session
-        const token = cookieHelper.get("access_token");
-        if (token) {
-            dispatch(checkAuth());
-        }else {
-            dispatch(setLoading(false));
-        }
-    }, [dispatch]);
+  useEffect(() => {
+    // httpOnly cookie không đọc được từ JS — hỏi server để biết đã auth chưa
+    dispatch(checkAuth());
+  }, [dispatch]);
 
-    return <>{children}</>;
+  return <>{children}</>;
 }
-
-

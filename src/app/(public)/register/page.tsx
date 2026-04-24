@@ -92,8 +92,7 @@ const RegisterPage = () => {
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {};
 
-  // Không render form nếu đã đăng nhập (sẽ redirect)
-  if (isAuthenticated) {
+  if (loading || isAuthenticated) {
     return null;
   }
 

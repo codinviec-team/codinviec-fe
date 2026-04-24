@@ -24,18 +24,22 @@ export function HrProvider({ children }: { children: React.ReactNode }) {
     JobType[],
     Error
   >({
-    queryKey: ["jobs", user?.company?.id],
+    queryKey: ["jobs", "company", user?.company?.id],
     enabled: !!user?.company?.id,
     queryFn: () => JobServices.getJobByIdCompany(user!.company!.id),
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
 
   const { data: dataUserApply, isLoading: isLoadingUserApply } = useQuery<
     JobApplyUserType,
     Error
   >({
-    queryKey: ["UserApply", user?.company?.id],
+    queryKey: ["userApply", user?.company?.id],
     enabled: !!user?.company?.id,
     queryFn: () => UserService.getUserApplyByCompanyId(user!.company!.id),
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
 
   const loadingContextHr = loading || isLoadingJobs || isLoadingUserApply;
