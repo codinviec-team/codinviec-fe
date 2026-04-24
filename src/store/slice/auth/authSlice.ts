@@ -6,7 +6,6 @@ import { ILogin } from "@/types/Login";
 import { IRegister } from "@/types/Register";
 import { IUser } from "@/types/User";
 import { authService } from "@/services/authService";
-import { cookieHelper } from "@/utils/cookieHelper";
 
 interface IAuthState {
   isAuthenticated: boolean;
@@ -24,17 +23,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (loginData: ILogin, { rejectWithValue, dispatch }) => {
     try {
-      // Gọi service login để lấy token
-      const tokenData = await authService.login(loginData);
-
-      // Lưu access token vào cookie
-      if (tokenData.accessToken) {
-        cookieHelper.set("access_token", tokenData.accessToken);
-      } else {
-        cookieHelper.remove("access_token");
-      }
-
-      // Gọi checkAuth để lấy user info
+      await authService.login(loginData);
       return await dispatch(checkAuth()).unwrap();
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
@@ -70,22 +59,9 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, { rejectWithValue }) => {
     try {
-      const token = cookieHelper.get("access_token");
-
-      if (!token) {
-        throw new Error("Không tìm thấy token!");
-      }
-
-      // Gọi service để lấy thông tin user
       return await authService.getProfile();
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
-
-      // Nếu lỗi 401 token không hợp lệ logout
-      if (axiosError.response?.status === 401) {
-        cookieHelper.remove("access_token");
-      }
-
       return rejectWithValue(axiosError);
     }
   },
@@ -102,12 +78,6 @@ export const changeIsFindJob = createAsyncThunk(
       return await authService.getProfile();
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
-
-      // Nếu lỗi 401 token không hợp lệ logout
-      if (axiosError.response?.status === 401) {
-        cookieHelper.remove("access_token");
-      }
-
       return rejectWithValue(axiosError);
     }
   },
@@ -127,7 +97,6 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-      cookieHelper.remove("access_token");
     },
   },
   extraReducers: (builder) => {

@@ -49,14 +49,13 @@ export default function AdminUsersPage() {
 
   const [debouncedKeyword] = useDebounce(searchKeyword, 500);
 
-  console.log("selectedRowKeys", selectedRowKeys);
 
   const {
     data: dataUser,
     isLoading: isLoadingUser,
     refetch: refetchUserData,
   } = useQuery<BasePageResponse<IUser>, Error>({
-    queryKey: ["userAll", filterRole, filterStatus, debouncedKeyword],
+    queryKey: ["userAll", filterRole, filterStatus, debouncedKeyword, pageNumber],
     queryFn: () =>
       UserService.getAllUserHavePage({
         pageNumber: pageNumber,
@@ -65,6 +64,8 @@ export default function AdminUsersPage() {
         block: filterStatus ? filterStatus === "block" : null,
         roleId: filterRole ? filterRole : null,
       }),
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
 
   const { data: dataRoles, isLoading: isLoadingRoles } = useQuery<
@@ -73,6 +74,9 @@ export default function AdminUsersPage() {
   >({
     queryKey: ["roleAll"],
     queryFn: () => RoleService.getAllRole(),
+    staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 60,
+    refetchOnMount: false,
   });
 
   const { data: dataCompany, isLoading: isLoadingCompany } = useQuery<
@@ -81,6 +85,9 @@ export default function AdminUsersPage() {
   >({
     queryKey: ["companyAll"],
     queryFn: () => CompanyServices.getAllCompany(),
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    refetchOnMount: false,
   });
 
   useEffect(() => {

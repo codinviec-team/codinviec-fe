@@ -1,7 +1,6 @@
 "use client";
 
 import axios, { AxiosError } from "axios";
-import { cookieHelper } from "@/utils/cookieHelper";
 import { authService } from "@/services/authService";
 
 const api = axios.create({
@@ -13,37 +12,22 @@ const api = axios.create({
 let isRefresh = false;
 
 interface QueueItem {
-  resolve: (token: string | null) => void;
+  resolve: () => void;
   reject: (error: AxiosError) => void;
 }
 
 let failedQueue: QueueItem[] = [];
 
-// Xử lý queue khi refresh xong
-const processQueue = (
-  error: AxiosError | null,
-  token: string | null = null,
-) => {
+const processQueue = (error: AxiosError | null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(token);
+      prom.resolve();
     }
   });
   failedQueue = [];
 };
-
-api.interceptors.request.use(
-  (config) => {
-    const token = cookieHelper.get("access_token");
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
 
 api.interceptors.response.use(
   (response) => response,
@@ -54,58 +38,36 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Bỏ qua refresh logic cho logout endpoint
     const isLogoutRequest = originalRequest.url?.includes("/auth/logout");
     const isAuthRequest =
       originalRequest.url?.includes("/auth/login") ||
       originalRequest.url?.includes("/auth/register");
 
-    //Nếu bị lỗi 401 và chưa retry (và không phải logout request)
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !isLogoutRequest &&
-      cookieHelper.get("access_token") &&
       !isAuthRequest
     ) {
       if (isRefresh) {
-        //néu đang refresh, thì chờ
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
+        return new Promise<void>((resolve, reject) => {
+          failedQueue.push({ resolve: () => resolve(), reject });
         })
-          .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return api(originalRequest);
-          })
-          .catch((error) => {
-            return Promise.reject(error);
-          });
+          .then(() => api(originalRequest))
+          .catch((err) => Promise.reject(err));
       }
 
       originalRequest._retry = true;
       isRefresh = true;
 
       try {
-        //Goi refresh token
-        const newToken = await authService.refresh();
-
-        if (!newToken || !newToken.accessToken) {
-          throw new Error("Không thể lấy token mới");
-        }
-
-        //Luu access token vao cookie
-        cookieHelper.set("access_token", newToken.accessToken);
-
-        //Cap nhat header
-        originalRequest.headers.Authorization = `Bearer ${newToken.accessToken}`;
-
-        processQueue(null, newToken.accessToken);
+        await authService.refresh();
+        processQueue(null);
         isRefresh = false;
-
         return api(originalRequest);
-      } catch (error) {
+      } catch (err) {
         isRefresh = false;
-        processQueue(error as AxiosError, null);
+        processQueue(err as AxiosError);
 
         const logoutEvent = new CustomEvent("logout", {
           detail: {
@@ -114,12 +76,10 @@ api.interceptors.response.use(
         });
         window.dispatchEvent(logoutEvent);
 
-        return Promise.reject(error);
+        return Promise.reject(err);
       }
     }
 
-    // Dispatch api-error event cho các lỗi khác
-    // GlobalHandler sẽ xử lý hiển thị thông báo phù hợp
     const status =
       error.response?.status || (error.code === "ECONNABORTED" ? 0 : undefined);
     if (status !== undefined && typeof window !== "undefined") {

@@ -47,20 +47,22 @@ export default function CompanyDetailClient({
     CompanyType,
     Error
   >({
-    queryKey: ["company"],
-    queryFn: () => {
-      return CompanyServices.getCompanyById(slug || "");
-    },
+    queryKey: ["company", slug],
+    queryFn: () => CompanyServices.getCompanyById(slug || ""),
+    enabled: !!slug,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const { data: dataJobs, isLoading: isLoadingJobs } = useQuery<
     JobType[],
     Error
   >({
-    queryKey: ["jobs"],
-    queryFn: () => {
-      return JobServices.getJobByIdCompany(slug || "");
-    },
+    queryKey: ["jobs", "company", slug],
+    queryFn: () => JobServices.getJobByIdCompany(slug || ""),
+    enabled: !!slug,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const loadingPage = isLoadingComapny || isLoadingJobs;
@@ -115,7 +117,7 @@ export default function CompanyDetailClient({
   const headOfficeCompany =
     dataComapny?.companyAddress?.find(
       (address: CompanyAddress) => address.headOffice === true,
-    ) || dataComapny?.companyAddress[0];
+    ) ?? dataComapny?.companyAddress?.[0];
 
   return (
     <Container className="!py-8">

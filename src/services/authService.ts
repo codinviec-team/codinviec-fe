@@ -1,7 +1,6 @@
 import api from "@/interceptor/api";
 import { ILogin } from "@/types/Login";
 import { IRegister, RegisterType } from "@/types/Register";
-import { IToken } from "@/types/Token";
 import { UpdateProfileServiceType } from "@/types/UpdateProfileServiceType";
 import { changeSoftSkillType, IUser } from "@/types/User";
 import { IBaseResponse } from "@/types/BaseResponse";
@@ -15,12 +14,8 @@ const refreshApi = axios.create({
 });
 
 export const authService = {
-  async login(loginData: ILogin): Promise<IToken> {
-    const res = await api.post<IBaseResponse<IToken>>("/auth/login", loginData);
-    if (!res.data.data) {
-      throw new Error("Không nhận được token từ server");
-    }
-    return res.data.data;
+  async login(loginData: ILogin): Promise<void> {
+    await api.post("/auth/login", loginData);
   },
 
   async register(registerData: IRegister): Promise<RegisterType> {
@@ -35,7 +30,7 @@ export const authService = {
   },
 
   async getProfile(): Promise<IUser> {
-    const res = await api.get<IBaseResponse<IUser>>("/auth/profile");
+    const res = await api.get<IBaseResponse<IUser>>("/user/profile");
     if (!res.data.data) {
       throw new Error("Không nhận được thông tin người dùng từ server");
     }
@@ -86,12 +81,8 @@ export const authService = {
     await api.post<IBaseResponse>(`/auth/logout`);
   },
 
-  async refresh(): Promise<IToken> {
-    const res = await refreshApi.post<IBaseResponse<IToken>>("/auth/refresh");
-    if (!res.data.data) {
-      throw new Error("Không nhận được token mới từ server");
-    }
-    return res.data.data;
+  async refresh(): Promise<void> {
+    await refreshApi.post("/auth/refresh");
   },
 
   async changeIsFindJob(): Promise<IUser> {

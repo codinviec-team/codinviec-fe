@@ -42,6 +42,8 @@ const BlogAllClientsPage = () => {
         sortBy: sortBy || "createdDateDesc",
         keyword: keywordParam,
       }),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const onChangePagination = (page: number) => {

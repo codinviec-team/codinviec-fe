@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { generatePublicMetadata } from "@/utils/metadata";
 import HeroHomeComponent from "@/components/HeroComponent";
-import JobCategoriesComponent from "@/components/JobCategoriesComponent";
 import FeaturedJobComponent from "@/components/FeaturedJobComponent";
-import TopEmployersComponent from "@/components/TopEmployersComponent";
 import StatsSectionComponent from "@/components/StatsSectionComponent";
+import TopEmployersComponent from "@/components/TopEmployersComponent";
+import { generatePublicMetadata } from "@/utils/metadata";
+import type { Metadata } from "next";
+import JobCategoriesComponent from "@/components/JobCategoriesComponent";
 
 export const metadata: Metadata = generatePublicMetadata(
   "Trang chủ - Tìm việc làm IT, Developer, Lập trình viên",
@@ -21,7 +21,7 @@ export default function HomePage() {
       {/* Job Categories */}
       <JobCategoriesComponent />
 
-      {/* Featured Jobs */}
+      {/* Job Categories */}
       <FeaturedJobComponent />
 
       {/* Top Employers */}

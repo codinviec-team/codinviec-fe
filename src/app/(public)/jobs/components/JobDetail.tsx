@@ -27,14 +27,6 @@ type JobDetailProps = {
 
 export default function JobDetail({ job, onClose }: JobDetailProps) {
   const [isSaved, setIsSaved] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  }, [job]); // 👈 data thay đổi là scroll lên đầu
-
   if (!job) {
     return (
       <div className="hidden lg:flex items-center justify-center h-full bg-white rounded-2xl border border-primary-100">
@@ -54,7 +46,6 @@ export default function JobDetail({ job, onClose }: JobDetailProps) {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
       className="hidden lg:block bg-white rounded-2xl border border-primary-100 p-6 sticky top-30 max-h-[calc(100vh-8rem)] overflow-y-auto"
-      ref={scrollRef}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-6 pb-6 border-b border-primary-100">

@@ -24,26 +24,30 @@ const BlogPageClients = () => {
     BasePageResponse<BlogType>,
     Error
   >({
-    queryKey: ["blogsFeatured"],
+    queryKey: ["blogsLatest"],
     queryFn: () =>
       BlogService.getAllBlogHavePage({
         pageNumber: 0,
         pageSize: 6,
         sortBy: "createdDateDesc",
       }),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const { data: featuredBlogs, isLoading: loadingFeaturedBlog } = useQuery<
     BasePageResponse<BlogType>,
     Error
   >({
-    queryKey: ["blogsNewest"],
+    queryKey: ["blogsFeatured"],
     queryFn: () =>
       BlogService.getAllBlogHavePage({
         pageNumber: 0,
         pageSize: 6,
         sortBy: "sortHighlight",
       }),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const handleSearch = (values: SearchFormFields) => {

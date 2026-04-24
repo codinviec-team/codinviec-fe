@@ -7,13 +7,12 @@ import { Form, FormProps, Input } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { checkAuth, login, setLoading } from "@/store/slice/auth/authSlice";
+import { useEffect, useState } from "react";
+import { login } from "@/store/slice/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { RootState } from "@/store";
 import { alert } from "@/utils/notification";
 import { getGoogleErrorMessages } from "@/utils/errorGoogle";
-import { cookieHelper } from "@/utils/cookieHelper";
 
 type FieldType = {
   email?: string;
@@ -24,14 +23,12 @@ const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const hasProcessedToken = useRef(false);
   const { isAuthenticated, loading } = useAppSelector(
     (state: RootState) => state.auth,
   );
   const [submitting, setSubmitting] = useState(false);
 
   const handleGoogleLogin = () => {
-    // Redirect đến backend OAuth2 endpoint
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!apiBaseUrl) {
       alert.error(
@@ -40,81 +37,24 @@ const LoginPage = () => {
       );
       return;
     }
-    window.location.href = `${apiBaseUrl}/auth/login-google`;
+    window.location.href = `${apiBaseUrl}/auth/google`;
   };
 
-  // Redirect nếu đã đăng nhập
+  // Redirect về HOME nếu đã đăng nhập (AuthProvider đã gọi checkAuth khi mount)
   useEffect(() => {
     if (!loading && isAuthenticated) {
       router.replace(PATHS.HOME);
     }
   }, [isAuthenticated, loading, router]);
 
+  // Xử lý lỗi từ Google OAuth callback
   useEffect(() => {
     const error = searchParams.get("error");
     if (error) {
-      const errorMessage = getGoogleErrorMessages(error);
-
-      alert.error("Đăng nhập thất bại", errorMessage);
-
+      alert.error("Đăng nhập thất bại", getGoogleErrorMessages(error));
       router.replace(PATHS.SIGNIN);
-      return;
-    }
-
-    const token = searchParams.get("token");
-
-    if (token && !hasProcessedToken.current) {
-      hasProcessedToken.current = true;
-
-      try {
-        // Decode token từ URL (đã được encode ở backend)
-        const decodedToken = decodeURIComponent(token);
-
-        // Validate token format (basic check)
-        if (!decodedToken || decodedToken.trim().length === 0) {
-          throw new Error("Token không hợp lệ");
-        }
-
-        // Lưu access token vào cookie
-        cookieHelper.set("access_token", decodedToken);
-
-        // Xóa token từ URL
-        const newUrl = window.location.pathname;
-        router.replace(newUrl);
-      } catch (error: unknown) {
-        const errorMessage =
-          typeof error === "string"
-            ? error
-            : error instanceof Error
-              ? error.message
-              : "Token không hợp lệ. Vui lòng thử lại.";
-
-        alert.error("Đăng nhập thất bại", errorMessage);
-
-        // Xóa token từ URL
-        const newUrl = window.location.pathname;
-        router.replace(newUrl);
-      }
     }
   }, [searchParams, router]);
-
-  useEffect(() => {
-    const syncAuth = async () => {
-      try {
-        const token = cookieHelper.get("access_token");
-
-        if (token) {
-          await dispatch(checkAuth()).unwrap();
-        } else {
-          dispatch(setLoading(false));
-        }
-      } catch (error: unknown) {
-        dispatch(setLoading(false));
-      }
-    };
-
-    syncAuth();
-  }, []);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     const loginData: ILogin = {
@@ -124,10 +64,8 @@ const LoginPage = () => {
 
     setSubmitting(true);
     try {
-      // Dispatch login action - Service được gọi trong slice
-      // checkAuth được gọi tự động trong login
       await dispatch(login(loginData)).unwrap();
-    } catch (error) {
+    } catch {
     } finally {
       setSubmitting(false);
     }
@@ -135,8 +73,7 @@ const LoginPage = () => {
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = () => {};
 
-  // Không render form nếu đã đăng nhập (sẽ redirect)
-  if (isAuthenticated) {
+  if (loading || isAuthenticated) {
     return null;
   }
 

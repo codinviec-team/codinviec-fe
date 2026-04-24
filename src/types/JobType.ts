@@ -1,5 +1,5 @@
 import { StatusSpecial } from "@/types/StatusSpecial";
-import { CompanyType } from "../company/CompanyType";
+import { CompanyType } from "@/types/CompanyType";
 import { AvailableSkillType } from "@/types/AvailableSkill";
 
 export interface JobType {
@@ -25,6 +25,7 @@ export interface JobType {
   statusSpecials: StatusSpecial[];
   skills: AvailableSkillType[];
   isAgreedSalary: boolean;
+  isFeatured: boolean;
   responsibility: string;
   idJobStatus: number;
   jobStatusName: string;

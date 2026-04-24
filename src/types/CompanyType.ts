@@ -9,9 +9,9 @@ export interface CompanyType {
   description: string;
   website: string;
   logo: string;
-  statusSpecials: StatusSpecial[];
+  statusSpecials: StatusSpecial[] | null;
   companySize: CompanySize;
-  companyAddress: CompanyAddress[];
+  companyAddress: CompanyAddress[] | null;
   isFeatured: boolean;
   JobActive: number;
   industry: IndustryType;

@@ -18,7 +18,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Form, Select } from "antd";
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CompanyCard from "./CompanyCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PATHS } from "@/constants/paths";
@@ -89,15 +89,15 @@ const CompaniesListingClient = () => {
     router.replace(`${PATHS.COMPANIES}?${params.toString()}`);
   }, []);
 
-  const { data: dataCompany, isLoading: isLoadingCompany } = useQuery<
+  const { data: dataCompany } = useQuery<
     BasePageResponse<CompanyType>,
     Error
   >({
     queryKey: [
       "company",
       currentPage,
-      provinceData,
-      companySizeState,
+      provinceData?.name,
+      companySizeState?.id,
       searchKeyword,
     ],
     queryFn: () => {
@@ -110,6 +110,8 @@ const CompaniesListingClient = () => {
         pageNumber: currentPage || 1,
       });
     },
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
 
   const totalCompany = dataCompany?.content?.length || 0;
@@ -137,7 +139,6 @@ const CompaniesListingClient = () => {
     params.set("page", "1");
     params.set("location", option.name || "");
     router.replace(`${PATHS.COMPANIES}?${params.toString()}`);
-    console.log("option", option);
   };
 
   const handleChangeCompanySize = (
@@ -256,7 +257,6 @@ const CompaniesListingClient = () => {
                 className="lg:w-[200px] !h-[48px] [&_.ant-select-selector]:!h-[48px] [&_.ant-select-selector]:!rounded-xl"
               />
             </div>
-            <div className="flex-1" />
             <UIButton
               variantCustom="accent"
               size="large"

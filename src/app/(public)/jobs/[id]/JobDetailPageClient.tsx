@@ -43,10 +43,11 @@ export default function JobDetailPageClient({
 
   // job
   const { data: dataJob, isLoading: isLoadingJob } = useQuery<JobType, Error>({
-    queryKey: ["job"],
-    queryFn: () => {
-      return JobServices.getJobById(Number(jobId || 0));
-    },
+    queryKey: ["job", jobId],
+    queryFn: () => JobServices.getJobById(Number(jobId || 0)),
+    enabled: !!jobId,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
   });
 
   const loadingPage = isLoadingJob;

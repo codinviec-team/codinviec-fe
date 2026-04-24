@@ -79,5 +79,13 @@ const JobServices = {
     }
     return res?.data?.data;
   },
+
+  async getFeaturedJobs(): Promise<JobType[]> {
+    const res = await api.get<IBaseResponse<JobType[]>>("/job/featured");
+    if (!res.data.data) {
+      throw new Error("Không lấy được việc làm nổi bật");
+    }
+    return res?.data?.data;
+  },
 };
 export default JobServices;
